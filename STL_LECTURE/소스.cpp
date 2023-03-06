@@ -21,11 +21,17 @@ int main()
 
 	// [문제] 1000개 중에서 가장 큰 수를 출력하라.
 
-
+	int max = -1;
+	
 	for (int i{}; i < 1000; ++i)
-		std::cout << std::format("{:10}", uid(dre));
+	{
+		int rand_num = uid(dre);
+		std::cout << std::format("{:10}", rand_num);
+		if (max < rand_num)
+			max = rand_num;
+	}
 
-	std::cout << '\n';
+	std::cout << '\n' << "max_num = " << max << '\n';
 
 	save("소스.cpp");
 }
