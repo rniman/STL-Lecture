@@ -12,3 +12,7 @@ C++ programming paradigm
 int [1000];
 continuous -> 시간상 연속성
 contiguous -> 공간상 연속성 (가장 빠른 자료구조)
+
+
+
+RAII : Resource Acquisition Is Initialization
