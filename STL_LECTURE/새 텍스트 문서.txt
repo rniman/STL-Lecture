@@ -6,3 +6,9 @@ C++ programming paradigm
 
 4. Template Meta PL
 5. functional PL
+
+
+
+int [1000];
+continuous -> 시간상 연속성
+contiguous -> 공간상 연속성 (가장 빠른 자료구조)
