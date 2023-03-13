@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <array>
+#include <algorithm>
 #include "save.h"
 
 
@@ -29,15 +30,17 @@ int main()
 
 	// 다음 시간에는 알고리즘으로 해결
 
-	int cnt{};
+	int cnt = std::count_if(numbers.begin(), numbers.end(), [](int n) {return n < 100; });
 
-	for (int num : numbers) {
-		if (num < 100) {
-			++cnt;
-		}
-	}
+	//int cnt{};
+
+	//for (int num : numbers) {
+	//	if (num < 100) {
+	//		++cnt;
+	//	}
+	//}
 
 	std::cout << "100보다 작은 숫자 - " << cnt << '\n';
 
-	save("소스.cpp");
+	//save("소스.cpp");
 }
