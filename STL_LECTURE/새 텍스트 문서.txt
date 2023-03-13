@@ -11,8 +11,36 @@ C++ programming paradigm
 
 int [1000];
 continuous -> 시간상 연속성
-contiguous -> 공간상 연속성 (가장 빠른 자료구조)
 
+contiguous -> 공간상 연속성 (가장 빠른 자료구조)
+array, string, vector
 
 
 RAII : Resource Acquisition Is Initialization
+
+
+binary-mode
+비트그대로 파일작성
+
+
+왜 정확히 4000바이트가 아닐까?
+
+컴퓨터가 메모리를 읽다가 2바이트로 바꿔버림
+enter키에 해당하는 것을 -> CR + LF로 바꿔버림
+글자를 기록하게 시켰기 때문에
+
+
+file 열기모드
+
+1.default = text
+2.binary
+
+file 읽고쓰는 방법
+
+1.고수준 <<, >>
+2.저수준 write,read
+
+1 - 1, 1 - 2, 2 - 1, 2 - 2		--총 4가지
+
+
+메모리 padding
