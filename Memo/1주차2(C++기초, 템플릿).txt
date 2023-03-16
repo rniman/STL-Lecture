@@ -37,18 +37,18 @@ void save(const std::string& fileName)
 	/*while (in >> c)
 		std::cout << c;*/
 
-		// 저장할 파일을 덧붙여 쓰기 모드로 연다
+	// 저장할 파일을 덧붙여 쓰기 모드로 연다
 	std::ofstream out{ "2023 1학기 STL 월56 목56 강의저장.txt", std::ios::app }; //덧붙여 쓰기모드
 
 	// 저장한 시간을 파일에 기록한다.
 	// epoch: 시간의 기원
-	auto now = std::chrono::system_clock::now();			// time_point를 얻는다
+	auto now = std::chrono::system_clock::now();		// time_point를 얻는다
 	//std::cout << now << '\n'; -> 표준 시간 출력
 	auto time = std::chrono::system_clock::to_time_t(now);	// UTC 시간으로 변환	
 	//std::cout << time << '\n'; ->  틱수를 출력
-	auto lt = localtime(&time);								// 현지 시간으로 변환
+	auto lt = localtime(&time);				// 현지 시간으로 변환
 
-	auto old = out.imbue(std::locale("ko_KR"));				// 한국으로 변경
+	auto old = out.imbue(std::locale("ko_KR"));		// 한국으로 변경
 
 	// 시간 출력
 	out << '\n' << '\n';

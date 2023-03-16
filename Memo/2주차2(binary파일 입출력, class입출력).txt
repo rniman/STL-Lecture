@@ -88,8 +88,8 @@ int main()
 
 	std::cout << "array<int, 100>가 차지하는 메모리 크기 - " << sizeof a << '\n';
 
-	//std::ofstream out{ "스택에 있는 int 천개" }; //default(text)모드로 작성
-	std::ofstream out{ "스택에 있는 int 천개", std::ios::binary }; //binary모드로 작성
+	//std::ofstream out{ "스택에 있는 int 천개" };			//default(text)모드로 작성
+	std::ofstream out{ "스택에 있는 int 천개", std::ios::binary }; 	//binary모드로 작성
 
 	out.write(reinterpret_cast<char*>(&a), sizeof(int) * 1'000);
 
