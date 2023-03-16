@@ -41,11 +41,6 @@ int main()
 		std::cout << ++cnt << '\n';
 		std::unique_ptr<Dog[]> dog{ new Dog[10] };    // sizeof(Dog) * 10 = 1GB
 
-		//RAII
-		//제어경로 통일
-		//
-
-		
-		std::this_thread::sleep_for(1s);
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 }
