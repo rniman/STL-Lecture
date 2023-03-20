@@ -3,7 +3,7 @@ C++ programming paradigm
 1. procedual Program Language (절차 지향)
 2. Object Oriented PL (객체 지향) -> 특정자료형 집중: 특성 + 행동  --> 캡슐화, 자료추상화, 데이터 은닉
 3. Generic PL -> 자료형에 무관한 코딩 *template* -> 템플릿 함수(알고리즘)와 템플릿 클래스(자료구조)를 만든다.
-
+///////
 4. Template Meta PL
 5. functional PL
 
@@ -61,4 +61,23 @@ DATA SEGMENT
 2.초기화 되는 영역
 
 전역변수:default random engine
+
+
+자료를 STACK
+자료의 크기가 작다.
+
+free Store
+실행타임(execution-time)에 
+
+DATA
+실행파일 크기가 커질수 있다. BSS
+
+
+
+std::array<int, 1'000'000> numbers;
+qsort(뭘(numbers주소) , 몇개(100만개), 한개 크기는(4바이트), 정렬방법은?(callable type) -> (기능) );
+
+
+qsort가 callable type에게 가져온 데이터를 해결할 방법을 물어본다.
+
 
