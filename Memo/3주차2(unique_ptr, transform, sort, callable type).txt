@@ -1,0 +1,412 @@
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-20 월요일 오후 1:40:53
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 20 월56						(3주 2일)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 더 많은 자료 처리하기 - new를 사용한 메모리 동적할당(Free Sotre(HEAP))
+//------------------------------------------------------------
+#include <iostream>
+#include <memory>
+#include <chrono>
+#include "save.h"
+
+// [문제] 스마트 포인터의 동작을 관찰할 수 있도록 class Dog를 사용
+
+class Dog
+{
+public:
+	Dog() { std::cout << "Dog 생성" << '\n'; }
+	~Dog() { std::cout << "Dog 소멸" << '\n'; }
+
+private:
+};
+
+void f()
+{
+	Dog* p = new Dog;
+
+	// 여기서 문제가 생겼다.
+	throw 1; //예외를 던진다.
+
+	delete p;
+}
+
+//-------
+int main()
+//-------
+{
+	save("소스.cpp");
+	
+	f();
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-03-20 월요일 오후 1:42:10
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 20 월56						(3주 2일)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 더 많은 자료 처리하기 - new를 사용한 메모리 동적할당(Free Sotre(HEAP))
+//------------------------------------------------------------
+#include <iostream>
+#include <memory>
+#include <chrono>
+#include "save.h"
+
+// [문제] 스마트 포인터의 동작을 관찰할 수 있도록 class Dog를 사용
+
+class Dog
+{
+public:
+	Dog() { std::cout << "Dog 생성" << '\n'; }
+	~Dog() { std::cout << "Dog 소멸" << '\n'; }
+
+private:
+};
+
+void f()
+{
+	Dog* p = new Dog;
+
+	// 여기서 문제가 생겼다.
+	throw 1; //예외를 던진다. -> 예외처리를 하지 않으면 강제종료
+
+	delete p;
+}
+
+//-------
+int main()
+//-------
+{	
+	try
+	{
+		f();
+	}
+	catch(int n)
+	{
+		std::cout << "예외를 처리함\n";
+	}
+	save("소스.cpp");
+}
+==================================================
+소스.cpp , 저장시간: 2023-03-20 월요일 오후 1:47:58
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 20 월56						(3주 2일)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 더 많은 자료 처리하기 - new를 사용한 메모리 동적할당(Free Sotre(HEAP))
+//------------------------------------------------------------
+#include <iostream>
+#include <memory>
+#include <chrono>
+#include "save.h"
+
+// [문제] 스마트 포인터의 동작을 관찰할 수 있도록 class Dog를 사용
+
+class Dog
+{
+public:
+	Dog() { std::cout << "Dog 생성" << '\n'; }
+	~Dog() { std::cout << "Dog 소멸" << '\n'; }
+
+private:
+};
+
+void f()
+{
+	std::unique_ptr<Dog> p{ new Dog };	// RAII
+
+	// 여기서 문제가 생겼다.
+	// 예외가 발생하면 stack unwinding을 하기때문에
+	// p가 소유한 Dog의 소멸자를 반드시 호출한다.
+	throw 1;
+	
+
+	std::cout << "이 문장이 출력되면 노트북 버려라\n";
+}
+
+//-------
+int main()
+//-------
+{	
+	try
+	{
+		f();
+	}
+	catch(int n)
+	{
+		std::cout << "예외를 처리함\n";
+	}
+	save("소스.cpp");
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-03-20 월요일 오후 2:08:45
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 20 월56						(3주 2일)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 실습 - 파일 자료 처리하기
+//------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include "save.h"
+
+// [문제] "소스.cpp" 파일을 읽어 소문자를 대문자로 변환하여
+// "소스대문자.cpp" 파일에 저장하라.
+
+//-------
+int main()
+//-------
+{	
+	std::ifstream in{ "소스.cpp" }; 	// 소스.cpp를 읽기 모드로 연다
+	std::ofstream out{ "소스대문자.cpp" }; // 소스대문자.cpp를 쓰기 모드로 연다
+
+	if (!in)
+	{
+		std::cout << "파일 열기 실패\n";
+	}
+
+	char c;
+
+	in >> std::noskipws;
+	while (in >> c) //EOF쓰지 말기
+	{
+		//if (islower(c)) -> 한줄 더 줄이기
+		c = toupper(c);
+		out << c;
+	}
+
+	save("소스.cpp");
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-03-20 월요일 오후 2:20:10
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 20 월56						(3주 2일)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 실습 - 파일 자료 처리하기
+//------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+#include "save.h"
+
+// [문제] "소스.cpp" 파일을 읽어 소문자를 대문자로 변환하여
+// "소스대문자.cpp" 파일에 저장하라.
+
+//-------
+int main()
+//-------
+{	
+	std::ifstream in{ "소스.cpp" }; 	// 소스.cpp를 읽기 모드로 연다
+	std::ofstream out{ "소스대문자.cpp" }; // 소스대문자.cpp를 쓰기 모드로 연다
+
+	if (!in)
+	{
+		std::cout << "파일 열기 실패\n";
+	}
+
+
+	//소문자는 대문자로
+	std::transform(std::istreambuf_iterator<char>{in}, {}, std::ostreambuf_iterator<char>{out}, [](char c) {
+		return c = toupper(c);
+		});
+
+	//전부 *로
+	std::transform(std::istreambuf_iterator<char>{in}, {}, std::ostreambuf_iterator<char>{std::cout}, [](char c) {
+			return '*';
+		});
+
+	// 숫자는 *로
+	std::transform(std::istreambuf_iterator<char>{in}, {}, std::ostreambuf_iterator<char>{std::cout}, [](char c) {
+
+		if (isdigit(c))c = '*';
+			return c ;
+		});
+
+	save("소스.cpp");
+}
+==================================================
+소스.cpp , 저장시간: 2023-03-20 월요일 오후 3:08:24
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 20 월56						(3주 2일)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type
+//------------------------------------------------------------
+#include <iostream>
+#include <array>
+#include <random>
+#include <format>
+#include <algorithm>
+#include <ranges>		// C++ 20
+#include "save.h"
+
+// [문제] int 100만개를 만들고 random 값으로 채워라
+// 오름차순으로 정렬하라
+// 값을 출력하라
+
+
+std::array<int, 1'000'000> numbers;
+std::default_random_engine dre;
+std::uniform_int_distribution uid{ 1, 1'000'000 };
+
+int 어떻게(const void* a, const void* b)
+{
+	return *(int*)a - *(int*)b;
+}
+
+//-------
+int main()
+//-------
+{	
+	for (int& number : numbers)
+	{
+		number = uid(dre);
+	}
+
+	//오름차순 정렬
+	//qsort(뭘 , 몇개, 한개 크기는, 정렬방법은?);	// C 함수이지만 generic
+	qsort(numbers.data(), numbers.size(), sizeof(int), 어떻게);
+
+	//std::sort(numbers.begin(), numbers.end());
+
+	// 뒤에서 100개만 출력
+	for (int number : numbers |  // -> for(auto i = numbers.begin(); numbers.end(); ++i)로 번역 ( syntatic sugar )
+		std::views::drop(numbers.size()-100)) // | filter를 통해서 
+	{
+		std::cout << std::format("{:8}", number);
+	}
+
+	save("소스.cpp");
+}
+==================================================
+소스.cpp , 저장시간: 2023-03-20 월요일 오후 3:14:43
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 20 월56						(3주 2일)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type
+//------------------------------------------------------------
+#include <iostream>
+#include <array>
+#include <random>
+#include <format>
+#include <algorithm>
+#include <ranges>		// C++ 20
+#include "save.h"
+
+// [문제] int 100만개를 만들고 random 값으로 채워라
+// 오름차순으로 정렬하라
+// 값을 출력하라
+
+
+std::array<int, 1'000'000> numbers;
+std::default_random_engine dre;
+std::uniform_int_distribution uid{ 1, 1'000'000 };
+
+bool 어떻게( int a, int b)
+{
+	return a < b; //오름차순
+	return a > b; //내림차순
+}
+
+//-------
+int main()
+//-------
+{	
+	for (int& number : numbers)
+	{
+		number = uid(dre);
+	}
+
+	//오름차순 정렬
+	// 3번째 인자가 디폴트 인자 오름차순 정렬 -> 정렬 방법은 sort에게 직접 알려줘야 한다.(함수를 인자로 전다)
+	std::sort(numbers.begin(), numbers.end(), 어떻게);	// O(nlog(n))
+	//std::ranges::sort(numbers); //C++ 20이상
+
+	// 뒤에서 100개만 출력
+	for (int number : numbers | 				  // -> for(auto i = numbers.begin(); numbers.end(); ++i)로 번역 ( syntatic sugar )
+			std::views::drop(numbers.size()-100)) // | filter를 통해서 
+	{
+		std::cout << std::format("{:8}", number);
+	}
+
+	save("소스.cpp");
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-03-20 월요일 오후 3:19:30
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 20 월56						(3주 2일)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type
+//------------------------------------------------------------
+#include <iostream>
+#include <array>
+#include <random>
+#include <format>
+#include <algorithm>
+#include <ranges>		// C++ 20
+#include "save.h"
+
+// [문제] int 100만개를 만들고 random 값으로 채워라
+// 오름차순으로 정렬하라
+// 값을 출력하라
+
+
+std::array<int, 1'000'000> numbers;
+std::default_random_engine dre;
+std::uniform_int_distribution uid{ 1, 1'000'000 };
+
+//bool 어떻게( int a, int b)
+//{
+//	return a > b;
+//}
+class Dog {
+public:
+	bool operator()(int a, int b)
+	{
+		return a > b;
+	}
+};
+
+//-------
+int main()
+//-------
+{	
+	for (int& number : numbers)
+	{
+		number = uid(dre);
+	}
+
+	//오름차순 정렬
+	// 3번째 인자가 디폴트 인자 오름차순 정렬 -> 정렬 방법은 sort에게 직접 알려줘야 한다.(함수를 인자로 전다)
+	// 3번째 인자의 타입은 무한개이다. (부를 수 있는 타입, callable type)
+	std::sort(numbers.begin(), numbers.end(), Dog());	// O(nlog(n))
+	//std::ranges::sort(numbers); //C++ 20이상
+
+	// 뒤에서 100개만 출력
+	for (int number : numbers | 				  // -> for(auto i = numbers.begin(); numbers.end(); ++i)로 번역 ( syntatic sugar )
+			std::views::drop(numbers.size()-100)) // | filter를 통해서 
+	{
+		std::cout << std::format("{:8}", number);
+	}
+
+	save("소스.cpp");
+}
+
