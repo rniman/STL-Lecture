@@ -54,7 +54,7 @@ int main()
 
 	std::ofstream out{ "스택에 있는 int 천개" };
 
-	for ( int n : a)
+	for (int n : a)
 	{
 		//out << n << '\t';// << 고수준 입출력 
 		//-> 저수준 입출력 - 메모리 그대로 파일에 기록

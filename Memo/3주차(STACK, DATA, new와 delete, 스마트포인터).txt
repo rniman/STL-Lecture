@@ -219,12 +219,12 @@ int main()
             continue;
         }
 
-	  //해당 부분은 C++의 장점을 깎아먹는다.
-	  //int* p;
+	//해당 부분은 C++의 장점을 깎아먹는다.
+	//int* p;
         //try {
         //    p = new int[num];    //시스템에 요청
         //}
-        //catch (std::exception& e){
+        //catch (std::exception& e) {
         //    std::cout << "메모리 고갈 - " << e.what() << '\n';
         //    return 0;
         //}
@@ -235,7 +235,7 @@ int main()
             arr[i] = i + 1;
         }
 
-	  //int사용시 큰 입력이 주어지면 오버 플로우 발생이 쉬워진다.
+	//int사용시 큰 입력이 주어지면 오버 플로우 발생이 쉬워진다.
         long long sum{};
         for (int i = 0; i < num; ++i)
         {

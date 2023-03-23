@@ -1,0 +1,1445 @@
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 1:42:20
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type
+//------------------------------------------------------------
+#include <iostream>
+#include <array>
+#include <random>
+#include <format>
+#include <algorithm>
+#include <ranges>		// C++ 20
+#include "save.h"
+
+// [문제] int 100만개를 만들고 random 값으로 채워라
+// 오름차순으로 정렬하라
+// 값을 출력하라
+
+
+std::array<int, 1'000'000> numbers;
+std::default_random_engine dre;
+std::uniform_int_distribution uid{ 1, 1'000'000 };
+
+class Dog {
+public:
+	bool operator()(int a, int b)
+	{
+		return a > b;
+	}
+};
+
+//-------
+int main()
+//-------
+{
+
+	Dog dog;
+
+	std::cout << std::boolalpha << dog.operator()(3, 4) << '\n';
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 1:49:47
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type
+//------------------------------------------------------------
+#include <iostream>
+#include <array>
+#include <random>
+#include <format>
+#include <algorithm>
+#include <ranges>		// C++ 20
+#include "save.h"
+
+// [문제] int 100만개를 만들고 random 값으로 채워라
+// 오름차순으로 정렬하라
+// 값을 출력하라
+
+
+std::array<int, 1'000'000> numbers;
+std::default_random_engine dre;
+std::uniform_int_distribution uid{ 1, 1'000'000 };
+
+bool 함수( int a, int b)
+{
+	return a < b;
+}
+class Dog {
+public:
+	bool operator()(int a, int b)
+	{
+		return a < b;
+	}
+};
+
+//-------
+int main()
+//-------
+{
+
+	for (int& number : numbers)
+	{
+		number = uid(dre);
+	}
+
+	//오름차순 정렬
+	// 3번째 인자가 디폴트 인자 오름차순 정렬 -> 정렬 방법은 sort에게 직접 알려줘야 한다.(함수를 인자로 전다)
+	// 3번째 인자의 타입은 무한개이다. (부를 수 있는 타입, callable type)
+	Dog dog;
+	std::sort(numbers.begin(), numbers.end(), dog);		//이름있는 객체를 전달함 -> 지금은 그럴 이유가 없다. -> 같은 이유로 이름있는 함수는 전달할 필요가 없다. 
+	std::sort(numbers.begin(), numbers.end(), Dog());	//이름없는 객체를 전달함 -> 람다
+
+	// 뒤에서 100개만 출력
+	for (int number : numbers | 				// -> for(auto i = numbers.begin(); numbers.end(); ++i)로 번역 ( syntatic sugar )
+		std::views::drop(numbers.size() - 100))	// | filter를 통해서 
+	{
+		std::cout << std::format("{:8}", number);
+	}
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 1:52:06
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type
+//------------------------------------------------------------
+#include <iostream>
+#include <array>
+#include <random>
+#include <format>
+#include <algorithm>
+#include <ranges>		// C++ 20
+#include "save.h"
+
+// [문제] int 100만개를 만들고 random 값으로 채워라
+// 오름차순으로 정렬하라
+// 값을 출력하라
+
+
+std::array<int, 1'000'000> numbers;
+std::default_random_engine dre;
+std::uniform_int_distribution uid{ 1, 1'000'000 };
+
+bool 함수( int a, int b)
+{
+	return a < b;
+}
+class Dog {
+public:
+	bool operator()(int a, int b)
+	{
+		return a < b;
+	}
+};
+
+//-------
+int main()
+//-------
+{
+
+	for (int& number : numbers)
+	{
+		number = uid(dre);
+	}
+
+	//오름차순 정렬
+	// 3번째 인자가 디폴트 인자 오름차순 정렬 -> 정렬 방법은 sort에게 직접 알려줘야 한다.(함수를 인자로 전다)
+	// 3번째 인자의 타입은 무한개이다. (부를 수 있는 타입, callable type)
+
+	// 정렬방법은 sort에게 알려줘야 함(함수를 인자로 전달)
+	std::sort(numbers.begin(), numbers.end(), [](int a, int b) {
+		return a > b;
+		}); 
+
+	// 뒤에서 100개만 출력
+	for (int number : numbers | 				// -> for(auto i = numbers.begin(); numbers.end(); ++i)로 번역 ( syntatic sugar )
+		std::views::drop(numbers.size() - 100))	// | filter를 통해서 
+	{
+		std::cout << std::format("{:8}", number);
+	}
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 1:54:40
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include "save.h"
+
+//-------
+int main()
+//-------
+{
+	int n;
+	std::cout << typeid(n).name() << '\n';
+
+	[]() {
+		std::cout << "안녕하세요? 난 람다입니다." << '\n';
+	};
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 1:55:10
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include "save.h"
+
+//-------
+int main()
+//-------
+{
+	int n;
+	std::cout << typeid(n).name() << '\n';
+
+	std::cout << typeid([]() {
+		std::cout << "안녕하세요? 난 람다입니다." << '\n';
+	}).name();
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 1:56:11
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include "save.h"
+
+//-------
+int main()
+//-------
+{
+
+	auto lamda = []() {
+		std::cout << "안녕하세요? 난 람다입니다." << '\n';
+	};
+
+	lamda();
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 1:56:47
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include "save.h"
+
+//-------
+int main()
+//-------
+{
+
+	auto lamda = []() {
+		std::cout << "안녕하세요? 난 람다입니다." << '\n';
+	};
+
+	lamda();
+
+	std::cout << typeid(lamda).name() << '\n';
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 1:58:12
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include "save.h"
+
+//-------
+int main()
+//-------
+{
+	class Dog {};
+	Dog dog;
+
+	std::cout << typeid(dog).name() << '\n';
+
+	auto lamda = []() {
+		std::cout << "안녕하세요? 난 람다입니다." << '\n';
+	};
+
+	lamda();
+
+	std::cout << typeid(lamda).name() << '\n';
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 1:59:05
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include "save.h"
+
+class Dog {};
+
+//-------
+int main()
+//-------
+{
+	Dog dog;
+
+	std::cout << typeid(dog).name() << '\n';
+
+	auto lamda = []() {
+		std::cout << "안녕하세요? 난 람다입니다." << '\n';
+	};
+
+	lamda();
+
+	std::cout << typeid(lamda).name() << '\n';
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 1:59:23
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include "save.h"
+
+class Dog {};
+
+auto lamda = []() {
+	std::cout << "안녕하세요? 난 람다입니다." << '\n';
+};
+
+//-------
+int main()
+//-------
+{
+	Dog dog;
+
+	std::cout << typeid(dog).name() << '\n';
+
+
+
+	lamda();
+
+	std::cout << typeid(lamda).name() << '\n';
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 2:02:06
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include "save.h"
+
+class Dog {};
+
+class lambda {	//람다는 함수 객체
+public:
+	void operator()() {
+		std::cout << "안녕하세요? 난 람다입니다." << '\n';
+	};
+};
+
+//-------
+int main()
+//-------
+{
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 2:07:37
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include <array>
+#include <string>
+#include <algorithm>
+#include "save.h"
+
+using namespace std;
+class Dog {};
+
+//-------
+int main()
+//-------
+{
+	std::array<std::string, 5> a{
+		 "전광훈"s
+		,"교회"s
+		,"이번엔"s
+		,"장위8구역"s
+		,"사우나건물"s
+	};
+
+	sort(a.begin(), a.end(), [](const std::string& a, const std::string& b) {
+		return a < b;
+		});
+
+	for (const string& str : a)
+		std::cout << str << '\n';
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 2:08:39
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include <array>
+#include <string>
+#include <algorithm>
+#include "save.h"
+
+using namespace std;
+class Dog {};
+
+//-------
+int main()
+//-------
+{
+	std::array<std::string, 5> a{
+		 "전광훈"s
+		,"교회"s
+		,"이번엔"s
+		,"장위8구역"s
+		,"사우나건물"s
+	};
+
+	sort(a.begin(), a.end(), [](const std::string& a, const std::string& b) {
+		return a.size() < b.size();
+		});
+
+	for (const string& str : a)
+		std::cout << str << '\n';
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 2:09:29
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include <array>
+#include <string>
+#include <algorithm>
+#include "save.h"
+
+using namespace std;
+class Dog {};
+
+//-------
+int main()
+//-------
+{
+	std::array<std::string, 5> a{
+		 "전광훈"s
+		,"교회"s
+		,"이번엔"s
+		,"장위8구역"s
+		,"사우나건물"s
+	};
+
+	sort(a.begin(), a.end(), [](const std::string& a, const std::string& b) { //함수는 무조건 CODE영역에 저장
+		return a.size() < b.size();
+		});
+
+	for (const string& str : a)
+		std::cout << str << '\n';
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 2:12:25
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include <array>
+#include <string>
+#include <algorithm>
+#include "save.h"
+
+class Dog {};
+
+//-------
+int main()
+//-------
+{
+	// 호출가능한 타입
+	//class Dog {};
+	//class Bird {};
+	//Dog a;
+	//Dog b;
+	//
+	//a = b;	//타입이 같다
+
+	//Bird c;
+	//a = c;	//타입이 전혀 다르다.
+
+	//1. 함수
+	std::cout << typeid(main).name() << '\n';
+
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 2:13:32
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include <array>
+#include <string>
+#include <algorithm>
+#include "save.h"
+
+class Dog {};
+
+//-------
+int main()
+//-------
+{
+	// 호출가능한 타입
+	//class Dog {};
+	//class Bird {};
+	//Dog a;
+	//Dog b;
+	//
+	//a = b;	//타입이 같다
+
+	//Bird c;
+	//a = c;	//타입이 전혀 다르다.
+
+	//1. 함수 포인터
+	std::cout << typeid(main).name() << '\n';	//함수 포인터를 보여준다.
+
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 2:31:24
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include <array>
+#include <string>
+#include <algorithm>
+#include "save.h"
+
+//-------
+int main()
+//-------
+{
+	// 호출가능한 타입
+	// 1. 함수 포인터
+	// 2. 함수 객체(함수호출 연산자를 오버로딩한 클래스 자체)
+	// 3. 람다(기능만이 필요한 경우에 사용)
+	// 4. 멤버 함수 포인터
+	// 5. function 
+
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 2:33:42
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include <array>
+#include <string>
+#include <algorithm>
+#include "save.h"
+
+//-------
+int main()
+//-------
+{
+	//int(*f)(void) = main; //함수 포인터
+
+	//f(); //main()이 영원히 호출
+	//(*f)();
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 2:39:02
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include <array>
+#include <string>
+#include <algorithm>
+#include "save.h"
+
+
+void jump()
+{
+	std::cout << "점프" << '\n';
+}
+
+void slide()
+{
+	std::cout << "슬라이드" << '\n';
+}
+
+//-------
+int main()
+//-------
+{
+	// 게임에서 키의 동작을 실행중에 바꾸고 싶다.
+	
+	save("소스.cpp");
+
+	while (true)
+	{
+		std::cout << "a, l, o, q중에 하나를 누르세요 ";
+		char c;
+		std::cin >> c;
+		switch (c)
+		{
+		case 'a':
+			jump();
+			break;
+		case 'l':
+			slide();
+			break;
+		case 'o':
+			break;
+		case 'q':
+			return 0;
+		default:
+			break;
+		}
+	}
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 2:43:29
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include <array>
+#include <string>
+#include <algorithm>
+#include "save.h"
+
+
+void jump()
+{
+	std::cout << "점프" << '\n';
+}
+
+void slide()
+{
+	std::cout << "슬라이드" << '\n';
+}
+
+//-------
+int main()
+//-------
+{
+	// 게임에서 키의 동작을 실행중에 바꾸고 싶다.
+	
+	save("소스.cpp");
+
+	void(*akey)(void) = jump;
+	void(*lkey)(void) = slide;
+
+	while (true)
+	{
+		std::cout << "a, l, o, q중에 하나를 누르세요 ";
+		char c;
+		std::cin >> c;
+		switch (c)
+		{
+		case 'a':
+			akey();
+			break;
+		case 'l':
+			lkey();
+			break;
+		case 'o':
+			//여기서 기능 변경
+			if (akey == jump)
+			{
+				akey = slide;
+				lkey = jump;
+			}
+			else
+			{
+				akey = jump;
+				lkey = slide;
+			}
+			break;
+		case 'q':
+			return 0;
+		default:
+			break;
+		}
+	}
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 2:46:23
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include <array>
+#include <string>
+#include <algorithm>
+#include "save.h"
+
+
+void jump()
+{
+	std::cout << "점프" << '\n';
+}
+
+void slide()
+{
+	std::cout << "슬라이드" << '\n';
+}
+
+//-------
+int main()
+//-------
+{
+	// 게임에서 키의 동작을 실행중에 바꾸고 싶다.
+	
+	save("소스.cpp");
+
+	void(*akey)(void) = jump;	//번지를 넣어준다.
+	void(*lkey)(void) = slide;
+
+	while (true)
+	{
+		std::cout << "a, l, o, q중에 하나를 누르세요 ";
+		char c;
+		std::cin >> c;
+		switch (c)
+		{
+		case 'a':
+			akey();
+			break;
+		case 'l':
+			lkey();
+			break;
+		case 'o':
+			//여기서 기능 변경
+			if (akey == jump)
+			{
+				akey = slide;
+				lkey = jump;
+			}
+			else
+			{
+				akey = jump;
+				lkey = slide;
+			}
+			break;
+		case 'q':
+			return 0;
+		default:
+			break;
+		}
+	}
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 2:54:16
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <random>
+#include <format>
+#include <array>
+#include "save.h"
+
+std::default_random_engine dre;
+std::uniform_int_distribution uidNum{ 1, 1'000'000 };
+std::uniform_int_distribution uidLen{ 1, 50 };
+std::uniform_int_distribution<int> uidName{ 'a', 'z' };
+
+class Dog
+{
+	int num;
+	std::string name;
+
+public:
+	Dog() {
+		num = uidNum(dre);
+		int len = uidLen(dre);
+		for (int i{}; i < len; ++i)
+		{
+			name += uidName(dre);
+		}
+	}
+
+	void show() const {
+		std::cout << std::format("{:7}, {}", num, name) << '\n';
+	}
+};
+
+//-------
+int main()
+//-------
+{
+	std::array<Dog, 10> dogs;
+
+	for (const Dog& dog: dogs)
+	{
+		dog.show();
+	}
+
+	save("소스.cpp");
+
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 3:04:26
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <random>
+#include <format>
+#include <array>
+#include <algorithm>
+#include <ranges>
+#include "save.h"
+
+std::default_random_engine dre;
+std::uniform_int_distribution uidNum{ 1, 1'000'000 };
+std::uniform_int_distribution uidLen{ 1, 50 };
+std::uniform_int_distribution<int> uidName{ 'a', 'z' };
+
+class Dog
+{
+	int num;
+	std::string name;
+
+public:
+	Dog() {
+		num = uidNum(dre);
+		int len = uidLen(dre);
+		for (int i{}; i < len; ++i)
+		{
+			name += uidName(dre);
+		}
+	}
+
+	void show() const {
+		std::cout << std::format("{:7}, {}", num, name) << '\n';
+	}
+
+	bool operator()(Dog& a, Dog& b) {
+		return a.num < b.num;
+	}
+};
+
+std::array < Dog, 100'0000 > dogs;
+
+//-------
+int main()
+//-------
+{
+	// [문제] dogs를 Dog의 num기준 오름차순으로 정렬하라.
+	// 뒤에서 100객체를 show()로 출력하라.
+
+	sort(dogs.begin(), dogs.end(), Dog());
+
+	for (const Dog& dog : dogs |
+			std::views::drop(dogs.size() - 100))
+	{
+		dog.show();
+	}
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 3:05:58
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <random>
+#include <format>
+#include <array>
+#include <algorithm>
+#include <ranges>
+#include "save.h"
+
+std::default_random_engine dre;
+std::uniform_int_distribution uidNum{ 1, 1'000'000 };
+std::uniform_int_distribution uidLen{ 1, 50 };
+std::uniform_int_distribution<int> uidName{ 'a', 'z' };
+
+class Dog
+{
+	int num;
+	std::string name;
+
+public:
+	Dog() {
+		num = uidNum(dre);
+		int len = uidLen(dre);
+		for (int i{}; i < len; ++i)
+		{
+			name += uidName(dre);
+		}
+	}
+
+	void show() const {
+		std::cout << std::format("{:7}, {}", num, name) << '\n';
+	}
+
+	bool operator()(const Dog& a, const Dog& b) {
+		return a.num < b.num;
+	}
+};
+
+std::array < Dog, 100'0000 > dogs;
+
+//-------
+int main()
+//-------
+{
+	// [문제] dogs를 Dog의 num기준 오름차순으로 정렬하라.
+	// 뒤에서 100객체를 show()로 출력하라.
+
+	sort(dogs.begin(), dogs.end(), Dog());
+
+	for (const Dog& dog : dogs |
+			std::views::drop(dogs.size() - 100))
+	{
+		dog.show();
+	}
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 3:08:01
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <random>
+#include <format>
+#include <array>
+#include <algorithm>
+#include <ranges>
+#include "save.h"
+
+std::default_random_engine dre;
+std::uniform_int_distribution uidNum{ 1, 1'000'000 };
+std::uniform_int_distribution uidLen{ 1, 50 };
+std::uniform_int_distribution<int> uidName{ 'a', 'z' };
+
+class Dog
+{
+	int num;
+	std::string name;
+
+public:
+	Dog() {
+		num = uidNum(dre);
+		int len = uidLen(dre);
+		for (int i{}; i < len; ++i)
+		{
+			name += uidName(dre);
+		}
+	}
+
+	int getNum() const { return num; }
+
+	void show() const {
+		std::cout << std::format("{:7}, {}", num, name) << '\n';
+	}
+
+	bool operator()(const Dog& a, const Dog& b) {
+		return a.num < b.num;
+	}
+};
+
+std::array < Dog, 100'0000 > dogs;
+
+//-------
+int main()
+//-------
+{
+	// [문제] dogs를 Dog의 num기준 오름차순으로 정렬하라.
+	// 뒤에서 100객체를 show()로 출력하라.
+
+	//sort(dogs.begin(), dogs.end(), Dog());
+	sort(dogs.begin(), dogs.end(), [](const Dog& a, const Dog& b){
+			return a.getNum() < b.getNum();
+		});
+
+	for (const Dog& dog : dogs |
+			std::views::drop(dogs.size() - 100))
+	{
+		dog.show();
+	}
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 3:11:06
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <random>
+#include <format>
+#include <array>
+#include <algorithm>
+#include <ranges>
+#include "save.h"
+
+std::default_random_engine dre;
+std::uniform_int_distribution uidNum{ 1, 1'000'000 };
+std::uniform_int_distribution uidLen{ 1, 50 };
+std::uniform_int_distribution<int> uidName{ 'a', 'z' };
+
+class Dog
+{
+	int num;
+	std::string name;
+
+public:
+	Dog() {
+		num = uidNum(dre);
+		int len = uidLen(dre);
+		for (int i{}; i < len; ++i)
+		{
+			name += uidName(dre);
+		}
+	}
+
+	int getNum() const { return num; }
+	std::string getName() const{ return name; }
+
+	void show() const {
+		std::cout << std::format("{:7}, {}", num, name) << '\n';
+	}
+};
+
+std::array < Dog, 100'0000 > dogs;
+
+//-------
+int main()
+//-------
+{
+	// [문제] dogs를 Dog의 name 길이기준 오름차순으로 정렬하라.
+	// 뒤에서 100객체를 show()로 출력하라.
+
+
+	sort(dogs.begin(), dogs.end(), [](const Dog& a, const Dog& b){
+		return a.getName().length() < b.getName().length();
+		});
+
+	for (const Dog& dog : dogs |
+			std::views::drop(dogs.size() - 100))
+	{
+		dog.show();
+	}
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 3:11:35
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <random>
+#include <format>
+#include <array>
+#include <algorithm>
+#include <ranges>
+#include "save.h"
+
+std::default_random_engine dre;
+std::uniform_int_distribution uidNum{ 1, 1'000'000 };
+std::uniform_int_distribution uidLen{ 1, 50 };
+std::uniform_int_distribution<int> uidName{ 'a', 'z' };
+
+class Dog
+{
+	int num;
+	std::string name;
+
+public:
+	Dog() {
+		num = uidNum(dre);
+		int len = uidLen(dre);
+		for (int i{}; i < len; ++i)
+		{
+			name += uidName(dre);
+		}
+	}
+
+	int getNum() const { return num; }
+	std::string getName() const{ return name; }
+
+	void show() const {
+		std::cout << std::format("{:7}, {}", num, name) << '\n';
+	}
+};
+
+std::array < Dog, 100'0000 > dogs;
+
+//-------
+int main()
+//-------
+{
+	// [문제] dogs를 Dog의 name 길이기준 오름차순으로 정렬하라.
+	// 뒤에서 100객체를 show()로 출력하라.
+
+
+	sort(dogs.begin(), dogs.end(), [](const Dog& a, const Dog& b){
+		return a.getName().size() < b.getName().size();
+		});
+
+	for (const Dog& dog : dogs |
+			std::views::drop(dogs.size() - 100))
+	{
+		dog.show();
+	}
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 3:12:04
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <random>
+#include <format>
+#include <array>
+#include <algorithm>
+#include <ranges>
+#include "save.h"
+
+std::default_random_engine dre;
+std::uniform_int_distribution uidNum{ 1, 1'000'000 };
+std::uniform_int_distribution uidLen{ 1, 50 };
+std::uniform_int_distribution<int> uidName{ 'a', 'z' };
+
+class Dog
+{
+	int num;
+	std::string name;
+
+public:
+	Dog() {
+		num = uidNum(dre);
+		int len = uidLen(dre);
+		for (int i{}; i < len; ++i)
+		{
+			name += uidName(dre);
+		}
+	}
+
+	int getNum() const { return num; }
+	std::string getName() const{ return name; }
+
+	void show() const {
+		std::cout << std::format("{:7}, {}", num, name) << '\n';
+	}
+};
+
+std::array < Dog, 10000 > dogs;
+
+//-------
+int main()
+//-------
+{
+	// [문제] dogs를 Dog의 name 길이기준 오름차순으로 정렬하라.
+	// 뒤에서 100객체를 show()로 출력하라.
+
+
+	sort(dogs.begin(), dogs.end(), [](const Dog& a, const Dog& b){
+		return a.getName().size() < b.getName().size();
+		});
+
+	for (const Dog& dog : dogs)
+	{
+		dog.show();
+	}
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-23 목요일 오후 3:18:41
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 23 목56								(4주 1일)
+// 3. 30 목(5주 1) - 학과 MT ( e-class에 업로드, 출석은 대체)
+// 4. 3 예비군 훈련 - 수업 강의녹화 영상을 e-class에 제공
+//------------------------------------------------------------
+// 정렬(sort) - callable type, 호출가능 타입
+//------------------------------------------------------------
+#include <iostream>
+#include <functional>
+#include "save.h"
+
+//-------
+int main()
+//-------
+{
+	int (*fp)() = main;
+
+	//int반환에 매개변수 보이드
+	std::function<int()> f = main;
+	f = fp;
+
+	save("소스.cpp");
+}
+

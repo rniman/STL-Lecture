@@ -157,7 +157,6 @@ int main()
 	std::cout << "\n모두 " << cnt << "개 int를 읽었다.\n";
 
 
-
 	save("소스.cpp");
 }
 

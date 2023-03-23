@@ -73,11 +73,20 @@ DATA
 실행파일 크기가 커질수 있다. BSS
 
 
-
 std::array<int, 1'000'000> numbers;
 qsort(뭘(numbers주소) , 몇개(100만개), 한개 크기는(4바이트), 정렬방법은?(callable type) -> (기능) );
-
 
 qsort가 callable type에게 가져온 데이터를 해결할 방법을 물어본다.
 
 
+std::sort(numbers.begin(), numbers.end(), Dog());
+sort( 시작위치, 마지막에서 하나 지난위치, 이름이없는 객체 생성(1바이트)해 전달)
+sort는 임의의 값 a,b 2개를 가져와 Dog()(a, b)를 전달
+
+
+Callable Types
+1.function pointer
+2.function object
+3.lambda
+
+1,2,3을 통합하기 위해 function으로 대통함(템플릿 클래스)
