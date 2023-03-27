@@ -1,0 +1,294 @@
+
+
+==================================================
+소스.cpp , 저장시간: 2023-03-27 월요일 오후 9:03:02
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 27 월56								(4주 2일)
+//------------------------------------------------------------
+// 관찰 클래스 작성 
+// 1. C++ 복습 
+// 2. 앞으로 발전시켜서 STL 컨테이너로 만듦
+//------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <memory>
+#include <array>
+#include <algorithm>
+#include "save.h"
+
+using namespace std;
+
+// [문제] 자원을 할당하는 클래스 String (표준 string과 유사한)를 작성하자.
+// special 함수의 동작을 관찰하자
+// 모든 객체는 생성시 번호를 받는다.
+
+bool 관찰{ false };
+
+class String
+{
+	size_t len{};
+	unique_ptr<char[]> p{ nullptr };
+	size_t id = ++sid;
+
+	static size_t sid;		// 멤버 변수가 아니다
+
+public:
+	String()
+	{
+		print("디폴트 생성");
+	}
+
+	String(const char* str)
+		: len{strlen(str)}
+	{
+		//p = new char[len];
+		p = make_unique<char[]>(len);
+		memcpy(p.get(), str, len);
+
+		print("생성(char*)");
+	}
+
+	//복사 생성 연산자와 복사할당 연산자는 짝이다.
+	String(const String& other)
+		:len{ other.len }
+	{
+		p = make_unique<char[]>(len);
+		memcpy(p.get(), other.p.get(), len);
+
+		print("복사 생성");
+	}
+
+	String& operator=(const String& other)
+	{
+		if (this == &other)
+			return *this;
+
+		p.release();
+
+		len = other.len;
+		p = make_unique<char[]>(len);
+		memcpy(p.get(), other.p.get(), len);
+
+		print("복사할당 연산자");
+	}
+
+	//지역을 벗어날 때
+	//객체가 사라지기 전에 부르는 함수
+	//소멸 역순
+	~String()
+	{
+		print("소멸");
+	}
+
+	void print(const string& s)
+	{
+		if (!관찰)
+			return;
+		//cout << '[' << id << "] - " << s << ", 개수: " << len << ", 번지: " << (void*)p << endl;
+		cout << '[' << id << "] - " << s << ", 개수: " << len << ", 번지: " << (void*)p.get() << endl;
+	}
+
+	//인터페이스 함수
+	size_t size() const 
+	{
+		return len;
+	}
+
+	String operator+(const String& rhs)
+	{
+		String res;
+		res.len = len + rhs.len;
+		res.p = make_unique<char[]>(rhs.len);
+
+		memcpy(res.p.get(), p.get(), len);
+		memcpy(res.p.get() + len, rhs.p.get(), rhs.len);
+		
+		return res;
+	}
+
+	//프렌드 함수
+	friend ostream& operator<<(ostream& os, const String& s)
+	{
+		for (int i = 0; i < s.len; ++i)
+		{
+			os <<  s.p[i];
+		}
+		return os;
+	}
+
+	string getString() const
+	{
+		return string(p.get(), len);
+	}
+};
+
+size_t String::sid{ 0 };
+
+//-------
+int main()
+//-------
+{
+	관찰 = true;
+
+	array<String, 3> news{ "사진", "촬영은", "금지" }; //3개로 하고 쫒아가보기
+	// 오름차순 정렬하라.
+	sort(news.begin(), news.end(), [](const String& a, const String& b) {
+			return a.getString() < b.getString();
+		});
+
+	for (const String& s : news)
+	{
+		cout << s << endl;
+	}
+
+	save("소스.cpp");
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-03-27 월요일 오후 9:24:58
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 27 월56								(4주 2일)
+//------------------------------------------------------------
+// 관찰 클래스 작성 
+// 1. C++ 복습 
+// 2. 앞으로 발전시켜서 STL 컨테이너로 만듦
+//------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <memory>
+#include <array>
+#include <algorithm>
+#include "save.h"
+
+using namespace std;
+
+// [문제] 자원을 할당하는 클래스 String (표준 string과 유사한)를 작성하자.
+// special 함수의 동작을 관찰하자
+// 모든 객체는 생성시 번호를 받는다.
+
+bool 관찰{ false };
+
+class String
+{
+	size_t len{};
+	unique_ptr<char[]> p{ nullptr };
+	size_t id = ++sid;
+
+	static size_t sid;		// 멤버 변수가 아니다
+
+public:
+	String()
+	{
+		print("디폴트 생성");
+	}
+
+	String(const char* str)
+		: len{ strlen(str) }
+	{
+		//p = new char[len];
+		p = make_unique<char[]>(len);
+		memcpy(p.get(), str, len);
+
+		print("생성(char*)");
+	}
+
+	//복사 생성 연산자와 복사할당 연산자는 짝이다.
+	String(const String& other)
+		:len{ other.len }
+	{
+		p = make_unique<char[]>(len);
+		memcpy(p.get(), other.p.get(), len);
+
+		print("복사 생성");
+	}
+
+	String& operator=(const String& other)
+	{
+		if (this == &other)
+			return *this;
+
+		p.release();
+
+		len = other.len;
+		p = make_unique<char[]>(len);
+		memcpy(p.get(), other.p.get(), len);
+
+		print("복사할당 연산자");
+	}
+
+	//지역을 벗어날 때
+	//객체가 사라지기 전에 부르는 함수
+	//소멸 역순
+	~String()
+	{
+		print("소멸");
+	}
+
+	void print(const string& s)
+	{
+		if (!관찰)
+			return;
+		cout << '[' << id << "] - " << s << ", 개수: " << len << ", 번지: " << (void*)p.get() << endl;
+	}
+
+	//인터페이스 함수
+	size_t size() const
+	{
+		return len;
+	}
+
+	String operator+(const String& rhs)
+	{
+		String res;
+		res.len = len + rhs.len;
+		res.p = make_unique<char[]>(rhs.len);
+
+		memcpy(res.p.get(), p.get(), len);
+		memcpy(res.p.get() + len, rhs.p.get(), rhs.len);
+
+		return res;
+	}
+
+	//프렌드 함수
+	friend ostream& operator<<(ostream& os, const String& s)
+	{
+		for (int i = 0; i < s.len; ++i)
+		{
+			os << s.p[i];
+		}
+		return os;
+	}
+
+	bool operator<(const String& rhs)
+	{
+		return getString() < rhs.getString();
+	}
+
+	string getString() const
+	{
+		return string(p.get(), len);
+	}
+};
+
+size_t String::sid{ 0 };
+
+//-------
+int main()
+//-------
+{
+	관찰 = true;
+
+	array<String, 3> news{ "사진", "촬영은", "금지" }; //3개로 하고 쫒아가보기
+	// 오름차순 정렬하라.
+	sort(news.begin(), news.end());
+
+	for (const String& s : news)
+	{
+		cout << s << endl;
+	}
+
+	save("소스.cpp");
+}
+
