@@ -95,3 +95,7 @@ Callable Types
 
 
 span, range - generalization의 대표
+
+
+move semantic 이동 의미론
+
