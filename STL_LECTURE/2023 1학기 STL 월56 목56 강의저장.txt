@@ -1,585 +1,0 @@
-
-
-==================================================
-¼Ò½º.cpp , ÀúÀå½Ã°£: 2023-03-31 ±İ¿äÀÏ ¿ÀÈÄ 7:16:14
-==================================================
-//------------------------------------------------------------
-// 2023. 3. 30 ¸ñ56								(5ÁÖ 1ÀÏ)
-//------------------------------------------------------------
-// °üÂû Å¬·¡½º ÀÛ¼º - String(ÀÚ¿øÀ» È®º¸ÇÏ´Â Å¬·¡½º)
-// 1. C++ º¹½À 
-// 2. ¾ÕÀ¸·Î ¹ßÀü½ÃÄÑ¼­ STL ÄÁÅ×ÀÌ³Ê·Î ¸¸µê
-//------------------------------------------------------------
-#include <iostream>
-#include <string>
-#include <memory>
-#include <array>
-#include <algorithm>
-#include "save.h"
-
-using namespace std;
-
-// [¹®Á¦] ÀÚ¿øÀ» ÇÒ´çÇÏ´Â Å¬·¡½º String (Ç¥ÁØ string°ú À¯»çÇÑ)¸¦ ÀÛ¼ºÇÏÀÚ.
-// special ÇÔ¼öÀÇ µ¿ÀÛÀ» °üÂûÇÏÀÚ
-// ¸ğµç °´Ã¼´Â »ı¼º½Ã ¹øÈ£¸¦ ¹Ş´Â´Ù.
-
-bool °üÂû{ false };
-
-class String
-{
-	size_t len{};
-	char* p{ nullptr };
-	size_t id = ++sid;
-
-	static size_t sid;		// ¸â¹ö º¯¼ö°¡ ¾Æ´Ï´Ù
-
-public:
-	String()
-	{
-		print("µğÆúÆ® »ı¼º");
-	}
-
-	String(const char* str)
-		: len{ strlen(str) }
-		//, p = new char[len] ¼ø¼­ º¸Àå X -> ¸ÁÇÒ¼öÀÖ´Ù.
-	{
-		p = new char[len];
-
-		memcpy(p, str, len);	//°í¼Ó ¸Ş¸ğ¸® º¹»ç - DMA
-		print("»ı¼º(char*)");
-	}
-
-	//º¹»ç »ı¼º ¿¬»êÀÚ¿Í º¹»çÇÒ´ç ¿¬»êÀÚ´Â Â¦ÀÌ´Ù.
-	String(const String& other)
-		:len{ other.len }
-	{
-		p = new char[len];
-		memcpy(p, other.p, len);
-
-		print("º¹»ç »ı¼º");
-	}
-
-	String& operator=(const String& other)
-	{
-		if (this == &other)
-			return *this;
-
-		delete[] p;
-
-		len = other.len;
-		p = new char[len];
-		memcpy(p, other.p, len);
-
-		print("º¹»çÇÒ´ç ¿¬»êÀÚ");
-	}
-
-	//Áö¿ªÀ» ¹ş¾î³¯ ¶§
-	//°´Ã¼°¡ »ç¶óÁö±â Àü¿¡ ºÎ¸£´Â ÇÔ¼ö
-	//¼Ò¸ê ¿ª¼ø
-	~String()
-	{
-		print("¼Ò¸ê");
-		delete[] p;
-	}
-
-	void print(const string& s)
-	{
-		if (!°üÂû)
-			return;
-		cout << '[' << id << "] - " << s << ", °³¼ö: " << len << ", ¹øÁö: " << (void*)p << endl;
-	}
-
-	//ÀÎÅÍÆäÀÌ½º ÇÔ¼ö
-	size_t size() const
-	{
-		return len;
-	}
-
-	String operator+(const String& rhs)
-	{
-		String res;
-		res.len = len + rhs.len;
-		res.p = new char[res.len];
-
-		memcpy(res.p, p, len);
-		memcpy(res.p + len, rhs.p, rhs.len);
-
-		return res;
-	}
-
-	//ÇÁ·»µå ÇÔ¼ö
-	friend ostream& operator<<(ostream& os, const String& s)
-	{
-		for (int i = 0; i < s.len; ++i)
-		{
-			os << s.p[i];
-		}
-		return os;
-	}
-
-	string getString() const
-	{
-		return string(p, len);
-	}
-};
-
-size_t String::sid{ 0 };
-
-//-------
-int main()
-//-------
-{
-	array<String, 3> news{ "»çÁø", "ÃÔ¿µÀº", "¹«Á¶°Ç"}; //3°³·Î ÇÏ°í ¦i¾Æ°¡º¸±â
-	
-	°üÂû = true;
-	// ¿À¸§Â÷¼ø Á¤·ÄÇÏ¶ó.
-	sort(news.begin(), news.end(), [](const String& a, const String& b) {
-		return a.getString() < b.getString();
-		});
-	°üÂû = false;
-
-	for (const String& s : news)
-	{
-		cout << s << endl;
-	}
-
-	save("¼Ò½º.cpp");
-}
-
-==================================================
-¼Ò½º.cpp , ÀúÀå½Ã°£: 2023-03-31 ±İ¿äÀÏ ¿ÀÈÄ 7:52:28
-==================================================
-//------------------------------------------------------------
-// 2023. 3. 30 ¸ñ56								(5ÁÖ 1ÀÏ)
-//------------------------------------------------------------
-// °üÂû Å¬·¡½º ÀÛ¼º - String(ÀÚ¿øÀ» È®º¸ÇÏ´Â Å¬·¡½º)
-// 1. C++ º¹½À 
-// 2. ¾ÕÀ¸·Î ¹ßÀü½ÃÄÑ¼­ STL ÄÁÅ×ÀÌ³Ê·Î ¸¸µê
-//------------------------------------------------------------
-#include <iostream>
-#include <string>
-#include <memory>
-#include <array>
-#include <algorithm>
-#include "save.h"
-
-using namespace std;
-
-// [¹®Á¦] ÀÚ¿øÀ» ÇÒ´çÇÏ´Â Å¬·¡½º String (Ç¥ÁØ string°ú À¯»çÇÑ)¸¦ ÀÛ¼ºÇÏÀÚ.
-// special ÇÔ¼öÀÇ µ¿ÀÛÀ» °üÂûÇÏÀÚ
-// ¸ğµç °´Ã¼´Â »ı¼º½Ã ¹øÈ£¸¦ ¹Ş´Â´Ù.
-
-bool °üÂû{ false };
-
-// 2023. 3. 27 String ÄÚµù ½ÃÀÛ
-class String
-{
-	size_t len{};				// È®º¸ÇÑ ÀÚ¿ø ¼ö
-	char* p{ nullptr };			// È®º¸ÇÑ ÀÚ¿øÀÇ ÁÖ¼Ò
-	size_t id = ++sid;			// °´Ã¼ id
-
-	static size_t sid;			// classÀÇ static º¯¼ö?, ¸â¹ö º¯¼ö°¡ ¾Æ´Ï´Ù
-
-public:
-	// »ı¼ºÀÚ¿Í ¼Ò¸êÀÚ
-	String()
-	{
-		print("µğÆúÆ® »ı¼ºÀÚ");
-	}
-
-	String(const char* str)
-		: len{ strlen(str) }
-	{
-		p = new char[len];
-
-		memcpy(p, str, len);	//°í¼Ó ¸Ş¸ğ¸® º¹»ç - DMA
-		print("»ı¼ºÀÚ(char*)");
-	}
-
-	~String()
-	{
-		print("¼Ò¸êÀÚ");
-		delete[] p;
-	}
-
-	// º¹»ç»ı¼ºÀÚ / º¹»çÇÒ´ç¿¬»êÀÚ
-	String(const String& other)
-		:len{ other.len }
-	{
-		p = new char[len];
-		memcpy(p, other.p, len);
-
-		print("º¹»ç »ı¼ºÀÚ");
-	}
-	
-	String& operator=(const String& other)
-	{
-		if (this == &other)
-		{
-			return *this;
-		}
-
-		delete[] p;
-
-		len = other.len;
-		p = new char[len];
-		memcpy(p, other.p, len);
-
-		print("º¹»çÇÒ´ç¿¬»êÀÚ");
-		return *this;
-	}
-
-	// ÀÌµ¿»ı¼ºÀÚ / ÀÌµ¿ÇÒ´ç¿¬»êÀÚ - 2023. 3. 30 Ãß°¡
-	String(String&& other)	//&&: r-value ref
-	{
-		len = other.len;
-		p = other.p;
-
-		// ÀÌµ¿µÇ´Â °´Ã¼¸¦ Á¤¸®ÇØÁØ´Ù
-		other.len = 0;
-		other.p = nullptr;
-
-		print("ÀÌµ¿»ı¼ºÀÚ");
-	}
-
-	String& operator=(String&& other)
-	{
-		// ÀÚ½ÅÀ» ÀÌµ¿ÇÒ´çÇÏ¸é ¾ÈµÈ´Ù.
-		if (this == &other)
-		{
-			return *this;
-		}
-
-		// ÀÌ¹Ì È®º¸ÇÑ ÀÚ¿øÀ» ÇØÁ¦ÇÑ´Ù.
-		delete[] p;
-
-		// other¸¦ ÀÌµ¿ÇÑ´Ù.
-		len = other.len;
-		p = other.p;
-
-		other.len = 0;
-		other.p = nullptr;
-
-		print("ÀÌµ¿ÇÒ´ç¿¬»êÀÚ");
-		return *this;
-	}
-
-	// ¿¬»êÀÚ ¿À¹ö·Îµù ÇÔ¼ö
-	String operator+(const String& rhs)
-	{
-		String res;
-		res.len = len + rhs.len;
-		res.p = new char[res.len];
-
-		memcpy(res.p, p, len);
-		memcpy(res.p + len, rhs.p, rhs.len);
-
-		return res;
-	}
-
-	friend ostream& operator<<(ostream& os, const String& s)
-	{
-		for (int i = 0; i < s.len; ++i)
-		{
-			os << s.p[i];
-		}
-		return os;
-	}
-
-	// ±× ¿Ü ¸â¹öÇÔ¼öµé
-	void print(const string& s)
-	{
-		if (!°üÂû)
-			return;
-		cout << '[' << id << "] - " << s << ", °³¼ö: " << len << ", ¹øÁö: " << (void*)p << endl;
-	}
-
-	//ÀÎÅÍÆäÀÌ½º ÇÔ¼ö
-	size_t size() const
-	{
-		return len;
-	}
-
-	string getString() const
-	{
-		return string(p, len);
-	}
-};
-
-size_t String::sid{ 0 };			// ÀÌ º¯¼ö´Â Å¬·¡½º ¹Û¿¡¼­ ÃÊ±âÈ­ÇÑ´Ù
-
-//-------
-int main()
-//-------
-{
-	array<String, 3> news{ "»çÁø", "ÃÔ¿µÀº", "¹«Á¶°Ç"}; //3°³·Î ÇÏ°í ¦i¾Æ°¡º¸±â
-	
-	°üÂû = true;
-	// ¿À¸§Â÷¼ø Á¤·ÄÇÏ¶ó.
-	sort(news.begin(), news.end(), [](const String& a, const String& b) {
-		return a.getString() < b.getString();
-		});
-	°üÂû = false;
-
-	for (const String& s : news)
-	{
-		cout << s << endl;
-	}
-
-	save("¼Ò½º.cpp");
-}
-
-==================================================
-¼Ò½º.cpp , ÀúÀå½Ã°£: 2023-03-31 ±İ¿äÀÏ ¿ÀÈÄ 8:33:33
-==================================================
-//------------------------------------------------------------
-// 2023. 3. 30 ¸ñ56								(5ÁÖ 1ÀÏ)
-//------------------------------------------------------------
-// °üÂû Å¬·¡½º ÀÛ¼º - String(ÀÚ¿øÀ» È®º¸ÇÏ´Â Å¬·¡½º)
-// 1. C++ º¹½À 
-// 2. ¾ÕÀ¸·Î ¹ßÀü½ÃÄÑ¼­ STL ÄÁÅ×ÀÌ³Ê·Î ¸¸µê
-//------------------------------------------------------------
-#include <iostream>
-#include <array>
-#include <algorithm>
-#include "save.h"
-#include "String.h"
-
-using namespace std;
-
-extern bool °üÂû;
-
-//-------
-int main()
-//-------
-{
-	array<String, 3> news{ "»çÁø", "ÃÔ¿µÀº", "¹«Á¶°Ç"}; //3°³·Î ÇÏ°í ¦i¾Æ°¡º¸±â
-	
-	°üÂû = true;
-	// ¿À¸§Â÷¼ø Á¤·ÄÇÏ¶ó.
-	sort(news.begin(), news.end(), [](const String& a, const String& b) {
-		return a.getString() < b.getString();
-		});
-	°üÂû = false;
-
-	for (const String& s : news)
-	{
-		cout << s << endl;
-	}
-
-	save("¼Ò½º.cpp");
-}
-
-==================================================
-¼Ò½º.cpp , ÀúÀå½Ã°£: 2023-03-31 ±İ¿äÀÏ ¿ÀÈÄ 8:51:55
-==================================================
-//------------------------------------------------------------
-// 2023. 3. 30 ¸ñ56								(5ÁÖ 1ÀÏ)
-//------------------------------------------------------------
-// °üÂû Å¬·¡½º ÀÛ¼º - String(ÀÚ¿øÀ» È®º¸ÇÏ´Â Å¬·¡½º)
-// 1. C++ º¹½À 
-// 2. ¾ÕÀ¸·Î ¹ßÀü½ÃÄÑ¼­ STL ÄÁÅ×ÀÌ³Ê·Î ¸¸µê
-//------------------------------------------------------------
-#include <iostream>
-#include "save.h"
-#include "String.h"
-
-using namespace std;
-
-extern bool °üÂû;
-
-//-------
-int main()
-//-------
-{	
-	save("¼Ò½º.cpp");
-	save("String.h");
-	save("String.cpp");
-}
-
-==================================================
-String.h , ÀúÀå½Ã°£: 2023-03-31 ±İ¿äÀÏ ¿ÀÈÄ 8:51:56
-==================================================
-//-------------------------------------------------------------------------------------------------------------------
-// String.h - Ç¥ÁØ string°ú À¯»çÇÑ Å¬·¡½º
-// 
-// 2023. 3. 30
-//-------------------------------------------------------------------------------------------------------------------
-#pragma once
-
-// 2023. 3. 27 String ÄÚµù ½ÃÀÛ
-class String
-{
-	size_t len{};				// È®º¸ÇÑ ÀÚ¿ø ¼ö
-	char* p{ nullptr };			// È®º¸ÇÑ ÀÚ¿øÀÇ ÁÖ¼Ò
-	size_t id = ++sid;			// °´Ã¼ id
-
-	static size_t sid;			// classÀÇ static º¯¼ö?, ¸â¹ö º¯¼ö°¡ ¾Æ´Ï´Ù
-
-public:
-	// »ı¼ºÀÚ¿Í ¼Ò¸êÀÚ
-	String();
-	String(const char* str);
-	~String();
-
-	// º¹»ç»ı¼ºÀÚ / º¹»çÇÒ´ç¿¬»êÀÚ
-	String(const String& other);
-	String& operator=(const String& other);
-
-	// ÀÌµ¿»ı¼ºÀÚ / ÀÌµ¿ÇÒ´ç¿¬»êÀÚ - 2023. 3. 30 Ãß°¡
-	String(String&& other) noexcept;	//&&: r-value ref
-	String& operator=(String&& other) noexcept;
-
-	// ¿¬»êÀÚ ¿À¹ö·Îµù ÇÔ¼ö
-	String operator+(const String& rhs);
-	friend std::ostream& operator<<(std::ostream& os, const String& s);
-
-	// ±× ¿Ü ¸â¹öÇÔ¼öµé
-	void print(const std::string& s) const;
-
-	//ÀÎÅÍÆäÀÌ½º ÇÔ¼ö
-	size_t size() const;
-
-	std::string getString() const;
-};
-
-
-==================================================
-String.cpp , ÀúÀå½Ã°£: 2023-03-31 ±İ¿äÀÏ ¿ÀÈÄ 8:51:56
-==================================================
-ÿş/ / - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
- / /   S t r i n g . c p p   -   \Ô É  s t r i n g ü¬   Ç¬À\Õ  tĞ˜·¤Â 
- / /    
- / /   2 0 2 3 .   3 .   3 0  
- / / - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
- # i n c l u d e   < i o s t r e a m >  
- # i n c l u d e   < s t r i n g >  
- # i n c l u d e   " S t r i n g . h "  
-  
- b o o l    ­0Ì{   f a l s e   } ; 	 	 	 	 / /   ¤Â˜Ó\Á  hÕÂXÇ  Ù³‘ÇDÇ     ­0ÌXÕ$¸tº  t r u e \¸  ¼À¯  ƒ¬ 
-  
- / /   İÀ1ÁÇ@Æ  ŒÁxºÇ 
- S t r i n g : : S t r i n g ( )  
- {  
- 	 p r i n t ( " µôÓ¸Ò  İÀ1ÁÇ" ) ;  
- }  
-  
- S t r i n g : : S t r i n g ( c o n s t   c h a r *   s t r )  
- 	 :   l e n {   s t r l e n ( s t r )   }  
- {  
- 	 p   =   n e w   c h a r [ l e n ] ;  
-  
- 	 m e m c p y ( p ,   s t r ,   l e n ) ; 	 / / à¬Á  Tº¨º¬¹  õ¼¬À  -   D M A  
- 	 p r i n t ( " İÀ1ÁÇ( c h a r * ) " ) ;  
- }  
-  
- S t r i n g : : ~ S t r i n g ( )  
- {  
- 	 p r i n t ( " ŒÁxºÇ" ) ;  
- 	 d e l e t e [ ]   p ;  
- }  
-  
- / /   õ¼¬ÀİÀ1ÁÇ  /   õ¼¬À`Õù²ğÅ°ÀÇ 
- S t r i n g : : S t r i n g ( c o n s t   S t r i n g &   o t h e r )  
- 	 : l e n {   o t h e r . l e n   }  
- {  
- 	 p   =   n e w   c h a r [ l e n ] ;  
- 	 m e m c p y ( p ,   o t h e r . p ,   l e n ) ;  
-  
- 	 p r i n t ( " õ¼¬À  İÀ1ÁÇ" ) ;  
- }  
-  
- S t r i n g &   S t r i n g : : o p e r a t o r = ( c o n s t   S t r i n g &   o t h e r )  
- {  
- 	 i f   ( t h i s   = =   & o t h e r )  
- 	 {  
- 	 	 r e t u r n   * t h i s ;  
- 	 }  
-  
- 	 d e l e t e [ ]   p ;  
-  
- 	 l e n   =   o t h e r . l e n ;  
- 	 p   =   n e w   c h a r [ l e n ] ;  
- 	 m e m c p y ( p ,   o t h e r . p ,   l e n ) ;  
-  
- 	 p r i n t ( " õ¼¬À`Õù²ğÅ°ÀÇ" ) ;  
- 	 r e t u r n   * t h i s ;  
- }  
-  
- / /   tÇÙ³İÀ1ÁÇ  /   tÇÙ³`Õù²ğÅ°ÀÇ  -   2 0 2 3 .   3 .   3 0   ”Í ¬ 
- S t r i n g : : S t r i n g ( S t r i n g & &   o t h e r )   n o e x c e p t 	 / / & & :   r - v a l u e   r e f  
- {  
- 	 l e n   =   o t h e r . l e n ;  
- 	 p   =   o t h e r . p ;  
-  
- 	 / /   tÇÙ³´”²  ¬´Ì|¹  È¬¹tÕ Éä² 
- 	 o t h e r . l e n   =   0 ;  
- 	 o t h e r . p   =   n u l l p t r ;  
-  
- 	 p r i n t ( " tÇÙ³İÀ1ÁÇ" ) ;  
- }  
-  
- S t r i n g &   S t r i n g : : o p e r a t o r = ( S t r i n g & &   o t h e r )   n o e x c e p t  
- {  
- 	 / /   ÇàÂDÇ  tÇÙ³`Õù²XÕtº  HÅ´ä².  
- 	 i f   ( t h i s   = =   & o t h e r )  
- 	 {  
- 	 	 r e t u r n   * t h i s ;  
- 	 }  
-  
- 	 / /   tÇø»  UÖô¼\Õ  ÇĞÆDÇ  tÕÈ\Õä².  
- 	 d e l e t e [ ]   p ;  
-  
- 	 / /   o t h e r |¹  tÇÙ³\Õä².  
- 	 l e n   =   o t h e r . l e n ;  
- 	 p   =   o t h e r . p ;  
-  
- 	 o t h e r . l e n   =   0 ;  
- 	 o t h e r . p   =   n u l l p t r ;  
-  
- 	 p r i n t ( " tÇÙ³`Õù²ğÅ°ÀÇ" ) ;  
- 	 r e t u r n   * t h i s ;  
- }  
-  
- / /   ğÅ°ÀÇ  $Æ„¼\¸)µ  hÕÂ 
- S t r i n g   S t r i n g : : o p e r a t o r + ( c o n s t   S t r i n g &   r h s )  
- {  
- 	 S t r i n g   r e s ;  
- 	 r e s . l e n   =   l e n   +   r h s . l e n ;  
- 	 r e s . p   =   n e w   c h a r [ r e s . l e n ] ;  
-  
- 	 m e m c p y ( r e s . p ,   p ,   l e n ) ;  
- 	 m e m c p y ( r e s . p   +   l e n ,   r h s . p ,   r h s . l e n ) ;  
-  
- 	 r e t u r n   r e s ;  
- }  
-  
- s t d : : o s t r e a m &   o p e r a t o r < < ( s t d : : o s t r e a m &   o s ,   c o n s t   S t r i n g &   s )  
- {  
- 	 f o r   ( i n t   i   =   0 ;   i   <   s . l e n ;   + + i )  
- 	 {  
- 	 	 o s   < <   s . p [ i ] ;  
- 	 }  
- 	 r e t u r n   o s ;  
- }  
-  
- / /   ø­  xÆ  dº„¼hÕÂä´ 
- v o i d   S t r i n g : : p r i n t ( c o n s t   s t d : : s t r i n g &   s )   c o n s t  
- {  
- 	 i f   ( !  ­0Ì)  
- 	 	 r e t u r n ;  
- 	 s t d : : c o u t   < <   ' [ '   < <   i d   < <   " ]   -   "   < <   s   < <   " ,   ¬Â:   "   < <   l e n   < <   " ,   ˆ¼ÀÉ:   "   < <   ( v o i d * ) p   < <   s t d : : e n d l ;  
- }  
-  
- / / xÇ0Ñ˜ÓtÇ¤Â  hÕÂ 
- s i z e _ t   S t r i n g : : s i z e ( )   c o n s t  
- {  
- 	 r e t u r n   l e n ;  
- }  
-  
- s t d : : s t r i n g   S t r i n g : : g e t S t r i n g ( )   c o n s t  
- {  
- 	 r e t u r n   s t d : : s t r i n g ( p ,   l e n ) ;  
- }  
-  
- s i z e _ t   S t r i n g : : s i d {   0   } ; 	 	 	 / /   tÇ  À¼Â”²  tĞ˜·¤Â  ¼ĞÅÁ  Í0®TÖ\Õä²

@@ -16,4 +16,6 @@ int main()
 //-------
 {	
 	save("¼Ò½º.cpp");
+	save("String.cpp");
+	save("String.h");
 }

@@ -1,0 +1,539 @@
+==================================================
+소스.cpp , 저장시간: 2023-03-31 금요일 오후 7:16:14
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 30 목56								(5주 1일)
+//------------------------------------------------------------
+// 관찰 클래스 작성 - String(자원을 확보하는 클래스)
+// 1. C++ 복습 
+// 2. 앞으로 발전시켜서 STL 컨테이너로 만듦
+//------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <memory>
+#include <array>
+#include <algorithm>
+#include "save.h"
+
+using namespace std;
+
+// [문제] 자원을 할당하는 클래스 String (표준 string과 유사한)를 작성하자.
+// special 함수의 동작을 관찰하자
+// 모든 객체는 생성시 번호를 받는다.
+
+bool 관찰{ false };
+
+class String
+{
+	size_t len{};
+	char* p{ nullptr };
+	size_t id = ++sid;
+
+	static size_t sid;		// 멤버 변수가 아니다
+
+public:
+	String()
+	{
+		print("디폴트 생성");
+	}
+
+	String(const char* str)
+		: len{ strlen(str) }
+		//, p = new char[len] 순서 보장 X -> 망할수있다.
+	{
+		p = new char[len];
+
+		memcpy(p, str, len);	//고속 메모리 복사 - DMA
+		print("생성(char*)");
+	}
+
+	//복사 생성 연산자와 복사할당 연산자는 짝이다.
+	String(const String& other)
+		:len{ other.len }
+	{
+		p = new char[len];
+		memcpy(p, other.p, len);
+
+		print("복사 생성");
+	}
+
+	String& operator=(const String& other)
+	{
+		if (this == &other)
+			return *this;
+
+		delete[] p;
+
+		len = other.len;
+		p = new char[len];
+		memcpy(p, other.p, len);
+
+		print("복사할당 연산자");
+	}
+
+	//지역을 벗어날 때
+	//객체가 사라지기 전에 부르는 함수
+	//소멸 역순
+	~String()
+	{
+		print("소멸");
+		delete[] p;
+	}
+
+	void print(const string& s)
+	{
+		if (!관찰)
+			return;
+		cout << '[' << id << "] - " << s << ", 개수: " << len << ", 번지: " << (void*)p << endl;
+	}
+
+	//인터페이스 함수
+	size_t size() const
+	{
+		return len;
+	}
+
+	String operator+(const String& rhs)
+	{
+		String res;
+		res.len = len + rhs.len;
+		res.p = new char[res.len];
+
+		memcpy(res.p, p, len);
+		memcpy(res.p + len, rhs.p, rhs.len);
+
+		return res;
+	}
+
+	//프렌드 함수
+	friend ostream& operator<<(ostream& os, const String& s)
+	{
+		for (int i = 0; i < s.len; ++i)
+		{
+			os << s.p[i];
+		}
+		return os;
+	}
+
+	string getString() const
+	{
+		return string(p, len);
+	}
+};
+
+size_t String::sid{ 0 };
+
+//-------
+int main()
+//-------
+{
+	array<String, 3> news{ "사진", "촬영은", "무조건"}; //3개로 하고 쫒아가보기
+	
+	관찰 = true;
+	// 오름차순 정렬하라.
+	sort(news.begin(), news.end(), [](const String& a, const String& b) {
+		return a.getString() < b.getString();
+		});
+	관찰 = false;
+
+	for (const String& s : news)
+	{
+		cout << s << endl;
+	}
+
+	save("소스.cpp");
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-03-31 금요일 오후 7:52:28
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 30 목56								(5주 1일)
+//------------------------------------------------------------
+// 관찰 클래스 작성 - String(자원을 확보하는 클래스)
+// 1. C++ 복습 
+// 2. 앞으로 발전시켜서 STL 컨테이너로 만듦
+//------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <memory>
+#include <array>
+#include <algorithm>
+#include "save.h"
+
+using namespace std;
+
+// [문제] 자원을 할당하는 클래스 String (표준 string과 유사한)를 작성하자.
+// special 함수의 동작을 관찰하자
+// 모든 객체는 생성시 번호를 받는다.
+
+bool 관찰{ false };
+
+// 2023. 3. 27 String 코딩 시작
+class String
+{
+	size_t len{};				// 확보한 자원 수
+	char* p{ nullptr };			// 확보한 자원의 주소
+	size_t id = ++sid;			// 객체 id
+
+	static size_t sid;			// class의 static 변수?, 멤버 변수가 아니다
+
+public:
+	// 생성자와 소멸자
+	String()
+	{
+		print("디폴트 생성자");
+	}
+
+	String(const char* str)
+		: len{ strlen(str) }
+	{
+		p = new char[len];
+
+		memcpy(p, str, len);	//고속 메모리 복사 - DMA
+		print("생성자(char*)");
+	}
+
+	~String()
+	{
+		print("소멸자");
+		delete[] p;
+	}
+
+	// 복사생성자 / 복사할당연산자
+	String(const String& other)
+		:len{ other.len }
+	{
+		p = new char[len];
+		memcpy(p, other.p, len);
+
+		print("복사 생성자");
+	}
+	
+	String& operator=(const String& other)
+	{
+		if (this == &other)
+		{
+			return *this;
+		}
+
+		delete[] p;
+
+		len = other.len;
+		p = new char[len];
+		memcpy(p, other.p, len);
+
+		print("복사할당연산자");
+		return *this;
+	}
+
+	// 이동생성자 / 이동할당연산자 - 2023. 3. 30 추가
+	String(String&& other)	//&&: r-value ref
+	{
+		len = other.len;
+		p = other.p;
+
+		// 이동되는 객체를 정리해준다
+		other.len = 0;
+		other.p = nullptr;
+
+		print("이동생성자");
+	}
+
+	String& operator=(String&& other)
+	{
+		// 자신을 이동할당하면 안된다.
+		if (this == &other)
+		{
+			return *this;
+		}
+
+		// 이미 확보한 자원을 해제한다.
+		delete[] p;
+
+		// other를 이동한다.
+		len = other.len;
+		p = other.p;
+
+		other.len = 0;
+		other.p = nullptr;
+
+		print("이동할당연산자");
+		return *this;
+	}
+
+	// 연산자 오버로딩 함수
+	String operator+(const String& rhs)
+	{
+		String res;
+		res.len = len + rhs.len;
+		res.p = new char[res.len];
+
+		memcpy(res.p, p, len);
+		memcpy(res.p + len, rhs.p, rhs.len);
+
+		return res;
+	}
+
+	friend ostream& operator<<(ostream& os, const String& s)
+	{
+		for (int i = 0; i < s.len; ++i)
+		{
+			os << s.p[i];
+		}
+		return os;
+	}
+
+	// 그 외 멤버함수들
+	void print(const string& s)
+	{
+		if (!관찰)
+			return;
+		cout << '[' << id << "] - " << s << ", 개수: " << len << ", 번지: " << (void*)p << endl;
+	}
+
+	//인터페이스 함수
+	size_t size() const
+	{
+		return len;
+	}
+
+	string getString() const
+	{
+		return string(p, len);
+	}
+};
+
+size_t String::sid{ 0 };			// 이 변수는 클래스 밖에서 초기화한다
+
+//-------
+int main()
+//-------
+{
+	array<String, 3> news{ "사진", "촬영은", "무조건"}; //3개로 하고 쫒아가보기
+	
+	관찰 = true;
+	// 오름차순 정렬하라.
+	sort(news.begin(), news.end(), [](const String& a, const String& b) {
+		return a.getString() < b.getString();
+		});
+	관찰 = false;
+
+	for (const String& s : news)
+	{
+		cout << s << endl;
+	}
+
+	save("소스.cpp");
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-04-02 일요일 오후 7:15:30
+==================================================
+//------------------------------------------------------------
+// 2023. 3. 30 목56								(5주 1일)
+//------------------------------------------------------------
+// STL 시작 - 
+//------------------------------------------------------------
+#include <iostream>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{	
+	save("소스.cpp");
+	save("String.cpp");
+	save("String.h");
+}
+
+==================================================
+String.cpp , 저장시간: 2023-04-02 일요일 오후 7:15:30
+==================================================
+//-------------------------------------------------------------------------------------------------------------------
+// String.cpp - 표준 string과 유사한 클래스
+// 
+// 2023. 3. 30
+//-------------------------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include "String.h"
+
+bool 관찰{ false };				// 스페셜 함수의 동작을  관찰하려면 true로 바꿀 것
+
+// 생성자와 소멸자
+String::String()
+{
+	print("디폴트 생성자");
+}
+
+String::String(const char* str)
+	: len{ strlen(str) }
+{
+	p = new char[len];
+
+	memcpy(p, str, len);	//고속 메모리 복사 - DMA
+	print("생성자(char*)");
+}
+
+String::~String()
+{
+	print("소멸자");
+	delete[] p;
+}
+
+// 복사생성자 / 복사할당연산자
+String::String(const String& other)
+	:len{ other.len }
+{
+	p = new char[len];
+	memcpy(p, other.p, len);
+
+	print("복사 생성자");
+}
+
+String& String::operator=(const String& other)
+{
+	if (this == &other)
+	{
+		return *this;
+	}
+
+	delete[] p;
+
+	len = other.len;
+	p = new char[len];
+	memcpy(p, other.p, len);
+
+	print("복사할당연산자");
+	return *this;
+}
+
+// 이동생성자 / 이동할당연산자 - 2023. 3. 30 추가
+String::String(String&& other) noexcept	//&&: r-value ref
+{
+	len = other.len;
+	p = other.p;
+
+	// 이동되는 객체를 정리해준다
+	other.len = 0;
+	other.p = nullptr;
+
+	print("이동생성자");
+}
+
+String& String::operator=(String&& other) noexcept
+{
+	// 자신을 이동할당하면 안된다.
+	if (this == &other)
+	{
+		return *this;
+	}
+
+	// 이미 확보한 자원을 해제한다.
+	delete[] p;
+
+	// other를 이동한다.
+	len = other.len;
+	p = other.p;
+
+	other.len = 0;
+	other.p = nullptr;
+
+	print("이동할당연산자");
+	return *this;
+}
+
+// 연산자 오버로딩 함수
+String String::operator+(const String& rhs)
+{
+	String res;
+	res.len = len + rhs.len;
+	res.p = new char[res.len];
+
+	memcpy(res.p, p, len);
+	memcpy(res.p + len, rhs.p, rhs.len);
+
+	return res;
+}
+
+std::ostream& operator<<(std::ostream& os, const String& s)
+{
+	for (int i = 0; i < s.len; ++i)
+	{
+		os << s.p[i];
+	}
+	return os;
+}
+
+// 그 외 멤버함수들
+void String::print(const std::string& s) const
+{
+	if (!관찰)
+		return;
+	std::cout << '[' << id << "] - " << s << ", 개수: " << len << ", 번지: " << (void*)p << std::endl;
+}
+
+//인터페이스 함수
+size_t String::size() const
+{
+	return len;
+}
+
+std::string String::getString() const
+{
+	return std::string(p, len);
+}
+
+size_t String::sid{ 0 };			// 이 변수는 클래스 밖에서 초기화한다
+
+==================================================
+String.h , 저장시간: 2023-04-02 일요일 오후 7:15:30
+==================================================
+//-------------------------------------------------------------------------------------------------------------------
+// String.h - 표준 string과 유사한 클래스
+// 
+// 2023. 3. 30
+//-------------------------------------------------------------------------------------------------------------------
+#pragma once
+
+// 2023. 3. 27 String 코딩 시작
+class String
+{
+	size_t len{};				// 확보한 자원 수
+	char* p{ nullptr };			// 확보한 자원의 주소
+	size_t id = ++sid;			// 객체 id
+
+	static size_t sid;			// class의 static 변수?, 멤버 변수가 아니다
+
+public:
+	// 생성자와 소멸자
+	String();
+	String(const char* str);
+	~String();
+
+	// 복사생성자 / 복사할당연산자
+	String(const String& other);
+	String& operator=(const String& other);
+
+	// 이동생성자 / 이동할당연산자 - 2023. 3. 30 추가
+	String(String&& other) noexcept;	//&&: r-value ref
+	String& operator=(String&& other) noexcept;
+
+	// 연산자 오버로딩 함수
+	String operator+(const String& rhs);
+	friend std::ostream& operator<<(std::ostream& os, const String& s);
+
+	// 그 외 멤버함수들
+	void print(const std::string& s) const;
+
+	//인터페이스 함수
+	size_t size() const;
+
+	std::string getString() const;
+};
