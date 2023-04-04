@@ -114,6 +114,18 @@ std::ostream& operator<<(std::ostream& os, const String& s)
 	return os;
 }
 
+std::istream& operator>>(std::istream& is, String& s)
+{
+	std::string str;
+	is >> str;
+	s.len = str.size();
+	delete[] s.p;
+	s.p = new char[s.len];
+	memcpy(s.p, str.data(), s.len);
+
+	return is;
+}
+
 // 그 외 멤버함수들
 void String::print(const std::string& s) const
 {

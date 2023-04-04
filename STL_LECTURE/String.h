@@ -32,6 +32,10 @@ public:
 	String operator+(const String& rhs);
 	friend std::ostream& operator<<(std::ostream& os, const String& s);
 
+	// 2023. 4. 3 입력연산자 오버로딩
+	friend std::istream& operator>>(std::istream& os, String& s);
+
+
 	// 그 외 멤버함수들
 	void print(const std::string& s) const;
 
