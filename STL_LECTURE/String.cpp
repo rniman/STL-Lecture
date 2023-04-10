@@ -58,7 +58,8 @@ String& String::operator=(const String& other)
 }
 
 // 이동생성자 / 이동할당연산자 - 2023. 3. 30 추가
-String::String(String&& other) noexcept	//&&: r-value ref
+// 이동이 안점함을 보중한다. - 2023. 4. 10 추가
+String::String(String&& other)	noexcept//&&: r-value ref
 	: len{ other.len }
 	, p{ other.p }
 {

@@ -1,10 +1,12 @@
 //------------------------------------------------------------
-// 2023. 4. 6 목56								(6주 1일)
+// 2023. 4. 10 월56								(6주 2일)
+// 4월 24일 월요일(8주 2일) - 중간시험
 //------------------------------------------------------------
 // Sequence container - vector
 //------------------------------------------------------------
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include "save.h"
 #include "String.h"
 
@@ -14,15 +16,14 @@ extern bool 관찰;
 int main()
 //-------
 {	
-	관찰 = true;
+	//noexcept을 선언해 이동생성을 시킨다.
 
 	vector<String> v;
-	v.reserve(10);
-	v.emplace_back("123");
-	v.emplace_back("abcde");
-	v.emplace_back("7890");
+	
+	관찰 = true;
+	v.push_back("123");
+	v.push_back("abc");
 
-	//메모리 그림으로 그릴 수 있니?
 
-	//save("소스.cpp");
+	save("소스.cpp");
 }
