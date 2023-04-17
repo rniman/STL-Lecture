@@ -105,6 +105,12 @@ String String::operator+(const String& rhs)
 	return res;
 }
 
+// 2023. 4. 13 == Ãß°¡
+bool String::operator==(const String& rhs)
+{
+	return getString() == rhs.getString();
+}
+
 std::ostream& operator<<(std::ostream& os, const String& s)
 {
 	for (int i = 0; i < s.len; ++i)

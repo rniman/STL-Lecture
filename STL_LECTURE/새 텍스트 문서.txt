@@ -107,3 +107,4 @@ Amortized constant - 평균내면 상수시간
 처음 vector의 크기를 여유롭게 하는 것이 좋다.
 
 입력의 끝 ctrl+z
+
