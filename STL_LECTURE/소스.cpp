@@ -1,34 +1,46 @@
 //------------------------------------------------------------
-// 2023. 4. 13 목56								(7주 1일)
+// 2023. 4. 17 월56								(7주 2일)
 // 4월 24일 월요일(8주 2일) - 중간시험
 //------------------------------------------------------------
-// Sequence container - vector
+// Sequence container - list
 //------------------------------------------------------------
 #include <iostream>
-#include <vector>
-#include <algorithm>
+#include <fstream>
+#include <list>
 #include "save.h"
 #include "String.h"
 
 using namespace std;
 extern bool 관찰;
 
-
+// [문제] 파일 "리스트설명.txt"의 단어를 list<String>으로 읽어와라.
+// 읽은 단어를 화면에 출려하라.
 
 //-------
 int main()
 //-------
-{	
-	vector<String> v{ "1", "2", "3", "4", "5" };
-	
-	// [문제] v에서 "3"을 제거하라
-	erase(v, "3");
+{
+	ifstream in{ "리스트설명.txt" };
 
-	for (String& s : v)
+	if (!in)
 	{
-		cout << s << ' ';
+		cout << "파일 읽기 실패" << endl;
+		return 0;
 	}
-	cout << endl;
+
+	list<String> l;
+
+	String s;
+	while (in >> s)
+	{
+		l.push_back(s);
+	}
+
+	for (String& s : l)
+	{
+		cout << s << endl;
+	}
 
 	//save("소스.cpp");
 }
+

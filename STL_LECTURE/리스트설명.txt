@@ -1,0 +1,29 @@
+C++ Containers library std::list 
+Defined in header <list>
+template<
+    class T,
+    class Allocator = std::allocator<T>
+> class list;
+(1)	
+namespace pmr {
+    template <class T>
+    using list = std::list<T, std::pmr::polymorphic_allocator<T>>;
+}
+(2)	(since C++17)
+std::list is a container that supports constant time insertion and removal of elements from anywhere in the container. Fast random access is not supported. It is usually implemented as a doubly-linked list. Compared to std::forward_list this container provides bidirectional iteration capability while being less space efficient.
+
+Adding, removing and moving the elements within the list or across several lists does not invalidate the iterators or references. An iterator is invalidated only when the corresponding element is deleted.
+
+std::list meets the requirements of Container, AllocatorAwareContainer, SequenceContainer and ReversibleContainer.
+
+Template parameters
+T	-	The type of the elements.
+T must meet the requirements of CopyConstructible. T must meet the requirements of CopyAssignable if list::operator= or list::assign is instantiated with T.	(until C++11)
+The requirements that are imposed on the elements depend on the actual operations performed on the container. Generally, it is required that element type is a complete type and meets the requirements of Erasable, but many member functions impose stricter requirements.	(since C++11)
+(until C++17)
+The requirements that are imposed on the elements depend on the actual operations performed on the container. Generally, it is required that element type meets the requirements of Erasable, but many member functions impose stricter requirements. This container (but not its members) can be instantiated with an incomplete element type if the allocator satisfies the allocator completeness requirements.
+
+Feature-test macro	Value	Std	Comment
+__cpp_lib_incomplete_container_elements	201505L	(C++17)	Minimal incomplete type support
+(since C++17)
+Allocator	-	An allocator that is used to acquire/release memory and to construct/destroy the elements in that memory. The type must meet the requirements of Allocator. The behavior is undefined (until C++20)The program is ill-formed (since C++20) if Allocator::value_type is not the same as T.

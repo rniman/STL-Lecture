@@ -5,6 +5,7 @@
 //-------------------------------------------------------------------------------------------------------------------
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include "String.h"
 
 bool 관찰{ false };				// 스페셜 함수의 동작을  관찰하려면 true로 바꿀 것
@@ -108,7 +109,14 @@ String String::operator+(const String& rhs)
 // 2023. 4. 13 == 추가
 bool String::operator==(const String& rhs)
 {
-	return getString() == rhs.getString();
+	//if (len != rhs.len)
+	//{
+	//	return false;
+	//}
+
+	return std::equal(p, p + len, rhs.p, rhs.p + rhs.len);	//사이즈 비교 필요 X
+	//return std::equal(p, p + len, rhs.p);					//사이즈 비교 필요 O
+	//return getString() == rhs.getString();
 }
 
 std::ostream& operator<<(std::ostream& os, const String& s)
