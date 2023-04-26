@@ -49,16 +49,6 @@ int main()
 		if (s.size() == 7)
 			out << s << endl;
 
-	//int len7Num = 0;
-	//len7Num = count_if(cont.begin(), cont.end(), [&out](const String& a) {
-	//	if (a.size() == 7)
-	//	{
-	//		out << a.getString() << endl;
-	//		return true;
-	//	}
-	//	return false;
-	//	});
-
 	//cout << "길이가 7인 단어의 수 " << len7Num << endl;
 }
 

@@ -1,0 +1,562 @@
+==================================================
+소스.cpp , 저장시간: 2023-04-20 목요일 오후 1:45:14
+==================================================
+//------------------------------------------------------------
+// 2023. 4. 20 목56								(8주 1일)
+// 4월 24일 월요일(8주 2일) - 중간시험
+//------------------------------------------------------------
+// Sequence container - list
+//------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <list>
+#include <vector>
+#include <deque>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 파일 "리스트설명.txt"의 단어를 list<String>으로 읽어와라.
+// 읽은 단어를 화면에 출려하라.
+
+//-------
+int main()
+//-------
+{
+	save("소스.cpp");
+
+	vector<int> v{ 1,2,3,4,5 };
+
+	while (true)
+	{
+		cout << "몇 번째 값을 알려드릴까요? ";
+		int number;
+		cin >> number;
+
+		//if (number < 0 || number > v.size())
+		//{
+		//	cout << "유효하지 않다" << endl;
+		//}
+		//else 
+		//{
+		//	cout << number << "번째 값 - " << v[number] << endl;
+		//}
+
+		// at(): 검사를 통해 예외를 던진다. -> 시간을 희생시킨다.
+		try
+		{
+			cout << number << "번째 값 - " << v.at(number) << endl;
+		}
+		catch (exception& e) {
+			cout << "잘못된 번호 - " << e.what() << endl;
+			continue;
+		}
+	}	
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-04-20 목요일 오후 2:00:07
+==================================================
+//------------------------------------------------------------
+// 2023. 4. 20 목56								(8주 1일)
+// 4월 24일 월요일(8주 2일) - 중간시험
+//------------------------------------------------------------
+// Sequence container - list
+//------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <list>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 파일 "리스트설명.txt"의 단어를 list<String>으로 읽어와라.
+// 읽은 단어를 화면에 출려하라.
+
+//-------
+int main()
+//-------
+{
+	ifstream in{ "리스트설명.txt" };
+
+	if (!in)
+	{
+		cout << "파일열기 실패" << endl;
+	}
+
+	//list<String> cont{시작, 끝}; -> 모든 컨테이너는 다음과 같이 가능
+	//istream_iterator: 입력스트림을 돌아다니는 이터레이터, >>이 구현 되어 있어야한다
+	list<String> cont{ istream_iterator<String>{in}, {} };
+
+	cout << "모두 " << cont.size() << "개의 단어를 읽었습니다." << endl;
+
+	for (auto p = cont.begin(); p != cont.end(); ++p)
+	{
+		cout << *p << endl;
+	}
+	//for (const String& s: cont)
+	//{
+	//	cout << s << ' ';
+	//}
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-04-20 목요일 오후 2:01:30
+==================================================
+//------------------------------------------------------------
+// 2023. 4. 20 목56								(8주 1일)
+// 4월 24일 월요일(8주 2일) - 중간시험
+//------------------------------------------------------------
+// Sequence container - list
+//------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <list>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 파일 "리스트설명.txt"의 단어를 list<String>으로 읽어와라.
+// 읽은 단어를 화면에 출려하라.
+
+//-------
+int main()
+//-------
+{
+	ifstream in{ "리스트설명.txt" };
+
+	if (!in)
+	{
+		cout << "파일열기 실패" << endl;
+	}
+
+	list<String> cont{ istream_iterator<String>{in}, {} };
+
+	cout << "모두 " << cont.size() << "개의 단어를 읽었습니다." << endl;
+
+	//[문제] 역순으로 출력하라
+
+	for (auto p = cont.rbegin(); p != cont.rend(); ++p)
+	{
+		cout << *p << endl;
+	}
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-04-20 목요일 오후 2:17:02
+==================================================
+//------------------------------------------------------------
+// 2023. 4. 20 목56								(8주 1일)
+// 4월 24일 월요일(8주 2일) - 중간시험
+//------------------------------------------------------------
+// Sequence container - list
+//------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <list>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 파일 "리스트설명.txt"의 단어를 list<String>으로 읽어와라.
+// 읽은 단어를 화면에 출려하라.
+
+//-------
+int main()
+//-------
+{
+	ifstream in{ "리스트설명.txt" };
+
+	if (!in)
+	{
+		cout << "파일열기 실패" << endl;
+	}
+
+	list<String> cont{ istream_iterator<String>{in}, {} };
+
+	cout << "모두 " << cont.size() << "개의 단어를 읽었습니다." << endl;
+
+	관찰 = true;
+	//[문제] cont를 오름차순으로 정렬하라.
+	cont.sort([](const String& a, const String& b) {
+		return a.getString() < b.getString();
+		});
+	관찰 = false;
+
+	// 템플릿의 어려운점: 에러메시지를 보고 알 수가 없다
+	//sort(cont.begin(), cont.end(), [](const String& a, const String& b) {
+	//	return a.getString() < b.getString();
+	//	});
+
+	for (auto p = cont.begin(); p != cont.end(); ++p)
+	{
+		cout << *p << endl;
+	}
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-04-20 목요일 오후 2:36:18
+==================================================
+//------------------------------------------------------------
+// 2023. 4. 20 목56								(8주 1일)
+// 4월 24일 월요일(8주 2일) - 중간시험
+//------------------------------------------------------------
+// Sequence container - list
+//------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <list>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 파일 "리스트설명.txt"의 단어를 list<String>으로 읽어와라.
+// 읽은 단어를 화면에 출려하라.
+
+//-------
+int main()
+//-------
+{
+	ifstream in{ "리스트설명.txt" };
+
+	if (!in)
+	{
+		cout << "파일열기 실패" << endl;
+	}
+
+	list<String> cont{ istream_iterator<String>{in}, {} };
+
+	cout << "모두 " << cont.size() << "개의 단어를 읽었습니다." << endl;
+
+	관찰 = true;
+	//[문제] cont를 오름차순으로 정렬하라.
+	cont.sort([](const String& a, const String& b) {
+		return a.getString() < b.getString();
+		});
+	관찰 = false;
+
+	// [문제] 역순으로 10개만 화면 출력
+	auto p = cont.rbegin();
+	
+	/*auto e = next(cont.rbegin(), 10);
+	for (auto p = cont.rbegin(); p != e; ++p)
+	{
+		cout << *p++ << endl;
+	}*/
+
+	for (int i = 0; i < 10; ++i)
+	{
+		cout << *p++ << endl;
+	}
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-04-20 목요일 오후 2:40:23
+==================================================
+//------------------------------------------------------------
+// 2023. 4. 20 목56								(8주 1일)
+// 4월 24일 월요일(8주 2일) - 중간시험
+//------------------------------------------------------------
+// Sequence container - list
+//------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <list>
+#include <algorithm>
+#include <ranges>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 파일 "리스트설명.txt"의 단어를 list<String>으로 읽어와라.
+// 읽은 단어를 화면에 출려하라.
+
+//-------
+int main()
+//-------
+{
+	ifstream in{ "리스트설명.txt" };
+
+	if (!in)
+	{
+		cout << "파일열기 실패" << endl;
+	}
+	list<String> cont{ istream_iterator<String>{in}, {} };
+
+	cout << "모두 " << cont.size() << "개의 단어를 읽었습니다." << endl;
+
+	관찰 = true;
+	//[문제] cont를 오름차순으로 정렬하라.
+	cont.sort([](const String& a, const String& b) {
+		return a.getString() < b.getString();
+		});
+	관찰 = false;
+
+	// [문제] 마지막 10개만 화면 출력
+	/*for (auto p = next(cont.begin(), cont.size()-10); p!= cont.end(); ++p)
+	{
+		cout << *p << endl;
+	}*/
+	for (String& s : cont | views::drop(cont.size() - 10)) // 10개빼고 떨군다
+	{
+		cout << s << endl;
+	}
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-04-20 목요일 오후 2:45:39
+==================================================
+//------------------------------------------------------------
+// 2023. 4. 20 목56								(8주 1일)
+// 4월 24일 월요일(8주 2일) - 중간시험
+//------------------------------------------------------------
+// Sequence container - list
+//------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <list>
+#include <algorithm>
+#include <ranges>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 파일 "리스트설명.txt"의 단어를 list<String>으로 읽어와라.
+// 읽은 단어를 화면에 출려하라.
+
+//-------
+int main()
+//-------
+{
+	ifstream in{ "리스트설명.txt" };
+
+	if (!in)
+	{
+		cout << "파일열기 실패" << endl;
+	}
+
+	list<String> cont{ istream_iterator<String>{in}, {} };
+
+	cout << "모두 " << cont.size() << "개의 단어를 읽었습니다." << endl;
+
+	cont.sort([](const String& a, const String& b) {
+		return a.getString() < b.getString();
+		});
+	
+	관찰 = true;
+	//list는 unique를 전역함수가 아닌 멤버함수로 사용
+	cont.unique();
+	관찰 = false;
+
+	for (String& s : cont)
+	{
+		cout << s << endl;
+	}
+
+	save("소스.cpp");
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-04-20 목요일 오후 3:03:30
+==================================================
+//------------------------------------------------------------
+// 2023. 4. 20 목56								(8주 1일)
+// 4월 24일 월요일(8주 2일) - 중간시험
+//------------------------------------------------------------
+// Sequence container - list
+//------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <list>
+#include <algorithm>
+#include <ranges>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 파일 "리스트설명.txt"의 단어를 list<String>으로 읽어와라.
+// 읽은 단어를 화면에 출려하라.
+
+//-------
+int main()
+//-------
+{
+	save("소스.cpp");
+
+
+	ifstream in{ "리스트설명.txt" };
+
+	if (!in)
+	{
+		cout << "파일열기 실패" << endl;
+	}
+
+	list<String> cont{ istream_iterator<String>{in}, {} };
+	cout << "모두 " << cont.size() << "개의 단어를 읽었습니다." << endl;
+
+	// [문제] 단어를 입력받아서 cont에 있는 단어인지?
+	// 그렇다면 몇 번째 단어인지 출력하라
+
+	while (true)
+	{
+		cout << "찾을 단어를 입력하세요" << endl;
+		String s;
+		cin >> s;
+
+		int i = 0;
+		auto p = find(cont.begin(), cont.end(), s);
+		
+		if (p == cont.end())
+		{
+			cout << s << " 는 없는 단어입니다" << endl;
+			continue;
+		}
+
+		cout << s << distance(cont.begin(), p) + 1 << "번째 있습니다." << endl;
+	}
+
+
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-04-20 목요일 오후 3:09:24
+==================================================
+//------------------------------------------------------------
+// 2023. 4. 20 목56								(8주 1일)
+// 4월 24일 월요일(8주 2일) - 중간시험
+//------------------------------------------------------------
+// Sequence container - list
+//------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <list>
+#include <algorithm>
+#include <numeric>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 파일 "리스트설명.txt"의 단어를 list<String>으로 읽어와라.
+// 읽은 단어를 화면에 출려하라.
+
+//-------
+int main()
+//-------
+{
+	save("소스.cpp");
+
+	ifstream in{ "리스트설명.txt" };
+
+	if (!in)
+	{
+		cout << "파일열기 실패" << endl;
+	}
+
+	list<String> cont{ istream_iterator<String>{in}, {} };
+	cout << "모두 " << cont.size() << "개의 단어를 읽었습니다." << endl;
+
+	// [문제] 길이가 7인 단어가 몇 개인지 출력하라
+	// 답지에도 몇 개인지 써라.
+	int len7Num = 0;
+	len7Num = count_if(cont.begin(), cont.end(), [](const String& a) {
+		return a.size() == 7;
+		});
+
+	cout << "길이가 7인 단어의 수 " << len7Num << endl;
+
+}
+
+//------------------------------------------------------------
+// 2023. 4. 20 목56								(8주 1일)
+// 4월 24일 월요일(8주 2일) - 중간시험
+//------------------------------------------------------------
+// Sequence container - list
+//------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <list>
+#include <algorithm>
+#include <numeric>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 파일 "리스트설명.txt"의 단어를 list<String>으로 읽어와라.
+// 읽은 단어를 화면에 출려하라.
+
+//-------
+int main()
+//-------
+{
+	//save("소스.cpp");
+
+	ifstream in{ "리스트설명.txt" };
+
+	if (!in)
+	{
+		cout << "파일열기 실패" << endl;
+	}
+
+	list<String> cont{ istream_iterator<String>{in}, {} };
+	cout << "모두 " << cont.size() << "개의 단어를 읽었습니다." << endl;
+
+	// [문제] 길이가 7인 String을 "길이7.txt"에 저장하라
+	// 한 줄에 String 한개를 저장하라
+
+	ofstream out{ "길이7.txt" };
+
+	//copy_if(cont.begin(), cont.end(), ostream_iterator<String>(out, '\n'), [](const String& s) {
+	//	return s.size() == 7;
+	//	});
+
+	for (String& s : cont)
+		if (s.size() == 7)
+			out << s << endl;
+}
+
