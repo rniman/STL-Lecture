@@ -96,7 +96,6 @@ Callable Types
 
 span, range - generalization의 대표
 
-
 move semantic 이동 의미론
 
 컨테이너는 다른 오브젝트들을 저장하는 오브젝트
@@ -108,3 +107,4 @@ Amortized constant - 평균내면 상수시간
 
 입력의 끝 ctrl+z
 
+container: 자료를 저장할 수 있는 객체
