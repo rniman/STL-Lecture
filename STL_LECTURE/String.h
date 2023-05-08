@@ -5,6 +5,33 @@
 //-------------------------------------------------------------------------------------------------------------------
 #pragma once
 
+
+// 2023. 5. 4
+// String이 제공하는 역방향 반복자
+class String_reverse_iterator
+{
+	char* p;
+public:
+	String_reverse_iterator(char* p) : p{ p } {};
+
+	bool operator!=(const String_reverse_iterator& rhs) const
+	{
+		return p != rhs.p;
+	}
+
+	String_reverse_iterator& operator++()
+	{
+		--p;
+		return *this;
+	}
+
+	char operator*() const 
+	{
+		return *(p - 1);
+	}
+};
+
+
 // 2023. 3. 27 String 코딩 시작
 class String
 {
@@ -38,11 +65,20 @@ public:
 	// 2023. 4. 3 입력연산자 오버로딩
 	friend std::istream& operator>>(std::istream& os, String& s);
 
+	// 표준 컨테이너가 되기위하여 추가한 함수들
+	// 2023. 5. 4일 추가
+	char* begin();
+	char* end();
+
+	// 2023. 5. 4일 추가
+	String_reverse_iterator rbegin();
+	String_reverse_iterator rend();
+
 	// 그 외 멤버함수들
 	void print(const std::string& s) const;
 
+
 	//인터페이스 함수
 	size_t size() const;
-
 	std::string getString() const;
 };

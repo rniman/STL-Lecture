@@ -1,0 +1,885 @@
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 1:34:48
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator)
+// - 포인터를 추상화(=일반화) 한 것이 반복자다
+// - Iterators are a generalization of pointers
+// 6가지 종류(category)로 나뉜다.
+// - 입력/출력/전진(전방향)/양방향(전후진)/랜덤억세스/컨티구어스 반복자
+// 기초동작: *, ++, =
+//------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <iterator>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 함수 f() 반복자를 인자로 받아 어떤 종류의 반복자인지 화면 출력한다.
+
+// 전달된 인자가 원하는 타입인지 판단하는 - type_traits 
+template <class 반복자>
+void f(반복자 iter)
+{
+	cout << typeid(iter).name() << endl;
+}
+
+//-------
+int main()
+//-------
+{
+	vector<int> v;
+	ostream_iterator<char> p{ cout };
+	
+	f(1234);
+	f(v.begin());
+	f(p);
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 1:36:17
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator)
+// - 포인터를 추상화(=일반화) 한 것이 반복자다
+// - Iterators are a generalization of pointers
+// 6가지 종류(category)로 나뉜다.
+// - 입력/출력/전진(전방향)/양방향(전후진)/랜덤억세스/컨티구어스 반복자
+// 기초동작: *, ++, =
+//------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <iterator>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 함수 f() 반복자를 인자로 받아 어떤 종류의 반복자인지 화면 출력한다.
+
+// 전달된 인자가 원하는 타입인지 판단하는 - type_traits 
+template <class 반복자>
+void f(반복자 iter)
+{
+	cout << typeid(iter).name() << endl;
+}
+
+//-------
+int main()
+//-------
+{
+	vector<int> v;		// data structure
+	auto p = v.begin();	// p는 v가 제공하는 반복자
+	
+	f(p);
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 1:38:03
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator)
+// - 포인터를 추상화(=일반화) 한 것이 반복자다
+// - Iterators are a generalization of pointers
+// 6가지 종류(category)로 나뉜다.
+// - 입력/출력/전진(전방향)/양방향(전후진)/랜덤억세스/컨티구어스 반복자
+// 기초동작: *, ++, =
+//------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <iterator>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 함수 f() 반복자를 인자로 받아 어떤 종류의 반복자인지 화면 출력한다.
+
+// 전달된 인자가 원하는 타입인지 판단하는 - type_traits 
+template <class 반복자>
+void f(반복자 iter)
+{
+	cout << typeid(iter).name() << endl;
+}
+
+//-------
+int main()
+//-------
+{
+	int n = 123;
+	f(n);
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 1:43:20
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator)
+// - 포인터를 추상화(=일반화) 한 것이 반복자다
+// - Iterators are a generalization of pointers
+// 6가지 종류(category)로 나뉜다.
+// - 입력/출력/전진(전방향)/양방향(전후진)/랜덤억세스/컨티구어스 반복자
+// 기초동작: *, ++, =
+//------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <iterator>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 함수 f() 반복자를 인자로 받아 어떤 종류의 반복자인지 화면 출력한다.
+
+// 전달된 인자가 원하는 타입인지 판단하는 - type_traits 
+template <class 반복자>
+void f(반복자 iter)
+{
+	cout << typeid(반복자::iterator_category).name() << endl;
+}
+
+//-------
+int main()
+//-------
+{
+	vector<int> v;
+	auto p = v.begin();
+
+	f(p);
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 1:48:42
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator)
+// - 포인터를 추상화(=일반화) 한 것이 반복자다
+// - Iterators are a generalization of pointers
+// 6가지 종류(category)로 나뉜다.
+// - 입력/출력/전진(전방향)/양방향(전후진)/랜덤억세스/컨티구어스 반복자
+// 기초동작: *, ++, =
+//------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <iterator>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 함수 f() 반복자를 인자로 받아 어떤 종류의 반복자인지 화면 출력한다.
+
+// 전달된 인자가 원하는 타입인지 판단하는 - type_traits 
+template <class 반복자>
+void f(반복자 iter)
+{
+	// 반복자가 진짜 반복자?
+	cout << typeid(반복자::iterator_category).name() << endl;
+}
+
+
+
+//-------
+int main()
+//-------
+{
+	vector<int> v;
+	auto p = v.begin();
+	
+	//random_access_iterator_tag
+	f(p);
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 1:53:00
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator)
+// - 포인터를 추상화(=일반화) 한 것이 반복자다
+// - Iterators are a generalization of pointers
+// 6가지 종류(category)로 나뉜다.
+// - 입력/출력/전진(전방향)/양방향(전후진)/랜덤억세스/컨티구어스 반복자
+// 기초동작: *, ++, =
+//------------------------------------------------------------
+#include <iostream>
+#include <forward_list>
+#include <list>
+#include <deque>
+#include <vector>
+#include <iterator>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 함수 f() 반복자를 인자로 받아 어떤 종류의 반복자인지 화면 출력한다.
+
+// 전달된 인자가 원하는 타입인지 판단하는 - type_traits 
+template <class 반복자>
+void f(반복자 iter)
+{
+	// 반복자가 진짜 반복자?
+	cout << typeid(반복자::iterator_category).name() << endl;
+}
+
+
+
+//-------
+int main()
+//-------
+{
+	f(istream_iterator<char>{cin});
+	f(ostream_iterator<char>{cout});
+	f(forward_list<char>{}.begin());
+	f(list<int>::iterator{});
+	f(deque<int>::const_iterator{});
+	f(vector<int>::iterator{});
+
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 1:53:36
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator)
+// - 포인터를 추상화(=일반화) 한 것이 반복자다
+// - Iterators are a generalization of pointers
+// 6가지 종류(category)로 나뉜다.
+// - 입력/출력/전진(전방향)/양방향(전후진)/랜덤억세스/컨티구어스 반복자
+// 기초동작: *, ++, =
+//------------------------------------------------------------
+#include <iostream>
+#include <forward_list>
+#include <list>
+#include <deque>
+#include <vector>
+#include <iterator>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 함수 f() 반복자를 인자로 받아 어떤 종류의 반복자인지 화면 출력한다.
+
+// 전달된 인자가 원하는 타입인지 판단하는 - type_traits 
+template <class 반복자>
+void f(반복자 iter)
+{
+	// 반복자가 진짜 반복자?
+	cout << typeid(반복자::iterator_category).name() << endl;
+}
+
+
+
+//-------
+int main()
+//-------
+{
+	f(istream_iterator<char>{cin});
+	f(ostream_iterator<char>{cout});
+	f(forward_list<char>{}.begin());
+	f(list<int>::iterator{});
+	f(deque<int>::const_iterator{});
+	f(vector<int>::iterator{});
+
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 1:56:13
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator)
+// - 포인터를 추상화(=일반화) 한 것이 반복자다
+// - Iterators are a generalization of pointers
+// 6가지 종류(category)로 나뉜다.
+// - 입력/출력/전진(전방향)/양방향(전후진)/랜덤억세스/컨티구어스 반복자
+// 기초동작: *, ++, =
+//------------------------------------------------------------
+#include <iostream>
+#include <forward_list>
+#include <list>
+#include <deque>
+#include <vector>
+#include <iterator>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 함수 f() 반복자를 인자로 받아 어떤 종류의 반복자인지 화면 출력한다.
+
+// 전달된 인자가 원하는 타입인지 판단하는 - type_traits 
+template <class 반복자>
+void f(반복자 iter)
+{
+	// 반복자가 진짜 반복자?
+	cout << typeid(반복자::iterator_category).name() << endl;
+	cout << typeid(반복자::iterator_concept).name() << endl;
+}
+
+
+
+//-------
+int main()
+//-------
+{
+	f(vector<int>::iterator{});	//contiguous이지만 randomaccess로 나온다
+
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 1:56:58
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator)
+// - 포인터를 추상화(=일반화) 한 것이 반복자다
+// - Iterators are a generalization of pointers
+// 6가지 종류(category)로 나뉜다.
+// - 입력/출력/전진(전방향)/양방향(전후진)/랜덤억세스/컨티구어스 반복자
+// 기초동작: *, ++, =
+//------------------------------------------------------------
+#include <iostream>
+#include <forward_list>
+#include <list>
+#include <deque>
+#include <vector>
+#include <iterator>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 함수 f() 반복자를 인자로 받아 어떤 종류의 반복자인지 화면 출력한다.
+
+// 전달된 인자가 원하는 타입인지 판단하는 - type_traits 
+template <class 반복자>
+void f(반복자 iter)
+{
+	// 반복자가 진짜 반복자?
+	cout << typeid(반복자::iterator_category).name() << endl;
+	cout << typeid(반복자::iterator_concept).name() << endl;
+}
+
+
+
+//-------
+int main()
+//-------
+{
+	f(vector<int>::iterator{});	//contiguous이지만 randomaccess로 나온다 -> concept으로 물으면 contiguous로 나오게 된다.
+
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 1:57:34
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator)
+// - 포인터를 추상화(=일반화) 한 것이 반복자다
+// - Iterators are a generalization of pointers
+// 6가지 종류(category)로 나뉜다.
+// - 입력/출력/전진(전방향)/양방향(전후진)/랜덤억세스/컨티구어스 반복자
+// 기초동작: *, ++, =
+//------------------------------------------------------------
+#include <iostream>
+#include <forward_list>
+#include <list>
+#include <deque>
+#include <vector>
+#include <iterator>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 함수 f() 반복자를 인자로 받아 어떤 종류의 반복자인지 화면 출력한다.
+
+// 전달된 인자가 원하는 타입인지 판단하는 - type_traits 
+template <class 반복자>
+void f(반복자 iter)
+{
+	// 반복자가 진짜 반복자?
+	cout << typeid(반복자::iterator_concept).name() << endl;
+}
+
+
+
+//-------
+int main()
+//-------
+{
+	//f(deque<int>::iterator{}); //컴파일 오류
+
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 2:01:31
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator)
+// - 포인터를 추상화(=일반화) 한 것이 반복자다
+// - Iterators are a generalization of pointers
+// 6가지 종류(category)로 나뉜다.
+// - 입력/출력/전진(전방향)/양방향(전후진)/랜덤억세스/컨티구어스 반복자
+// 기초동작: *, ++, =
+//------------------------------------------------------------
+#include <iostream>
+#include <forward_list>
+#include <list>
+#include <deque>
+#include <vector>
+#include <iterator>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 함수 f() 반복자를 인자로 받아 어떤 종류의 반복자인지 화면 출력한다.
+
+// 전달된 인자가 원하는 타입인지 판단하는 - type_traits 
+template <class 반복자>
+void f(반복자 iter)
+{
+	cout << typeid(반복자::iterator_category).name() << endl;
+	//cout << typeid(반복자::iterator_concept).name() << endl;
+}
+
+
+
+//-------
+int main()
+//-------
+{
+	int a[10]{ 1,3,5,7,9,2,4,6,8,10 };
+
+	sort(a, a + 10);
+
+	for (int n : a)
+	{
+		cout << n << ' ';
+	}
+	cout << endl;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 2:11:19
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator)
+// - 포인터를 추상화(=일반화) 한 것이 반복자다
+// - Iterators are a generalization of pointers
+// 6가지 종류(category)로 나뉜다.
+// - 입력/출력/전진(전방향)/양방향(전후진)/랜덤억세스/컨티구어스 반복자
+// 기초동작: *, ++, =
+//------------------------------------------------------------
+#include <iostream>
+#include <forward_list>
+#include <list>
+#include <deque>
+#include <vector>
+#include <iterator>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 함수 f() 반복자를 인자로 받아 어떤 종류의 반복자인지 화면 출력한다.
+
+// 전달된 인자가 원하는 타입인지 판단하는 - type_traits 
+template <class 반복자>
+void f(반복자 iter)
+{
+	//등록기관에 반복자 등록
+	cout << typeid(iterator_traits<반복자>::iterator_category).name() << endl;
+}
+
+
+
+//-------
+int main()
+//-------
+{
+	int* p;
+	f(p);
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 2:13:13
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator)
+// - 포인터를 추상화(=일반화) 한 것이 반복자다
+// - Iterators are a generalization of pointers
+// 6가지 종류(category)로 나뉜다.
+// - 입력/출력/전진(전방향)/양방향(전후진)/랜덤억세스/컨티구어스 반복자
+// 기초동작: *, ++, =
+//------------------------------------------------------------
+#include <iostream>
+#include <forward_list>
+#include <list>
+#include <deque>
+#include <vector>
+#include <iterator>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// [문제] 함수 f() 반복자를 인자로 받아 어떤 종류의 반복자인지 화면 출력한다.
+
+// 전달된 인자가 원하는 타입인지 판단하는 - type_traits 
+template <class 반복자>
+void f(반복자 iter)
+{
+	//등록기관에 반복자 등록
+	cout << typeid(iterator_traits<반복자>::iterator_category).name() << endl;
+}
+
+
+
+//-------
+int main()
+//-------
+{
+	int* p;
+	f(p);	//정보가 없는 것에서 정보를 끄집어 낸다.
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 2:39:40
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator) - 포인터를 추상화(=일반화) 한 것이 반복자다
+// String을 표준 컨테이너로 -> 반복자를 제공해줘야 
+//		begin(), end()
+//------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	String s{ "13579246810" };
+
+	auto p = s.begin();
+	for (auto p = s.begin(); p != s.end(); ++p)
+	{
+		cout << *p << ' ';
+	}
+	cout << endl;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 2:40:33
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator) - 포인터를 추상화(=일반화) 한 것이 반복자다
+// String을 표준 컨테이너로 -> 반복자를 제공해줘야 
+//		begin(), end()
+//------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	String s{ "13579246810" };
+
+	for (char c : s)
+	{
+		cout << c << ' ';
+	}
+	cout << endl;
+
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 2:41:22
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator) - 포인터를 추상화(=일반화) 한 것이 반복자다
+// String을 표준 컨테이너로 -> 반복자를 제공해줘야 
+//		begin(), end()
+//------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	String s{ "13579246810" };
+
+	for (char c : s)	// begin end를 제공하기위해 사용가능
+	{
+		cout << c << ' ';
+	}
+	cout << endl;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 2:48:14
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator) - 포인터를 추상화(=일반화) 한 것이 반복자다
+// String을 표준 컨테이너로 -> 반복자를 제공해줘야 
+//		begin(), end()
+//------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	String s{ "STL iterators" };
+
+	// [문제] s를 역순으로 출력하라
+	for (auto p = s.end(); p != s.begin(); --p)
+	{
+		cout << *(p - 1) << ' ';
+	}
+	cout << endl;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 2:50:39
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator) - 포인터를 추상화(=일반화) 한 것이 반복자다
+// String을 표준 컨테이너로 -> 반복자를 제공해줘야 
+//		begin(), end()
+//------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	String s{ "STL iterators" };
+
+	// [문제] s를 역순으로 출력하라
+	reverse(s.begin(), s.end());
+	for (char c : s)
+	{
+		cout << c << ' ';
+	}
+	cout << endl;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 2:54:02
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator) - 포인터를 추상화(=일반화) 한 것이 반복자다
+// String을 표준 컨테이너로 -> 반복자를 제공해줘야 
+//		begin(), end()
+//------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <span>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	String s{ "STL iterators" };
+
+	// [문제] s를 역순으로 출력하라
+	span<char> ss = s;
+
+	for (auto p = ss.rbegin(); p != ss.rend(); ++p)
+	{
+		cout << *p << ' ';
+	}
+	cout << endl;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-04 목요일 오후 3:17:07
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 4 목56								(10주 1일)
+//------------------------------------------------------------
+// 반복자(iterator) - 포인터를 추상화(=일반화) 한 것이 반복자다
+// String을 표준 컨테이너로 -> 반복자를 제공해줘야 
+//		begin(), end()
+//------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <span>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	String s{ "STL iterators" };
+
+	// [문제] s를 역순으로 출력하라
+	// 다음 문장이 그대로 실행되어야 한다.
+	// p가 클래스 객체일때만 가능
+
+	for (auto p = s.rbegin(); p != s.rend(); ++p)
+	{
+		cout << *p << ' ';
+	}
+	cout << endl;
+
+	save("소스.cpp");
+}

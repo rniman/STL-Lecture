@@ -140,6 +140,30 @@ std::istream& operator>>(std::istream& is, String& s)
 	return is;
 }
 
+// 표준 컨테이너가 되기위하여 추가한 함수들
+// 2023. 5. 4일 추가
+char* String::begin()
+{
+	return p;
+}
+
+char* String::end()
+{
+	return (p + len);
+}
+
+// 2023. 5. 4일 추가
+String_reverse_iterator String::rbegin()
+{
+	return String_reverse_iterator{ p + len };
+}
+
+String_reverse_iterator String::rend()
+{
+	return String_reverse_iterator{ p };
+}
+
+
 // 그 외 멤버함수들
 void String::print(const std::string& s) const
 {
