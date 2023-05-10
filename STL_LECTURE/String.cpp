@@ -141,15 +141,15 @@ std::istream& operator>>(std::istream& is, String& s)
 }
 
 // 표준 컨테이너가 되기위하여 추가한 함수들
-// 2023. 5. 4일 추가
-char* String::begin()
+// 2023. 5. 8일 String_iterator를 return 하도록 변경
+String_iterator String::begin()
 {
-	return p;
+	return String_iterator{ p };
 }
 
-char* String::end()
+String_iterator String::end()
 {
-	return (p + len);
+	return String_iterator{ p + len };
 }
 
 // 2023. 5. 4일 추가

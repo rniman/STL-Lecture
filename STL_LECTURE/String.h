@@ -5,6 +5,66 @@
 //-------------------------------------------------------------------------------------------------------------------
 #pragma once
 
+// 2023. 5. 8
+// String이 제공하는 반복자
+class String_iterator
+{
+public:
+	using iterator_concept = std::contiguous_iterator_tag;
+
+	using iterator_category = std::random_access_iterator_tag;
+	using value_type = char;
+	using difference_type = long long;
+	using pointer = char*;
+	using reference = char&;
+
+private:
+	char* p;
+
+public:
+	String_iterator() = default;
+	String_iterator(char* p) :p{ p } {}
+
+	reference operator*() const
+	{
+		return *p;
+	}
+
+	String_iterator& operator++()
+	{
+		++p;
+		return *this;
+	}
+
+	// sort 하려면 이 연산자들 코딩해야~
+	difference_type operator-(const String_iterator& rhs) const
+	{
+		return p - rhs.p;
+	}
+
+	String_iterator& operator--()
+	{
+		--p;
+		return *this;
+	}
+
+	String_iterator& operator+(difference_type diff)
+	{
+		p += diff;
+		return *this;
+	}
+
+	String_iterator& operator-(difference_type diff)
+	{
+		p -= diff;
+		return *this;
+	}
+
+	//관계연산자(relational operators) -> 6가지 < <= > >= == != -> 한번에 만들 우주선 연산자 사용
+	//space-ship(정식명칭:three-way comparaotr) operator로 자동화할 수 있다.
+	auto operator<=>(const String_iterator& rhs) const = default;	//멤버가 하나이기 때문에 쉽게 사용가능
+};
+
 
 // 2023. 5. 4
 // String이 제공하는 역방향 반복자
@@ -25,7 +85,7 @@ public:
 		return *this;
 	}
 
-	char operator*() const 
+	char operator*() const
 	{
 		return *(p - 1);
 	}
@@ -66,9 +126,9 @@ public:
 	friend std::istream& operator>>(std::istream& os, String& s);
 
 	// 표준 컨테이너가 되기위하여 추가한 함수들
-	// 2023. 5. 4일 추가
-	char* begin();
-	char* end();
+	// 2023. 5. 8일 String_iterator를 return 하도록 변경
+	String_iterator begin();
+	String_iterator end();
 
 	// 2023. 5. 4일 추가
 	String_reverse_iterator rbegin();

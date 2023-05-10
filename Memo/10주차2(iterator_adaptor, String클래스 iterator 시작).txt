@@ -1,0 +1,269 @@
+==================================================
+소스.cpp , 저장시간: 2023-05-08 월요일 오후 2:02:11
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 8 월56								(10주 2일)
+//------------------------------------------------------------
+// 반복자(iterator) - 포인터를 추상화(=일반화) 한 것이 반복자다
+// String을 표준 컨테이너로 -> 반복자를 제공해줘야 
+//		begin(), end()
+//		rbegin(), rend() -> 반드시 class로 구현해야만 한다
+//		반복자 adapter:반복자처럼 행동하는 객체
+//------------------------------------------------------------
+#include <iostream>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	String s{ "STL iterators" };
+
+	// String이 제공하는 반복자의 종류는?
+	
+	for (char c : s)
+	{
+		cout << c << ' ';
+	}
+	cout << endl;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-08 월요일 오후 2:02:51
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 8 월56								(10주 2일)
+//------------------------------------------------------------
+// 반복자(iterator) - 포인터를 추상화(=일반화) 한 것이 반복자다
+// String을 표준 컨테이너로 -> 반복자를 제공해줘야 
+//		begin(), end()
+//		rbegin(), rend() -> 반드시 class로 구현해야만 한다
+//		반복자 adapter:반복자처럼 행동하는 객체
+//------------------------------------------------------------
+#include <iostream>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	String s{ "STL iterators" };
+
+	// String이 제공하는 반복자의 종류는?
+	
+	for (char& c : s)
+	{
+		c = toupper(c);
+		cout << c << ' ';
+	}
+	cout << endl;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-08 월요일 오후 2:15:26
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 8 월56								(10주 2일)
+//------------------------------------------------------------
+// 반복자(iterator) - 포인터를 추상화(=일반화) 한 것이 반복자다
+// String을 표준 컨테이너로 -> 반복자를 제공해줘야 
+//		begin(), end()
+//		rbegin(), rend() -> 반드시 class로 구현해야만 한다
+//		반복자 adapter:반복자처럼 행동하는 객체
+//------------------------------------------------------------
+#include <iostream>
+#include <iterator>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	String s{ "STL iterators" };
+
+	//  표준 이터레이터는 다음이 정의되어야한다.
+	//	difference_type	Iter::difference_type
+	//	value_type	Iter::value_type
+	//	pointer	Iter::pointer
+	//	reference	Iter::reference
+	//	iterator_category	Iter::iterator_category
+
+	// String이 제공하는 반복자의 종류는?
+	cout << typeid(String_iterator::iterator_category).name() << endl;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-08 월요일 오후 2:18:10
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 8 월56								(10주 2일)
+//------------------------------------------------------------
+// 반복자(iterator) - 포인터를 추상화(=일반화) 한 것이 반복자다
+// String을 표준 컨테이너로 -> 반복자를 제공해줘야 
+//		begin(), end()
+//		rbegin(), rend() -> 반드시 class로 구현해야만 한다
+//		반복자 adapter:반복자처럼 행동하는 객체
+//------------------------------------------------------------
+#include <iostream>
+#include <iterator>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+
+template<class Iter>
+void f(Iter b, Iter e)
+{
+	if (typeid(Iter::iterator_category) == typeid(random_access_iterator_tag))
+	{
+		cout << "랜덤억세스 반복자" << endl;
+	}
+	else
+	{
+		cout << "아니다" << endl;
+	}
+}
+
+//-------
+int main()
+//-------
+{
+	String s{ "STL iterators" };
+
+	f(s.begin(), s.end());
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-08 월요일 오후 2:33:00
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 8 월56								(10주 2일)
+//------------------------------------------------------------
+// 반복자(iterator) - 포인터를 추상화(=일반화) 한 것이 반복자다
+// String을 표준 컨테이너로 -> 반복자를 제공해줘야 
+//		begin(), end()
+//		rbegin(), rend() -> 반드시 class로 구현해야만 한다
+//		반복자 adapter:반복자처럼 행동하는 객체
+//------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	string s{ "The quick brown fox jumps over the lazy dog" };
+
+	sort(s.begin(), s.end());
+
+	cout << s << endl;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-08 월요일 오후 2:53:16
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 8 월56								(10주 2일)
+//------------------------------------------------------------
+// 반복자(iterator) - 포인터를 추상화(=일반화) 한 것이 반복자다
+// String을 표준 컨테이너로 -> 반복자를 제공해줘야 
+//		begin(), end()
+//		rbegin(), rend() -> 반드시 class로 구현해야만 한다
+//		반복자 adapter:반복자처럼 행동하는 객체
+//------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	String s{ "The quick brown fox jumps over the lazy dog" };
+
+	sort(s.begin(), s.end());
+
+	cout << s << endl;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-10 수요일 오후 7:39:37
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 8 월56								(10주 2일)
+//------------------------------------------------------------
+// 반복자(iterator) - 포인터를 추상화(=일반화) 한 것이 반복자다
+// String을 표준 컨테이너로 -> 반복자를 제공해줘야 
+//		begin(), end()
+//		rbegin(), rend() -> 반드시 class로 구현해야만 한다
+//		반복자 adapter:반복자처럼 행동하는 객체
+//------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	// 두개의 결과가 다른 이유는?
+
+	String s{ "The quick brown fox jumps over the lazy dog" };
+	string str{ "The quick brown fox jumps over the lazy dog" };
+
+	sort(s.begin(), s.end());
+	sort(str.begin(), str.end());
+
+	cout << s << endl;
+	cout << str << endl;
+
+	save("소스.cpp");
+}

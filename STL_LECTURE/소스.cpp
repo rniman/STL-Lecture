@@ -1,14 +1,15 @@
 //------------------------------------------------------------
-// 2023. 5. 4 목56								(10주 1일)
+// 2023. 5. 8 월56								(10주 2일)
 //------------------------------------------------------------
 // 반복자(iterator) - 포인터를 추상화(=일반화) 한 것이 반복자다
 // String을 표준 컨테이너로 -> 반복자를 제공해줘야 
 //		begin(), end()
+//		rbegin(), rend() -> 반드시 class로 구현해야만 한다
+//		반복자 adapter:반복자처럼 행동하는 객체
 //------------------------------------------------------------
 #include <iostream>
-#include <vector>
+#include <string>
 #include <algorithm>
-#include <span>
 #include "save.h"
 #include "String.h"
 
@@ -19,17 +20,14 @@ extern bool 관찰;
 int main()
 //-------
 {
-	String s{ "STL iterators" };
+	String s{ "The quick brown fox jumps over the lazy dog" };
+	string str{ "The quick brown fox jumps over the lazy dog" };
 
-	// [문제] s를 역순으로 출력하라
-	// 다음 문장이 그대로 실행되어야 한다.
-	// p가 클래스 객체일때만 가능 
+	sort(s.begin(), s.end());
+	sort(str.begin(), str.end());
 
-	for (auto p = s.rbegin(); p != s.rend(); ++p) // -> p는 반복자 흉내를 내는 반복자 어뎁터
-	{
-		cout << *p << ' ';
-	}
-	cout << endl;
+	cout << s << endl;
+	cout << str << endl;
 
 	save("소스.cpp");
 }
