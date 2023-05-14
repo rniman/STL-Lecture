@@ -48,16 +48,14 @@ public:
 		return *this;
 	}
 
-	String_iterator& operator+(difference_type diff)
+	String_iterator operator+(difference_type diff)
 	{
-		p += diff;
-		return *this;
+		return p + diff;
 	}
 
-	String_iterator& operator-(difference_type diff)
+	String_iterator operator-(difference_type diff)
 	{
-		p -= diff;
-		return *this;
+		return p - diff;
 	}
 
 	//관계연산자(relational operators) -> 6가지 < <= > >= == != -> 한번에 만들 우주선 연산자 사용
@@ -133,6 +131,11 @@ public:
 	// 2023. 5. 4일 추가
 	String_reverse_iterator rbegin();
 	String_reverse_iterator rend();
+
+	// 2023. 5. 11 < 추가
+	// String이 set의 원소가 되려면 < 연산자를 정의해야 한다
+	// < 연산자는 정렬하기 위해 필요한 기본연산자
+	bool operator<(const String& rhs) const;
 
 	// 그 외 멤버함수들
 	void print(const std::string& s) const;

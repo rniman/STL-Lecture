@@ -163,6 +163,13 @@ String_reverse_iterator String::rend()
 	return String_reverse_iterator{ p };
 }
 
+// 2023. 5. 11 < 추가
+// String이 set의 원소가 되려면 < 연산자를 정의해야 한다
+// < 연산자는 정렬하기 위해 필요한 기본연산자
+bool String::operator<(const String& rhs) const
+{
+	return len < rhs.len;
+}
 
 // 그 외 멤버함수들
 void String::print(const std::string& s) const
