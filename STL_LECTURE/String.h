@@ -118,6 +118,7 @@ public:
 	String operator+(const String& rhs);
 	// 2023. 4. 13 == 추가
 	bool operator==(const String& rhs);
+	bool operator==(const String& rhs) const;
 
 	friend std::ostream& operator<<(std::ostream& os, const String& s);
 	// 2023. 4. 3 입력연산자 오버로딩
@@ -127,6 +128,10 @@ public:
 	// 2023. 5. 8일 String_iterator를 return 하도록 변경
 	String_iterator begin();
 	String_iterator end();
+
+	// 2023. 5. 15일 추가
+	String_iterator begin() const;
+	String_iterator end() const;
 
 	// 2023. 5. 4일 추가
 	String_reverse_iterator rbegin();

@@ -119,6 +119,11 @@ bool String::operator==(const String& rhs)
 	//return getString() == rhs.getString();
 }
 
+bool String::operator==(const String& rhs) const
+{
+	return std::equal(p, p + len, rhs.p, rhs.p + rhs.len);
+}
+
 std::ostream& operator<<(std::ostream& os, const String& s)
 {
 	for (int i = 0; i < s.len; ++i)
@@ -152,6 +157,17 @@ String_iterator String::end()
 	return String_iterator{ p + len };
 }
 
+// 2023. 5. 15일 추가
+String_iterator String::begin() const
+{
+	return String_iterator{ p };
+}
+
+String_iterator String::end() const
+{
+	return String_iterator{ p + len };
+}
+
 // 2023. 5. 4일 추가
 String_reverse_iterator String::rbegin()
 {
@@ -168,7 +184,7 @@ String_reverse_iterator String::rend()
 // < 연산자는 정렬하기 위해 필요한 기본연산자
 bool String::operator<(const String& rhs) const
 {
-	return len < rhs.len;
+	return getString() < rhs.getString();
 }
 
 // 그 외 멤버함수들

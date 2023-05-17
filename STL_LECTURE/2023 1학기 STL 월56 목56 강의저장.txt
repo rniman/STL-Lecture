@@ -1,0 +1,521 @@
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-15 월요일 오후 1:50:13
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 15 월56								(11주 2일)
+//------------------------------------------------------------
+// Associative 컨테이너 
+// set/map - 원소의 같음을 equivalence(동등)로 평가
+//------------------------------------------------------------
+#include <iostream>
+#include <set>
+#include <fstream>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	// "소스.cpp"를 s에 저장
+
+	ifstream in{ "소스.cpp" };
+
+	//set은 길이기준으로 정렬한다고 치면 길이마다 하나를 저장한다
+	set<String> s{ istream_iterator<String>{in},{} };
+
+	for (const String& s : s)
+		cout << s << endl;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-15 월요일 오후 1:50:25
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 15 월56								(11주 2일)
+//------------------------------------------------------------
+// Associative 컨테이너 
+// set/map - 원소의 같음을 equivalence(동등)로 평가
+// 동등성/상등성
+//------------------------------------------------------------
+#include <iostream>
+#include <set>
+#include <fstream>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	// "소스.cpp"를 s에 저장
+
+	ifstream in{ "소스.cpp" };
+
+	//set은 길이기준으로 정렬한다고 치면 길이마다 하나를 저장한다
+	set<String> s{ istream_iterator<String>{in},{} };
+
+	for (const String& s : s)
+		cout << s << endl;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-15 월요일 오후 1:50:52
+==================================================
+//------------------------------------------------------------
+// 2023. 5. 15 월56								(11주 2일)
+//------------------------------------------------------------
+// Associative 컨테이너 
+// set/map - 원소의 같음을 equivalence(동등)로 평가
+// 동등성/상등성
+//------------------------------------------------------------
+#include <iostream>
+#include <set>
+#include <fstream>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	// "소스.cpp"를 s에 저장
+
+	ifstream in{ "소스.cpp" };
+
+	//set은 길이기준으로 정렬한다고 치면 길이마다 하나를 저장한다
+	set<String, less<String>> s{ istream_iterator<String>{in},{} };
+
+	for (const String& s : s)
+		cout << s << endl;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-15 월요일 오후 2:01:12
+==================================================
+//------------------------------------------------------------
+// 2023. 5.15, 월56                        (10주 2일)
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// set에 정렬기준을 알려주는 방법
+// 1. String의 멤버로 operator <를 정의한다. - 길이순
+// 2. Struct less를 특수화한다 - 사전식
+// 3. 호출가능객체를 직접 전달 - 영문자먼저
+//------------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+#include <algorithm>
+#include<set>   
+#include<fstream>
+using namespace std;
+extern bool 관찰;
+
+template<>
+struct less<String>
+{
+
+    bool operator()(const String& a, const String& b) const {
+        return a.getString() < b.getString();
+    }
+
+};
+
+//-------
+int main()
+//-------
+{
+
+    //"소스.cpp"를 s에 담아보아라.
+    ifstream in("소스.cpp");
+    multiset<String> s{ istream_iterator<String>{in},{} };
+
+    for (const String& c : s) {
+        cout << c << endl;
+    }
+
+    save("소스.cpp");
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-05-15 월요일 오후 2:05:52
+==================================================
+//------------------------------------------------------------
+// 2023. 5.15, 월56                        (10주 2일)
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// set에 정렬기준을 알려주는 방법
+// 1. String의 멤버로 operator <를 정의한다. - 길이순
+// 2. Struct less를 특수화한다 - 사전식
+// 3. 호출가능객체를 직접 전달 - 영문자먼저
+//------------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+#include<set>   
+#include<fstream>
+using namespace std;
+extern bool 관찰;
+
+struct 영문자우선
+{
+    //영문자우선
+    bool operator()(const String& a, const String& b) const {
+        // 영영, 영X, X영, XX
+        if(!isalpha(*(a.begin())))
+            if(isalpha(*(b.begin())))
+                return false;
+        return true;
+    }
+};
+
+//-------
+int main()
+//-------
+{
+
+    //"소스.cpp"를 s에 담아보아라.
+    ifstream in("소스.cpp");
+    multiset<String, 영문자우선> s{ istream_iterator<String>{in},{} };
+
+    for (const String& c : s) {
+        cout << c << endl;
+    }
+
+    save("소스.cpp");
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-05-15 월요일 오후 2:12:57
+==================================================
+//------------------------------------------------------------
+// 2023. 5.15, 월56                        (10주 2일)
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// set에 정렬기준을 알려주는 방법
+// 1. String의 멤버로 operator <를 정의한다. - 길이순
+// 2. Struct less를 특수화한다 - 사전식
+// 3. 호출가능객체를 직접 전달 - 영문자먼저
+//------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+#include<set>   
+#include<fstream>
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+
+    //"소스.cpp"를 s에 담아보아라.
+    ifstream in("이상한 나라의 앨리스.txt");
+
+    if (!in)
+    {
+        cout << "파일 읽기 실패" << endl;
+        return 0;
+    }
+
+    set<String> s{ istream_iterator<String>{in}, {} };
+
+    for (const String& str : s)
+        cout << str << endl;
+
+
+    save("소스.cpp");
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-05-15 월요일 오후 2:14:03
+==================================================
+//------------------------------------------------------------
+// 2023. 5.15, 월56                        (10주 2일)
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// set에 정렬기준을 알려주는 방법
+// 1. String의 멤버로 operator <를 정의한다. - 길이순
+// 2. Struct less를 특수화한다 - 사전식
+// 3. 호출가능객체를 직접 전달 - 영문자먼저
+//------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+#include<set>   
+#include<fstream>
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+
+    //"소스.cpp"를 s에 담아보아라.
+    ifstream in("이상한 나라의 앨리스.txt");
+
+    if (!in)
+    {
+        cout << "파일 읽기 실패" << endl;
+        return 0;
+    }
+
+    multiset<String> s{ istream_iterator<String>{in}, {} };
+
+    for (const String& str : s)
+        cout << str << endl;
+
+    cout << "단어 수 - " << s.size() << endl;
+
+    save("소스.cpp");
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-05-15 월요일 오후 2:52:54
+==================================================
+//------------------------------------------------------------
+// 2023. 5.15, 월56                        (10주 2일)
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// set에 정렬기준을 알려주는 방법
+// 1. String의 멤버로 operator <를 정의한다. - 길이순
+// 2. Struct less를 특수화한다 - 사전식
+// 3. 호출가능객체를 직접 전달 - 영문자먼저
+//------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+#include<set>   
+#include<fstream>
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+
+
+    // [문제] 사용자가 입력한 단어의 위치를 출력하라
+    while (true)
+    {
+        cout << "문자 입력:";
+        String word;
+        cin >> word;
+
+        auto p =s.find(word);
+        if (p != s.end())
+        {
+            cout << distance(s.begin(), p) + 1 << "번째에 있다." << endl;
+        }
+        else
+        {
+            cout << "찾는 단어가 없다" << endl;
+        }
+    }
+
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-05-15 월요일 오후 2:52:54
+==================================================
+//------------------------------------------------------------
+// 2023. 5.15, 월56                        (10주 2일)
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// set에 정렬기준을 알려주는 방법
+// 1. String의 멤버로 operator <를 정의한다. - 길이순
+// 2. Struct less를 특수화한다 - 사전식
+// 3. 호출가능객체를 직접 전달 - 영문자먼저
+//------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+#include<set>   
+#include<fstream>
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+
+    //"소스.cpp"를 s에 담아보아라.
+    ifstream in("이상한 나라의 앨리스.txt");
+
+    set<String> s{ istream_iterator<String>{in}, {} };
+
+    // [문제] 사용자가 입력한 문자가 포함된 단어를 모두 출력하라
+    
+    save("소스.cpp");
+
+
+    while (true)
+    {
+        cout << "문자 입력:";
+        char c;
+        cin >> c;
+
+        for (const String& str : s)
+        {
+            auto p = find(str.begin(), str.end(), c);
+            if (p != str.end())
+            {
+                cout << str << endl;
+                continue;
+            }
+        }
+
+    }
+
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-05-15 월요일 오후 3:06:26
+==================================================
+//------------------------------------------------------------
+// 2023. 5.15, 월56                        (10주 2일)
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// set에 정렬기준을 알려주는 방법
+// 1. String의 멤버로 operator <를 정의한다. - 길이순
+// 2. Struct less를 특수화한다 - 사전식
+// 3. 호출가능객체를 직접 전달 - 영문자먼저
+//------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+#include <set>   
+#include <fstream>
+#include <string>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+
+	//"소스.cpp"를 s에 담아보아라.
+	ifstream in("이상한 나라의 앨리스.txt");
+
+	set<String> s{ istream_iterator<String>{in}, {} };
+
+	save("소스.cpp");
+
+	// [문제] 사용자가 입력한 문자가 포함된 단어를 모두 출력하라  
+
+	while (true)
+	{
+		cout << "문자 입력:";
+		char c;
+		cin >> c;
+
+		for (const String& str : s)
+		{
+			std::string temp = str.getString();
+			if (temp.contains(c))
+				cout << str << '\t';
+		}
+	}
+
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-05-15 월요일 오후 3:12:02
+==================================================
+//------------------------------------------------------------
+// 2023. 5.15, 월56                        (10주 2일)
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// set에 정렬기준을 알려주는 방법
+// 1. String의 멤버로 operator <를 정의한다. - 길이순
+// 2. Struct less를 특수화한다 - 사전식
+// 3. 호출가능객체를 직접 전달 - 영문자먼저
+//------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+#include <set>   
+#include <fstream>
+#include <string>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+
+	//"소스.cpp"를 s에 담아보아라.
+	ifstream in("이상한 나라의 앨리스.txt");
+
+	set<String> s{ istream_iterator<String>{in}, {} };
+
+	save("소스.cpp");
+
+	// [문제] 사용자가 입력한 부분단어가 포함된 단어를 모두 출력하라  
+
+	while (true)
+	{
+		cout << "찾을 단어를 입력:";
+		String word;
+		cin >> word;
+
+		for (const String& str : s)
+		{
+
+			std::string temp = str.getString();
+			if (temp.contains(word.getString()))
+			{
+				cout << str << '\t';
+				continue;
+			}
+		}
+		cout << endl;
+	}
+
+}
