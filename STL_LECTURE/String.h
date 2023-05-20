@@ -48,12 +48,13 @@ public:
 		return *this;
 	}
 
-	String_iterator operator+(difference_type diff)
+	String_iterator operator+(difference_type diff) const
 	{
 		return p + diff;
 	}
 
-	String_iterator operator-(difference_type diff)
+	// 2023. 5. 18 search()에서 const 보증을 요구함
+	String_iterator operator-(difference_type diff) const
 	{
 		return p - diff;
 	}

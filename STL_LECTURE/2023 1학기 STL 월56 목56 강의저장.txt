@@ -1,0 +1,723 @@
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-18 목요일 오후 1:54:57
+==================================================
+//------------------------------------------------------------
+// 2023. 5.18, 목56                        (12주 1일)
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// set에 정렬기준을 알려주는 방법
+// 1. String의 멤버로 operator <를 정의한다. - 길이순
+// 2. Struct less를 특수화한다 - 사전식
+// 3. 호출가능객체를 직접 전달 - 영문자먼저
+//------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+#include <set>   
+#include <fstream>
+#include <string>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+
+	//"소스.cpp"를 s에 담아보아라.
+	ifstream in("이상한 나라의 앨리스.txt");
+
+	set<String> s{ istream_iterator<String>{in}, {} };
+	save("소스.cpp");
+
+	// [문제] 사용자가 입력한 부분단어가 포함된 단어를 모두 출력하라  
+
+	while (true)
+	{
+		cout << "찾을 단어를 입력:";
+		String word;
+		cin >> word;
+
+		// 알고리즘 함수 search가 이런 일을 한다.
+		for (const String& str : s)
+		{
+			auto p = search(str.begin(), str.end(), word.begin(), word.end());
+			if (p != str.end())
+			{
+				cout << str << " ";
+			}
+		}
+		cout << endl;
+	}
+
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-05-18 목요일 오후 2:06:45
+==================================================
+//------------------------------------------------------------
+// 2023. 5.18, 목56                        (12주 1일)
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// set에 정렬기준을 알려주는 방법
+// 1. String의 멤버로 operator <를 정의한다. - 길이순
+// 2. Struct less를 특수화한다 - 사전식
+// 3. 호출가능객체를 직접 전달 - 영문자먼저
+//------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+#include <set>   
+#include <fstream>
+#include <string>
+#include <ranges>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+
+	//"소스.cpp"를 s에 담아보아라.
+	ifstream in("이상한 나라의 앨리스.txt");
+
+	multiset<String> s{ istream_iterator<String>{in}, {} };
+	save("소스.cpp");
+
+	for (const String& str : s | views::drop(10000) | views::take(100))
+		cout << str << endl;
+
+
+	// [문제] 사용자가 입력한 단어가 모두 몇 개인지 출력하라.
+	// 없으면 없다고 출력하라
+
+	while (true)
+	{
+		cout << "찾을 단어를 입력:";
+		String word;
+		cin >> word;
+
+		size_t cnt = s.count(word);
+		if (cnt)
+			cout << cnt << endl;
+		else
+			cout << "없다" << endl;
+
+
+		cout << endl;
+	}
+
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-18 목요일 오후 2:17:55
+==================================================
+//------------------------------------------------------------
+// 2023. 5.18, 목56                        (12주 1일)
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// set에 정렬기준을 알려주는 방법
+// 1. String의 멤버로 operator <를 정의한다. - 길이순
+// 2. Struct less를 특수화한다 - 사전식
+// 3. 호출가능객체를 직접 전달 - 영문자먼저
+//------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+#include <vector>   
+#include <fstream>
+#include <string>
+#include <ranges>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+
+	//"소스.cpp"를 s에 담아보아라.
+	ifstream in("이상한 나라의 앨리스.txt");
+
+	vector<String> s{ istream_iterator<String>{in}, {} };
+	save("소스.cpp");
+
+	// 백터를 정렬
+	sort(s.begin(), s.end());
+
+	for (const String& str : s | views::drop(12000) | views::take(200))
+		cout << str << endl;
+
+	// [문제] 사용자가 입력한 단어가 모두 몇 개인지 출력하라.
+	// 없으면 없다고 출력하라
+	// 이 문제를 vector로 푼다면 더 빠른 결과를 얻을 수 있다
+
+	while (true)
+	{
+		cout << "찾을 단어를 입력:";
+		String word;
+		cin >> word;
+
+		//structual bound?
+		auto [상한선, 하한선] = equal_range(s.begin(), s.end(), word);
+		int cnt = 상한선 - 하한선;
+		cout << word << "의 수 - " << cnt << endl;
+
+		cout << endl;
+	}
+
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-05-18 목요일 오후 2:36:22
+==================================================
+//------------------------------------------------------------
+// 2023. 5.18, 목56                        (12주 1일)
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// set에 정렬기준을 알려주는 방법
+// 1. String의 멤버로 operator <를 정의한다. - 길이순
+// 2. Struct less를 특수화한다 - 사전식
+// 3. 호출가능객체를 직접 전달 - 영문자먼저
+//------------------------------------------------------------------
+#include <iostream>
+#include <map>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+
+	save("소스.cpp");
+	save("String.h");
+	save("String.cpp");
+
+}
+
+==================================================
+String.h , 저장시간: 2023-05-18 목요일 오후 2:36:22
+==================================================
+//-------------------------------------------------------------------------------------------------------------------
+// String.h - 표준 string과 유사한 클래스
+// 
+// 2023. 3. 30
+//-------------------------------------------------------------------------------------------------------------------
+#pragma once
+
+// 2023. 5. 8
+// String이 제공하는 반복자
+class String_iterator
+{
+public:
+	using iterator_concept = std::contiguous_iterator_tag;
+
+	using iterator_category = std::random_access_iterator_tag;
+	using value_type = char;
+	using difference_type = long long;
+	using pointer = char*;
+	using reference = char&;
+
+private:
+	char* p;
+
+public:
+	String_iterator() = default;
+	String_iterator(char* p) :p{ p } {}
+
+	reference operator*() const
+	{
+		return *p;
+	}
+
+	String_iterator& operator++()
+	{
+		++p;
+		return *this;
+	}
+
+	// sort 하려면 이 연산자들 코딩해야~
+	difference_type operator-(const String_iterator& rhs) const
+	{
+		return p - rhs.p;
+	}
+
+	String_iterator& operator--()
+	{
+		--p;
+		return *this;
+	}
+
+	String_iterator operator+(difference_type diff) const
+	{
+		return p + diff;
+	}
+
+	// 2023. 5. 18 search()에서 const 보증을 요구함
+	String_iterator operator-(difference_type diff) const
+	{
+		return p - diff;
+	}
+
+	//관계연산자(relational operators) -> 6가지 < <= > >= == != -> 한번에 만들 우주선 연산자 사용
+	//space-ship(정식명칭:three-way comparaotr) operator로 자동화할 수 있다.
+	auto operator<=>(const String_iterator& rhs) const = default;	//멤버가 하나이기 때문에 쉽게 사용가능
+};
+
+
+// 2023. 5. 4
+// String이 제공하는 역방향 반복자
+class String_reverse_iterator
+{
+	char* p;
+public:
+	String_reverse_iterator(char* p) : p{ p } {};
+
+	bool operator!=(const String_reverse_iterator& rhs) const
+	{
+		return p != rhs.p;
+	}
+
+	String_reverse_iterator& operator++()
+	{
+		--p;
+		return *this;
+	}
+
+	char operator*() const
+	{
+		return *(p - 1);
+	}
+};
+
+
+// 2023. 3. 27 String 코딩 시작
+class String
+{
+	size_t len{};				// 확보한 자원 수
+	char* p{ nullptr };			// 확보한 자원의 주소
+	size_t id = ++sid;			// 객체 id
+
+	static size_t sid;			// class의 static 변수?, 멤버 변수가 아니다
+
+public:
+	// 생성자와 소멸자
+	String();
+	String(const char* str);
+	~String();
+
+	// 복사생성자 / 복사할당연산자
+	String(const String& other);
+	String& operator=(const String& other);
+
+	// 이동생성자 / 이동할당연산자 - 2023. 3. 30 추가
+	// 이동이 안점함을 보중한다. - 2023. 4. 10 추가
+	String(String&& other) noexcept;	//&&: r-value ref
+	String& operator=(String&& other) noexcept;
+
+	// 연산자 오버로딩 함수
+	String operator+(const String& rhs);
+	// 2023. 4. 13 == 추가
+	bool operator==(const String& rhs);
+	bool operator==(const String& rhs) const;
+
+	friend std::ostream& operator<<(std::ostream& os, const String& s);
+	// 2023. 4. 3 입력연산자 오버로딩
+	friend std::istream& operator>>(std::istream& os, String& s);
+
+	// 표준 컨테이너가 되기위하여 추가한 함수들
+	// 2023. 5. 8일 String_iterator를 return 하도록 변경
+	String_iterator begin();
+	String_iterator end();
+
+	// 2023. 5. 15일 추가
+	String_iterator begin() const;
+	String_iterator end() const;
+
+	// 2023. 5. 4일 추가
+	String_reverse_iterator rbegin();
+	String_reverse_iterator rend();
+
+	// 2023. 5. 11 < 추가
+	// String이 set의 원소가 되려면 < 연산자를 정의해야 한다
+	// < 연산자는 정렬하기 위해 필요한 기본연산자
+	bool operator<(const String& rhs) const;
+
+	// 그 외 멤버함수들
+	void print(const std::string& s) const;
+
+
+	//인터페이스 함수
+	size_t size() const;
+	std::string getString() const;
+};
+
+
+==================================================
+String.cpp , 저장시간: 2023-05-18 목요일 오후 2:36:22
+==================================================
+//-------------------------------------------------------------------------------------------------------------------
+// String.cpp - 표준 string과 유사한 클래스
+// 
+// 2023. 3. 30
+//-------------------------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include "String.h"
+
+bool 관찰{ false };				// 스페셜 함수의 동작을  관찰하려면 true로 바꿀 것
+
+// 생성자와 소멸자
+String::String()
+{
+	print("디폴트 생성자");
+}
+
+String::String(const char* str)
+	: len{ strlen(str) }
+{
+	p = new char[len];
+
+	memcpy(p, str, len);	//고속 메모리 복사 - DMA
+	print("생성자(char*)");
+}
+
+String::~String()
+{
+	print("소멸자");
+	delete[] p;
+}
+
+// 복사생성자 / 복사할당연산자
+String::String(const String& other)
+	:len{ other.len }
+{
+	p = new char[len];
+	memcpy(p, other.p, len);
+
+	print("복사 생성자");
+}
+
+String& String::operator=(const String& other)
+{
+	if (this == &other)
+	{
+		return *this;
+	}
+
+	delete[] p;
+
+	len = other.len;
+	p = new char[len];
+	memcpy(p, other.p, len);
+
+	print("복사할당연산자");
+	return *this;
+}
+
+// 이동생성자 / 이동할당연산자 - 2023. 3. 30 추가
+// 이동이 안점함을 보중한다. - 2023. 4. 10 추가
+String::String(String&& other)	noexcept//&&: r-value ref
+	: len{ other.len }
+	, p{ other.p }
+{
+	// 이동되는 객체를 정리해준다
+	other.len = 0;
+	other.p = nullptr;
+
+	print("이동생성자");
+}
+
+String& String::operator=(String&& other) noexcept
+{
+	// 자신을 이동할당하면 안된다.
+	if (this == &other)
+	{
+		return *this;
+	}
+
+	// 이미 확보한 자원을 해제한다.
+	delete[] p;
+
+	// other를 이동한다.
+	len = other.len;
+	p = other.p;
+
+	other.len = 0;
+	other.p = nullptr;
+
+	print("이동할당연산자");
+	return *this;
+}
+
+// 연산자 오버로딩 함수
+String String::operator+(const String& rhs)
+{
+	String res;
+	res.len = len + rhs.len;
+	res.p = new char[res.len];
+
+	memcpy(res.p, p, len);
+	memcpy(res.p + len, rhs.p, rhs.len);
+
+	return res;
+}
+
+// 2023. 4. 13 == 추가
+bool String::operator==(const String& rhs)
+{
+	//if (len != rhs.len)
+	//{
+	//	return false;
+	//}
+
+	return std::equal(p, p + len, rhs.p, rhs.p + rhs.len);	//사이즈 비교 필요 X
+	//return std::equal(p, p + len, rhs.p);					//사이즈 비교 필요 O
+	//return getString() == rhs.getString();
+}
+
+bool String::operator==(const String& rhs) const
+{
+	return std::equal(p, p + len, rhs.p, rhs.p + rhs.len);
+}
+
+std::ostream& operator<<(std::ostream& os, const String& s)
+{
+	for (int i = 0; i < s.len; ++i)
+	{
+		os << s.p[i];
+	}
+	return os;
+}
+
+std::istream& operator>>(std::istream& is, String& s)
+{
+	std::string str;
+	is >> str;
+	s.len = str.size();
+	delete[] s.p;
+	s.p = new char[s.len];
+	memcpy(s.p, str.data(), s.len);
+
+	return is;
+}
+
+// 표준 컨테이너가 되기위하여 추가한 함수들
+// 2023. 5. 8일 String_iterator를 return 하도록 변경
+String_iterator String::begin()
+{
+	return String_iterator{ p };
+}
+
+String_iterator String::end()
+{
+	return String_iterator{ p + len };
+}
+
+// 2023. 5. 15일 추가
+String_iterator String::begin() const
+{
+	return String_iterator{ p };
+}
+
+String_iterator String::end() const
+{
+	return String_iterator{ p + len };
+}
+
+// 2023. 5. 4일 추가
+String_reverse_iterator String::rbegin()
+{
+	return String_reverse_iterator{ p + len };
+}
+
+String_reverse_iterator String::rend()
+{
+	return String_reverse_iterator{ p };
+}
+
+// 2023. 5. 11 < 추가
+// String이 set의 원소가 되려면 < 연산자를 정의해야 한다
+// < 연산자는 정렬하기 위해 필요한 기본연산자
+bool String::operator<(const String& rhs) const
+{
+	return getString() < rhs.getString();
+}
+
+// 그 외 멤버함수들
+void String::print(const std::string& s) const
+{
+	if (!관찰)
+		return;
+	std::cout << '[' << id << "] - " << s << ", 개수: " << len << ", 번지: " << (void*)p << std::endl;
+}
+
+//인터페이스 함수
+size_t String::size() const
+{
+	return len;
+}
+
+std::string String::getString() const
+{
+	return std::string(p, len);
+}
+
+size_t String::sid{ 0 };			// 이 변수는 클래스 밖에서 초기화한다
+
+==================================================
+소스.cpp , 저장시간: 2023-05-18 목요일 오후 2:48:20
+==================================================
+//------------------------------------------------------------
+// 2023. 5.18, 목56                        (12주 1일)
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// map은 pair<key, value>를 원소로 갖는다
+//-----------------------------------------------------------------
+#include <iostream>
+#include <map>
+#include <list>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	// kpop그룹과 멤버들을 map으로 관리
+	map<String, list<String>, less<String>> kpop{ {"아이브", {"안유진", "장원영", "레이"}}};
+
+	kpop.insert({ "베이비몬스터" ,{"루카", "파리타","아사"} });
+
+	//스트럭쳐드 바인드
+	for (auto [그룹이름, 멤버들] : kpop)
+	{
+		cout << 그룹이름 << " - ";
+		for (const String& 멤버 : 멤버들)
+		{
+			cout << 멤버 << " ";
+		}
+		cout << endl;
+	}
+
+	save("소스.cpp");
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-05-18 목요일 오후 2:58:53
+==================================================
+//------------------------------------------------------------
+// 2023. 5.18, 목56                        (12주 1일)
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// map은 pair<key, value>를 원소로 갖는다
+//-----------------------------------------------------------------
+#include <iostream>
+#include <map>
+#include <list>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	// kpop그룹과 멤버들을 map으로 관리
+	map<String, list<String>, less<String>> kpop{ {"아이브", {"안유진", "장원영", "레이"}} };
+
+	kpop.insert({ "베이비몬스터" ,{"루카", "파리타","아사"} });
+
+
+	list<String>& 멤버들 = kpop["아이브"];
+	멤버들.insert(멤버들.begin(), { "가을", "이서"});
+
+	//스트럭쳐드 바인드
+	for (auto [그룹이름, 멤버들] : kpop)
+	{
+		cout << 그룹이름 << " - ";
+		for (const String& 멤버 : 멤버들)
+		{
+			cout << 멤버 << " ";
+		}
+		cout << endl;
+	}
+
+	save("소스.cpp");
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-05-18 목요일 오후 3:06:17
+==================================================
+//------------------------------------------------------------
+// 2023. 5.18, 목56                        (12주 1일)
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// map은 pair<key, value>를 원소로 갖는다
+//-----------------------------------------------------------------
+#include <iostream>
+#include <map>
+#include <list>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	// kpop그룹과 멤버들을 map으로 관리
+	map<String, list<String>, less<String>> kpop{ {"아이브", {"안유진", "장원영", "레이"}} };
+
+	kpop.insert({ "베이비몬스터" ,{"루카", "파리타","아사"} });
+
+	list<String>& 멤버들 = kpop["아이브"];
+	멤버들.insert(멤버들.begin(), { "가을", "이서"});
+
+	// const인 노드 이름을 변경하는 기능 - extract(C++17)
+	auto handle = kpop.extract("아이브");
+	handle.key() = "IVE";
+	kpop.insert(move(handle));
+
+	for (auto [그룹이름, 멤버들] : kpop)
+	{
+		cout << 그룹이름 << " - ";
+		for (const String& 멤버 : 멤버들)
+		{
+			cout << 멤버 << " ";
+		}
+		cout << endl;
+	}
+
+	save("소스.cpp");
+}
