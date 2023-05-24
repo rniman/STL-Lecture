@@ -1,48 +1,32 @@
 //------------------------------------------------------------
-// 2023. 5.18, 목56                        (12주 1일)
+// 2023. 5.22, 월56                        (12주 2일)
+// 13주 2일 5. 29 월요일 - 동영상 출석대체
+// 15주 2일 6. 12 월요일 - 기말 시험
 //------------------------------------------------------------------
-// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
-// 
-// map은 pair<key, value>를 원소로 갖는다
+// 컨테이너들의 찾기 실력을 검증한다. int 천만개에서 int 만개를 찾는다
+// vector
+// set
+// unordered_set
 //-----------------------------------------------------------------
 #include <iostream>
-#include <fstream>
-#include <map>
-#include <list>
+#include <random>
+#include <array>
+#include <vector>
+#include <set>
+#include <unordered_set>
 #include "save.h"
 #include "String.h"
 
 using namespace std;
 extern bool 관찰;
 
+array<int, 1000'0000> numbers;
+array<int, 10000> toFind;
+
 //-------
 int main()
 //-------
 {
-	// 소설에서 각 문자가 사용된 횟수를 출력하라.
 
-	ifstream in{ "이상한 나라의 앨리스.txt" };
-
-	if (!in)
-		return 0;
-
-	map<char, int> cim;
-
-
-	char c;
-	while (in >> c)
-	{
-		++cim[c];
-	}
-
-	//cim['a'] -> 연관배열
-
-	// [문제] 많이 사용된 문자 순으로 출력하라
-
-	for (auto [문자, 개수] : cim)
-	{
-		cout << 문자 << " - " << 개수 << endl;
-	}
-	
-	//save("소스.cpp");
+	save("소스.cpp");
 }
