@@ -23,10 +23,22 @@ extern bool °üÂû;
 array<int, 1000'0000> numbers;
 array<int, 10000> toFind;
 
+
+template<>
+struct hash<String>
+{
+	size_t operator()(const String& str) const
+	{
+		return hash<string>()(str.getString());
+	}
+};
+
 //-------
 int main()
 //-------
 {
+	unordered_multiset<String, hash<String>> us{ "C++", "STL", "Container", "Iterator", "Algorithm"};
 
-	save("¼Ò½º.cpp");
+	auto p = us.find("Algorithm");
+	cout << *p << endl;
 }

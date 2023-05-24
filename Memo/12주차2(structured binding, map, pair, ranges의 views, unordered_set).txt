@@ -1,0 +1,582 @@
+==================================================
+소스.cpp , 저장시간: 2023-05-22 월요일 오후 1:38:53
+==================================================
+//------------------------------------------------------------
+// 2023. 5.22, 월56                        (12주 2일)
+// 13주 2일 5. 29 월요일 - 동영상 출석대체
+// 15주 2일 6. 12 월요일 - 기말 시험
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// map은 pair<key, value>를 원소로 갖는다
+//-----------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <map>
+#include <list>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	// 소설에서 각 문자가 사용된 횟수를 출력하라.
+
+	ifstream in{ "이상한 나라의 앨리스.txt" };
+
+	if (!in)
+		return 0;
+
+	map<char, int> cim;
+
+	char c;
+	while (in >> c)
+	{
+		if (isalpha(c))
+			++cim[tolower(c)];
+	}
+	
+	// cim['a'] -> 연관배열
+	// cim.operator[](key);
+	// -> &value;
+
+	// [문제] 많이 사용된 문자 순으로 출력하라
+
+
+	//스트럭쳐드 바인딩
+	for (auto [문자, 개수] : cim)
+	{
+		cout << 문자 << " - " << 개수 << endl;
+	}
+
+	
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-22 월요일 오후 1:44:50
+==================================================
+//------------------------------------------------------------
+// 2023. 5.22, 월56                        (12주 2일)
+// 13주 2일 5. 29 월요일 - 동영상 출석대체
+// 15주 2일 6. 12 월요일 - 기말 시험
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// map은 pair<key, value>를 원소로 갖는다
+//-----------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <map>
+#include <vector>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	// 소설에서 각 문자가 사용된 횟수를 출력하라.
+
+	ifstream in{ "이상한 나라의 앨리스.txt" };
+
+	if (!in)
+		return 0;
+
+	map<char, int> cim;
+
+	char c;
+	while (in >> c)
+	{
+		if (isalpha(c))
+			++cim[tolower(c)];
+	}
+
+	// [문제] 많이 사용된 문자 순으로 출력하라
+
+
+	// cim의 원소를 vector로 복사
+	vector<pair<char, int>> v{ cim.begin(), cim.end() };
+	sort(v.begin(), v.end(), [](const auto& a, const auto& b) {
+		return a.second > b.second;
+		});
+
+	
+	//map<int, char> icm;
+	//for (auto [문자, 개수] : cim)
+	//{
+	//	icm[개수] = 문자;
+	//}
+
+	//for (auto [개수, 문자] : icm)
+	//{
+	//	cout << 개수 << " - " << 문자 << endl;
+	//}
+	
+
+	//structured binding
+	for (auto [문자, 개수] : v)
+	{
+		cout << 문자 << " - " << 개수 << endl;
+	}
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-22 월요일 오후 1:55:40
+==================================================
+//------------------------------------------------------------
+// 2023. 5.22, 월56                        (12주 2일)
+// 13주 2일 5. 29 월요일 - 동영상 출석대체
+// 15주 2일 6. 12 월요일 - 기말 시험
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// map은 pair<key, value>를 원소로 갖는다
+//-----------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <map>
+#include <vector>
+#include <algorithm>
+#include <ranges>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	// [문제] 소설에서 각 단어가 사용된 횟수기준 내림차순으로 출력하라.
+
+	ifstream in{ "이상한 나라의 앨리스.txt" };
+
+	if (!in)
+		return 0;
+
+	map<String, int> Sim;
+
+	String str;
+	while (in >> str)
+	{
+		Sim[str]++;
+	}
+	
+	//문제점은? 개수가 같은 단어들이 키중복이 되어 사라진다.
+	map<int, String> iSm;
+
+	for (auto [단어, 개수] : Sim)
+	{
+		iSm[개수] = 단어;
+	}
+
+	for (auto [개수, 단어] : iSm | views::reverse)
+	{
+		cout << 단어 << " - " << 개수 << endl;
+	}
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-22 월요일 오후 1:59:18
+==================================================
+//------------------------------------------------------------
+// 2023. 5.22, 월56                        (12주 2일)
+// 13주 2일 5. 29 월요일 - 동영상 출석대체
+// 15주 2일 6. 12 월요일 - 기말 시험
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// map은 pair<key, value>를 원소로 갖는다
+//-----------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <map>
+#include <vector>
+#include <algorithm>
+#include <ranges>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	// [문제] 소설에서 각 단어가 사용된 횟수기준 내림차순으로 출력하라.
+
+	ifstream in{ "이상한 나라의 앨리스.txt" };
+
+	if (!in)
+		return 0;
+
+	map<String, int> Sim;
+
+	String str;
+	while (in >> str)
+	{
+		Sim[str]++;
+	}
+
+	multimap<int, String> iSm;
+
+	for (auto [단어, 개수] : Sim)
+	{
+		//iSm.insert(pair<int, String>{개수, 단어});
+		iSm.insert(make_pair(개수, 단어));
+	}
+	
+	//200개만 출력
+	for (auto [개수, 단어] : iSm | views::reverse | views::take(200))
+	{
+		cout << 단어 << " - " << 개수 << endl;
+	}
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-22 월요일 오후 2:14:13
+==================================================
+//------------------------------------------------------------
+// 2023. 5.22, 월56                        (12주 2일)
+// 13주 2일 5. 29 월요일 - 동영상 출석대체
+// 15주 2일 6. 12 월요일 - 기말 시험
+//------------------------------------------------------------------
+// Associative 컨테이너 - set/map - 원소의 같음을 equivalence로 평가
+// 
+// map은 pair<key, value>를 원소로 갖는다
+//-----------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <random>
+#include <map>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+default_random_engine dre;
+uniform_int_distribution uid{ 1, 99'999 };
+
+//-------
+int main()
+//-------
+{
+	//array 사용이 현명하다
+	map<int, int> iim;
+
+	for (int i = 0; i < 100'000; ++i)
+	{
+		iim[uid(dre) / 10000]++;
+	}
+
+	// [문제] 숫자를 10구간으로 나눠 개수를 세서 출력하라.
+	// [0, 9999] -
+	// [10000, 19999] -
+
+	for (auto& [구간, 개수] : iim)
+	{
+		cout << "[" << 구간 * 10000 << ", " << 구간 * 10000 + 9999 << "] - " << 개수 << endl;
+	}
+	
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-22 월요일 오후 2:47:47
+==================================================
+//------------------------------------------------------------
+// 2023. 5.22, 월56                        (12주 2일)
+// 13주 2일 5. 29 월요일 - 동영상 출석대체
+// 15주 2일 6. 12 월요일 - 기말 시험
+//------------------------------------------------------------------
+// Unordered Associative 컨테이너
+// 순서가 없다는 것의 의미
+// 메모리 구조를 이해해 본다
+// String을 원소로 담으려면? - hash 함수를 제공하면 된다.
+//-----------------------------------------------------------------
+#include <iostream>
+#include <unordered_set>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	unordered_set<int> us{ 2,4,1,3 };
+
+	for (int n : us)
+	{
+		cout << n << ' ';
+	}
+	cout << endl;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-22 월요일 오후 2:48:53
+==================================================
+//------------------------------------------------------------
+// 2023. 5.22, 월56                        (12주 2일)
+// 13주 2일 5. 29 월요일 - 동영상 출석대체
+// 15주 2일 6. 12 월요일 - 기말 시험
+//------------------------------------------------------------------
+// Unordered Associative 컨테이너
+// 순서가 없다는 것의 의미
+// 메모리 구조를 이해해 본다
+// String을 원소로 담으려면? - hash 함수를 제공하면 된다.
+//-----------------------------------------------------------------
+#include <iostream>
+#include <unordered_set>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	unordered_set<int> us{ 1,2,3,4 };
+
+	for (int n : us)
+	{
+		cout << n << ' ';
+	}
+	cout << endl;
+
+	//원소 추가
+	us.insert(10);
+
+	for (int n : us)
+	{
+		cout << n << ' ';
+	}
+	cout << endl;
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-22 월요일 오후 2:52:35
+==================================================
+//------------------------------------------------------------
+// 2023. 5.22, 월56                        (12주 2일)
+// 13주 2일 5. 29 월요일 - 동영상 출석대체
+// 15주 2일 6. 12 월요일 - 기말 시험
+//------------------------------------------------------------------
+// Unordered Associative 컨테이너
+// 순서가 없다는 것의 의미
+// 메모리 구조를 이해해 본다
+// String을 원소로 담으려면? - hash 함수를 제공하면 된다.
+//-----------------------------------------------------------------
+#include <iostream>
+#include <unordered_set>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	unordered_set<int> us{ 1, 2, 3, 4 };
+	//unordered_multiset<int> us{ 1, 2, 3, 4, 1, 1, 1 };	
+
+	for (int i = 0; i < us.bucket_count(); ++i)
+	{
+		cout << "[ " << i << " ]";
+		for (auto p = us.begin(i); p != us.end(i); ++p)
+		{
+			cout << " - " << *p;
+		}
+		cout << endl;
+	}
+
+	save("소스.cpp");
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-05-22 월요일 오후 2:57:09
+==================================================
+//------------------------------------------------------------
+// 2023. 5.22, 월56                        (12주 2일)
+// 13주 2일 5. 29 월요일 - 동영상 출석대체
+// 15주 2일 6. 12 월요일 - 기말 시험
+//------------------------------------------------------------------
+// Unordered Associative 컨테이너
+// 순서가 없다는 것의 의미
+// 메모리 구조를 이해해 본다
+// String을 원소로 담으려면? - hash 함수를 제공하면 된다.
+//-----------------------------------------------------------------
+#include <iostream>
+#include <unordered_set>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	unordered_multiset<int> us{ 1,2,3,4 };
+	save("소스.cpp");
+
+	while (true)
+	{
+		for (int i = 0; i < us.bucket_count(); ++i)
+		{
+			cout << "[ " << i << " ]";
+			for (auto p = us.begin(i); p != us.end(i); ++p)
+			{
+				cout << " - " << *p;
+			}
+			cout << endl;
+		}
+
+		cout << "값을 입력하면 원소를 추가합니다 ";
+		int num;
+		cin >> num;
+		us.insert(num);`
+	}
+	
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-22 월요일 오후 3:13:05
+==================================================
+//------------------------------------------------------------
+// 2023. 5.22, 월56                        (12주 2일)
+// 13주 2일 5. 29 월요일 - 동영상 출석대체
+// 15주 2일 6. 12 월요일 - 기말 시험
+//------------------------------------------------------------------
+// Unordered Associative 컨테이너
+// 순서가 없다는 것의 의미
+// 메모리 구조를 이해해 본다
+// String을 원소로 담으려면? - hash 함수를 제공하면 된다.
+//-----------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <unordered_set>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+template<>
+struct hash<String>
+{
+	size_t operator()(const String& str) const
+	{
+		return hash<string>()(str.getString());
+	}
+};
+
+//-------
+int main()
+//-------
+{
+	unordered_multiset<String, hash<String>> us{ "C++", "STL", "Container", "Iterator", "Algorithm"};
+	save("소스.cpp");
+	
+	while (true)
+	{
+		for (int i = 0; i < us.bucket_count(); ++i)
+		{
+			cout << "[ " << i << " ]";
+			for (auto p = us.begin(i); p != us.end(i); ++p)
+			{
+				cout << " - " << *p;
+			}
+			cout << endl;
+		}
+
+		cout << "값을 입력하면 원소를 추가합니다 ";
+		String word;
+		cin >> word;
+		us.insert(word);
+	}
+	
+
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-22 월요일 오후 3:13:44
+==================================================
+//------------------------------------------------------------
+// 2023. 5.22, 월56                        (12주 2일)
+// 13주 2일 5. 29 월요일 - 동영상 출석대체
+// 15주 2일 6. 12 월요일 - 기말 시험
+//------------------------------------------------------------------
+// Unordered Associative 컨테이너
+// 순서가 없다는 것의 의미
+// 메모리 구조를 이해해 본다
+// String을 원소로 담으려면? - hash 함수를 제공하면 된다.
+//-----------------------------------------------------------------
+#include <iostream>
+#include <string>
+#include <unordered_set>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+template<>
+struct hash<String>
+{
+	size_t operator()(const String& str) const
+	{
+		return hash<string>()(str.getString());
+	}
+};
+
+//-------
+int main()
+//-------
+{
+	unordered_multiset<String, hash<String>> us{ "C++", "STL", "Container", "Iterator", "Algorithm"};
+	
+
+	auto p = us.find("Algorithm");
+	cout << *p << endl;
+
+	save("소스.cpp");
+}
