@@ -1,0 +1,276 @@
+==================================================
+소스.cpp , 저장시간: 2023-05-25 목요일 오후 2:10:59
+==================================================
+//------------------------------------------------------------
+// 2023. 5.25, 목56                        (13주 1일)
+// 13주 2일 5. 29 월요일 - 동영상 출석대체
+// 15주 2일 6. 12 월요일 - 기말 시험
+//------------------------------------------------------------------
+// 컨테이너들의 찾기 실력을 검증한다. int 천만개에서 int 만개를 찾는다
+// vector			- 20s
+// set				- 0.011s
+// sorted vector	- 0.0033s
+// unordered_set	- 0.0006s
+//-----------------------------------------------------------------
+#include <iostream>
+#include <random>
+#include <array>
+#include <vector>
+#include <set>
+#include <unordered_set>
+#include <algorithm>
+#include <chrono>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+array<int, 1000'0000> numbers;
+array<int, 10000> toFind;
+
+default_random_engine dre;
+uniform_int_distribution uid{ 1, 100'000'000 };
+
+//-------
+int main()
+//-------
+{
+	save("소스.cpp");
+
+	for (int& num : numbers)
+	{
+		num = uid(dre);
+	}
+
+	for (int& num : toFind)
+	{
+		num = uid(dre);
+	}
+
+	{	// vector에서 찾기
+		vector<int> v { numbers.begin(), numbers.end() };
+		cout << "vector에서 찾는 중...";
+		int cnt = 0;
+
+		//시간재기 시작
+		auto start = chrono::steady_clock::now();
+
+		for (int num : toFind)
+		{
+			if (find(v.begin(), v.end(), num) != v.end())
+			{
+				cnt++;
+			}
+		}
+
+		//시간재기 끝
+		auto end = chrono::steady_clock::now();
+		auto elapsedTime = chrono::duration_cast<chrono::microseconds>(end - start);
+
+
+		cout << endl;
+		cout << "걸린 시간(us) - " << elapsedTime.count() << ' ' << elapsedTime << endl;
+		cout << "찾은 수 - " << cnt << endl;
+		cout << endl << endl; 
+	}
+
+	{	// set에서 찾기
+		cout << "set에 데이터 넣는 중...";
+		set<int> s { numbers.begin(), numbers.end() };
+		cout << endl;
+		cout << "set에서 찾는 중...";
+		int cnt = 0;
+
+		//시간재기 시작
+		auto start = chrono::steady_clock::now();
+
+		for (int num : toFind)
+		{
+			if (s.contains(num))
+				cnt++;
+		}
+
+		//시간재기 끝
+		auto end = chrono::steady_clock::now();
+		auto elapsedTime = chrono::duration_cast<chrono::microseconds>(end - start);
+
+		cout << endl;
+		cout << "걸린 시간(us) - " << elapsedTime.count() << ' ' << elapsedTime << endl;
+		cout << "찾은 수 - " << cnt << endl;
+		cout << endl << endl;
+	}
+	
+	{	// unordered_set에서 찾기
+		cout << "unordered_set에 데이터 넣는 중...";
+		unordered_set<int> us { numbers.begin(), numbers.end() };
+		cout << endl;
+		cout << "unordered_set에서 찾는 중...";
+		int cnt = 0;
+
+		//시간재기 시작
+		auto start = chrono::steady_clock::now();
+
+		for (int num : toFind)
+		{
+			if (us.contains(num))
+				cnt++;
+		}
+
+		//시간재기 끝
+		auto end = chrono::steady_clock::now();
+		auto elapsedTime = chrono::duration_cast<chrono::microseconds>(end - start);
+
+		cout << endl;
+		cout << "걸린 시간(us) - " << elapsedTime.count() << ' ' << elapsedTime << endl;
+		cout << "찾은 수 - " << cnt << endl;
+		cout << endl << endl;
+	}
+
+	{	// sorted vector에서 찾기
+		vector<int> v { numbers.begin(), numbers.end() };
+		cout << "vector를 정렬하는 중...";
+		sort(v.begin(), v.end());
+
+		cout << "sorted vector에서 찾는 중...";
+		int cnt = 0;
+
+		//시간재기 시작
+		auto start = chrono::steady_clock::now();
+
+		for (int num : toFind)
+		{
+			if (binary_search(v.begin(), v.end(), num))
+				cnt++;
+		}
+
+		//시간재기 끝
+		auto end = chrono::steady_clock::now();
+		auto elapsedTime = chrono::duration_cast<chrono::microseconds>(end - start);
+
+		cout << endl;
+		cout << "걸린 시간(us) - " << elapsedTime.count() << ' ' << elapsedTime << endl;
+		cout << "찾은 수 - " << cnt << endl;
+		cout << endl << endl;
+	}
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-25 목요일 오후 2:40:30
+==================================================
+//------------------------------------------------------------
+// 2023. 5.25, 목56                        (13주 1일)
+// 13주 2일 5. 29 월요일 - 동영상 출석대체
+// 15주 2일 6. 12 월요일 - 기말 시험
+//------------------------------------------------------------------
+//
+//-----------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	vector<int> v{1, 3, 5, 7, 9, 2, 4, 6, 8, 10};
+	ranges::sort(v);
+
+	for (int n : v)
+		cout << n << ' ';
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-25 목요일 오후 3:12:33
+==================================================
+//------------------------------------------------------------
+// 2023. 5.25, 목56                        (13주 1일)
+// 13주 2일 5. 29 월요일 - 동영상 출석대체
+// 15주 2일 6. 12 월요일 - 기말 시험
+//------------------------------------------------------------------
+//
+//-----------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	vector<int> v{1, 3, 5, 7, 9};
+	// [문제] v의 원소가 전부 홀수인지 검사한다.
+	bool res = all_of(v.begin(), v.end(), [](int i) {
+		return i & 1;
+		});
+
+	cout << boolalpha << "홀수? - " << res << endl;;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-25 목요일 오후 3:17:06
+==================================================
+//------------------------------------------------------------
+// 2023. 5.25, 목56                        (13주 1일)
+// 13주 2일 5. 29 월요일 - 동영상 출석대체
+// 15주 2일 6. 12 월요일 - 기말 시험
+//------------------------------------------------------------------
+//
+//-----------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+ 
+template<typename itr, typename pred>
+bool my_all_of(itr begin, itr end, pred pr)
+{
+	itr now = begin;
+	while (true)
+	{
+		if (now == end)
+			break;
+
+		if (pr(*now))
+			return true;
+		now++;
+	}
+
+	return false;
+}
+
+//-------
+int main()
+//-------
+{
+	vector<int> v{1, 3, 5, 7, 9};
+	// [문제] v의 원소가 전부 홀수인지 검사한다.
+	bool res = my_all_of(v.begin(), v.end(), [](int i) {
+		return i & 1;
+		});
+
+	cout << boolalpha << "홀수? - " << res << endl;;
+
+	save("소스.cpp");
+}
