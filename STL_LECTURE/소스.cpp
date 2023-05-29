@@ -1,44 +1,47 @@
 //------------------------------------------------------------
-// 2023. 5.22, 월56                        (12주 2일)
+// 2023. 5.25, 목56                        (13주 1일)
 // 13주 2일 5. 29 월요일 - 동영상 출석대체
 // 15주 2일 6. 12 월요일 - 기말 시험
 //------------------------------------------------------------------
-// 컨테이너들의 찾기 실력을 검증한다. int 천만개에서 int 만개를 찾는다
-// vector
-// set
-// unordered_set
+//
 //-----------------------------------------------------------------
 #include <iostream>
-#include <random>
-#include <array>
 #include <vector>
-#include <set>
-#include <unordered_set>
+#include <algorithm>
 #include "save.h"
 #include "String.h"
 
 using namespace std;
 extern bool 관찰;
-
-array<int, 1000'0000> numbers;
-array<int, 10000> toFind;
-
-
-template<>
-struct hash<String>
+ 
+template<typename itr, typename pred>
+bool my_all_of(itr begin, itr end, pred pr)
 {
-	size_t operator()(const String& str) const
+	itr now = begin;
+	while (true)
 	{
-		return hash<string>()(str.getString());
+		if (now == end)
+			break;
+
+		if (pr(*now))
+			return true;
+		now++;
 	}
-};
+
+	return false;
+}
 
 //-------
 int main()
 //-------
 {
-	unordered_multiset<String, hash<String>> us{ "C++", "STL", "Container", "Iterator", "Algorithm"};
+	vector<int> v{1, 3, 5, 7, 9};
+	// [문제] v의 원소가 전부 홀수인지 검사한다.
+	bool res = my_all_of(v.begin(), v.end(), [](int i) {
+		return i & 1;
+		});
 
-	auto p = us.find("Algorithm");
-	cout << *p << endl;
+	cout << boolalpha << "홀수? - " << res << endl;;
+
+	save("소스.cpp");
 }

@@ -471,9 +471,8 @@ int main()
 		cout << "값을 입력하면 원소를 추가합니다 ";
 		int num;
 		cin >> num;
-		us.insert(num);`
+		us.insert(num);
 	}
-	
 }
 
 
@@ -532,8 +531,6 @@ int main()
 		cin >> word;
 		us.insert(word);
 	}
-	
-
 }
 
 
@@ -574,7 +571,6 @@ int main()
 {
 	unordered_multiset<String, hash<String>> us{ "C++", "STL", "Container", "Iterator", "Algorithm"};
 	
-
 	auto p = us.find("Algorithm");
 	cout << *p << endl;
 
