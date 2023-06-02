@@ -1,47 +1,31 @@
 //------------------------------------------------------------
-// 2023. 5.25, 목56                        (13주 1일)
-// 13주 2일 5. 29 월요일 - 동영상 출석대체
-// 15주 2일 6. 12 월요일 - 기말 시험
+// 2023. 5.29, 월56                        (13주 2일)
 //------------------------------------------------------------------
-//
+// distance를 구현한다 - itreator operation
 //-----------------------------------------------------------------
 #include <iostream>
 #include <vector>
+#include <set>
 #include <algorithm>
 #include "save.h"
 #include "String.h"
 
 using namespace std;
 extern bool 관찰;
- 
-template<typename itr, typename pred>
-bool my_all_of(itr begin, itr end, pred pr)
+
+template<class Iter>
+int my_distance(Iter b, Iter e)
 {
-	itr now = begin;
-	while (true)
-	{
-		if (now == end)
-			break;
-
-		if (pr(*now))
-			return true;
-		now++;
-	}
-
-	return false;
+	return e - b;
 }
 
 //-------
 int main()
 //-------
 {
-	vector<int> v{1, 3, 5, 7, 9};
-	// [문제] v의 원소가 전부 홀수인지 검사한다.
-	bool res = my_all_of(v.begin(), v.end(), [](int i) {
-		return i & 1;
-		});
-
-	cout << boolalpha << "홀수? - " << res << endl;;
-
 	save("소스.cpp");
+
+	vector<int> v{1, 2, 3, 4, 5};
+
+	cout << my_distance(v.begin(), v.end()) << endl;
 }
