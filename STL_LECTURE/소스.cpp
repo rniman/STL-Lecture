@@ -1,31 +1,45 @@
 //------------------------------------------------------------
-// 2023. 5.29, 월56                        (13주 2일)
+// 2023. 6. 1, 목56                        (14주 1일)
 //------------------------------------------------------------------
-// distance를 구현한다 - itreator operation
+// C++20 - 4 major change
+// Concept - 함수형 프로그램밍
+// Range - 함수형 프로그래밍
+// Module
+// Coroutine
 //-----------------------------------------------------------------
 #include <iostream>
-#include <vector>
-#include <set>
+#include <ranges>
 #include <algorithm>
+#include <random>
+#include <vector>
 #include "save.h"
 #include "String.h"
 
 using namespace std;
 extern bool 관찰;
 
-template<class Iter>
-int my_distance(Iter b, Iter e)
+default_random_engine dre;
+uniform_int_distribution uidNum{ 1,100 };
+uniform_int_distribution<int> uidC{'A', 'Z'};
+
+struct Dog
 {
-	return e - b;
-}
+	int num = uidNum(dre);
+	char c = uidC(dre);
+};
 
 //-------
 int main()
 //-------
 {
+	vector<Dog> dogs(100);
+	
+	ranges::sort(dogs, {}, &Dog::num);
+
+	for ( auto& [숫자, 글자] : dogs)
+	{
+		cout << 글자 << " - " << 숫자 << endl;
+	}
+
 	save("소스.cpp");
-
-	vector<int> v{1, 2, 3, 4, 5};
-
-	cout << my_distance(v.begin(), v.end()) << endl;
 }
