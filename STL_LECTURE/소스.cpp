@@ -1,36 +1,31 @@
 //------------------------------------------------------------
-// 2023. 6. 5, 월56                        (14주 2일)
-// 6/6일 업로드할 동영상 - 총정리 실습
-//------------------------------------------------------------------
-// C++20 - 4 major change
-// Concept - 템플릿에 전달되는 인자(자료형)가 원하는 의미(semantic)를 
-//			 만족하는지 컴파일 타임에 검사(소스코드 확장 전);
-// Range - composable / less error-prone --> lazy evaluation(지연 평가)
-// - lightWeight object -> ex) string_view와 같이 가벼운 정보를 담은 경량화한 객체
-//  -- [begin, end)
-//  -- [start, size)
-//  -- [start, predicate)
-//  -- [start..)  끝이없는 시퀀스
+// 2023 STL 총정리 실습 - 애너그램 찾기
+// - "단어들.txt" 파일을 다운 받는다.
+// - 단어들이 자료구조에 369882개 저장되있다
+// - 정렬이 되어 있는지 확인하자 - 정렬되어 있다
+// - 중복된 단어는 없나? - 없다
+// - 길이가 가장 긴 단어는 - 31글자 dichlorodiphenyltrichloroethane
+// - 길이가 같은 단어 몇개를 화면에 출력
+// - 사용자가 입력한 단어가 사전에 있는지 검사
+//   사전에 있는 단어라면 anagram을 출력한다
 //-----------------------------------------------------------------
 #include <iostream>
-#include <ranges>
-#include <algorithm>
+#include <fstream>
 #include <vector>
+#include <list>
+#include <string>
+#include <algorithm>
+#include <ranges>
 #include "save.h"
-#include "String.h"
 
 using namespace std;
-extern bool 관찰;
 
-bool isPrime2(int n) {
-	for (int i = 2; i <= sqrt(n); i++) {//2~n의 제곱근까지
-		if (n % i == 0) {//i가 n의 약수라면 소수가 아니므로 false return
-			return false;
-		}
+struct PS : pair<string, string>
+{
+	PS(string s) :pair(s, s) {
+		sort(first.begin(), first.end());
 	}
-	//2 ~ n-1까지 약수가 없다면 소수이므로, true return
-	return true;
-}
+};
 
 //-------
 int main()
@@ -38,16 +33,77 @@ int main()
 {
 	save("소스.cpp");
 
-	// 소수(prime num, 2 3 5 7 9 11 13)를 영원히 출력하라
-	// 100만 이상의 수 중에서 100개만 뒤에서부터 출력하라
+	ifstream in{ "단어들.txt" };
 
-	for (int n : views::iota(2)
-			   | views::drop_while([](int i) {return i < 100'0000; })
-			   | views::filter(isPrime2)
-			   | views::take(100)
-			   | views::reverse
-		)
-		cout << n << ' ';
-	cout << endl;
+	if (!in)
+	{
+		cout << "파일 읽기 실패";
+		return 0;
+	}
 
+	vector<PS> v;
+	v.reserve(40'0000);
+
+	string s;
+	while (in >> s)
+	{
+		v.push_back(s);
+	}
+	cout << "단어 개수 - " << v.size() << endl;
+
+	// v를 first 오름차순으로 정렬한다.
+	auto PS기준 = [](const PS& a, const PS& b) {
+		return a.first < b.first;
+	};
+	sort(v.begin(), v.end(), PS기준);
+
+	// [문제] 전체 anagram 쌍을 컨테이너에 저장하라
+	vector<list<string>> anagrams;
+
+	auto i = v.begin();
+	int cnt{};
+	while (true)
+	{
+		i = adjacent_find(i, v.end(), [](const PS& a, const PS& b) {
+			return a.first == b.first;
+			});
+
+		if (i == v.end())
+		{
+			break;
+		}
+
+		// 그렇다면 i와 i+1의 first는 같다.
+		auto j = find_if_not(i + 1, v.end(), [i](const PS& a) {
+			return i->first == a.first;
+			});
+
+		// [i, j)는 애너그램 쌍이다
+		list<string> con;
+		for (auto k = i; k < j; ++k)
+		{
+			con.push_back(k->second);
+		}
+		anagrams.push_back(con);
+
+		i = j;
+	}
+
+	cout << "모두 " << anagrams.size() << "개의 애너그램 쌍을 찾았습니다." << endl;
+
+
+	// 애너그램 개수가 많은 순서대로 정렬
+	sort(anagrams.begin(), anagrams.end(), [](const list<string>& a, const list<string>& b) {
+		return a.size() > b.size();
+		});
+
+	for (int i = 0; i < 10; ++i)
+	{
+		cout << anagrams[i].size() << " - ";
+		for (const string& word : anagrams[i])
+		{
+			cout << word << " ";
+		}
+		cout << endl;
+	}
 }
