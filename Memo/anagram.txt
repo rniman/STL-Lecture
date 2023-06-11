@@ -1,0 +1,487 @@
+
+
+==================================================
+소스.cpp , 저장시간: 2023-06-08 목요일 오후 9:23:56
+==================================================
+//------------------------------------------------------------
+// 2023 STL 총정리 실습 - 애너그램 찾기
+// - "단어들.txt" 파일을 다운 받는다.
+// - 단어들이 자료구조에 369882개 저장되있다
+// - 정렬이 되어 있는지 확인하자 - 정렬되어 있다
+// - 중복된 단어는 없나? - 없다
+// - 길이가 가장 긴 단어는 - 31글자 dichlorodiphenyltrichloroethane
+// - 길이가 같은 단어 몇개를 화면에 출력
+// - 사용자가 입력한 단어가 사전에 있는지 검사
+//   사전에 있는 단어라면 anagram을 출력한다
+//-----------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <ranges>
+#include "save.h"
+
+using namespace std;
+
+//-------
+int main()
+//-------
+{
+	save("소스.cpp");
+
+	ifstream in{ "단어들.txt" };
+
+	if (!in)
+	{
+		cout << "파일 읽기 실패";
+		return 0;
+	}
+
+	vector<string> v;
+	v.reserve(10'0000);
+
+	copy(istream_iterator<string>{in}, {}, back_inserter(v));
+	cout << "읽은 단어의 수 " << v.size() << endl;
+
+	cout << "정렬되어 있나? - " << boolalpha << is_sorted(v.begin(), v.end()) << endl;
+
+	auto p = unique(v.begin(), v.end());
+
+	if (p == v.end())
+	{
+		cout << "중복된 단어는 없다." << endl;
+	}
+	else
+	{
+		cout << "중복된 단어가 있다." << endl;
+	}
+
+	// 길이가 가장 긴 단어는
+	auto 긴단어 = [](const string& a, const string& b) {return a.size() < b.size(); };
+	auto 긴단어위치 = max_element(v.begin(), v.end(), 긴단어);
+	cout << "가장 긴 단어 - " << 긴단어위치->size() << "글자:" << *긴단어위치 << endl;
+
+	// 길이가 12글자짜리 단어 몇 개를 화면에 출력
+	cout << "원하는 글자 수를 입력하세요: ";
+	int num = 0;
+	cin >> num;
+	for (const string& s : v | views::filter([](const string& str) {return str[0] == 'c'; })
+							 | views::filter([num](const string& str) {return str.size() == num; }) 
+							 | views::take(10))
+	{
+		cout << s << endl;
+	}
+
+
+	// anagram을 찾는 프로그램이다.
+	// 사용자가 입력한 단어와 anagram 관계에 있는 단어를 모두 출력한다.
+
+	cout << endl;
+	cout << "======================" << endl;
+	cout << "애너그램을 찾아드립니다." << endl;
+	cout << "======================" << endl;
+	while (true)
+	{
+		cout << "찾는 단어를 입력하세요: ";
+		string toFind;
+		cin >> toFind;
+
+		if (not binary_search(v.begin(), v.end(), toFind))
+		{
+			cout << "사전에 없는 단어 입니다." << endl << endl;
+			continue;
+		}
+
+		// 애너그램을 찾아 표시한다
+		cout << "가능한 조합의 개수 - ";
+		long long pNum = 1;
+		for (int i = 0; i < toFind.size(); ++i)
+		{
+			pNum *= i + 1;
+		}
+		cout << pNum << endl;
+		cout << endl;
+		
+		
+		//cout << "찾아야 할 가능한 조합들" << endl;
+		string word = toFind;
+		sort(word.begin(), word.end());
+		do
+		{
+			if (binary_search(v.begin(), v.end(), word))
+			{
+				cout << word << " ";
+			}
+			//cout << toFind << endl;
+		} while ( next_permutation(word.begin(), word.end()));
+		cout << endl;
+		cout << endl;
+		//next_permutation은 정렬되어 있는 상태여야 제대로된 결과를 얻을 수 있다
+	}
+
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-06-08 목요일 오후 9:29:14
+==================================================
+//------------------------------------------------------------
+// 2023 STL 총정리 실습 - 애너그램 찾기
+// - "단어들.txt" 파일을 다운 받는다.
+// - 단어들이 자료구조에 369882개 저장되있다
+// - 정렬이 되어 있는지 확인하자 - 정렬되어 있다
+// - 중복된 단어는 없나? - 없다
+// - 길이가 가장 긴 단어는 - 31글자 dichlorodiphenyltrichloroethane
+// - 길이가 같은 단어 몇개를 화면에 출력
+// - 사용자가 입력한 단어가 사전에 있는지 검사
+//   사전에 있는 단어라면 anagram을 출력한다
+//-----------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <ranges>
+#include "save.h"
+
+using namespace std;
+
+struct PS : pair<string, string>
+{
+	PS(string s) :pair(s, s) {
+		sort(first.begin(), first.end());
+	}
+};
+
+//-------
+int main()
+//-------
+{
+	save("소스.cpp");
+
+	ifstream in{ "단어들.txt" };
+
+	if (!in)
+	{
+		cout << "파일 읽기 실패";
+		return 0;
+	}
+
+	PS dog{ "dog" };
+	cout << dog.first << ", " << dog.second << endl;
+	
+
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-06-08 목요일 오후 9:56:16
+==================================================
+//------------------------------------------------------------
+// 2023 STL 총정리 실습 - 애너그램 찾기
+// - "단어들.txt" 파일을 다운 받는다.
+// - 단어들이 자료구조에 369882개 저장되있다
+// - 정렬이 되어 있는지 확인하자 - 정렬되어 있다
+// - 중복된 단어는 없나? - 없다
+// - 길이가 가장 긴 단어는 - 31글자 dichlorodiphenyltrichloroethane
+// - 길이가 같은 단어 몇개를 화면에 출력
+// - 사용자가 입력한 단어가 사전에 있는지 검사
+//   사전에 있는 단어라면 anagram을 출력한다
+//-----------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <ranges>
+#include "save.h"
+
+using namespace std;
+
+struct PS : pair<string, string>
+{
+	PS(string s) :pair(s, s) {
+		sort(first.begin(), first.end());
+	}
+};
+
+//-------
+int main()
+//-------
+{
+	save("소스.cpp");
+
+	ifstream in{ "단어들.txt" };
+
+	if (!in)
+	{
+		cout << "파일 읽기 실패";
+		return 0;
+	}
+	
+	vector<PS> v;
+	v.reserve(40'0000);
+	
+	string s;
+	while (in >> s)
+	{
+		v.push_back(s);
+	}
+	cout << "단어 개수 - " << v.size() << endl;
+
+	// v를 first 오름차순으로 정렬한다.
+	auto PS기준 = [](const PS& a, const PS& b) {
+		return a.first < b.first;
+	};
+	sort(v.begin(), v.end(), PS기준);
+
+	// v의 일부분을 출력한다
+	// 길이가 x글자인 경우만 100개
+
+	//cout << "어디서부터 출력할까요? ";
+	//int num;
+	//cin >> num;
+	//for (const auto& [정렬, 원본] : v 
+	//	| views::drop(num) 
+	//	| views::filter([](const PS& ps) { return ps.first.size() == 5; })
+	//	| views::take(100)
+	//	)
+	//{
+	//	cout << 정렬 << " - " << 원본 << endl;
+	//}
+
+	while (true)
+	{
+		cout << "찾을 단어를 입력하세요: ";
+		string s;
+		cin >> s;
+
+		PS word{ s };
+
+		auto [하한, 상한] = equal_range(v.begin(), v.end(), word, PS기준);
+
+		if (하한 == 상한)
+		{
+			cout << "사전에 없는 단어입니다." << endl;
+		}
+		else
+		{
+			cout << s << "의 anagram들" << endl;
+			for (auto p = 하한; p < 상한; ++p)
+			{
+				cout << p->second << " ";
+			}
+			cout << endl;
+		}
+	}
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-06-08 목요일 오후 10:14:57
+==================================================
+//------------------------------------------------------------
+// 2023 STL 총정리 실습 - 애너그램 찾기
+// - "단어들.txt" 파일을 다운 받는다.
+// - 단어들이 자료구조에 369882개 저장되있다
+// - 정렬이 되어 있는지 확인하자 - 정렬되어 있다
+// - 중복된 단어는 없나? - 없다
+// - 길이가 가장 긴 단어는 - 31글자 dichlorodiphenyltrichloroethane
+// - 길이가 같은 단어 몇개를 화면에 출력
+// - 사용자가 입력한 단어가 사전에 있는지 검사
+//   사전에 있는 단어라면 anagram을 출력한다
+//-----------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <ranges>
+#include "save.h"
+
+using namespace std;
+
+struct PS : pair<string, string>
+{
+	PS(string s) :pair(s, s) {
+		sort(first.begin(), first.end());
+	}
+};
+
+//-------
+int main()
+//-------
+{
+	save("소스.cpp");
+
+	ifstream in{ "단어들.txt" };
+
+	if (!in)
+	{
+		cout << "파일 읽기 실패";
+		return 0;
+	}
+
+	vector<PS> v;
+	v.reserve(40'0000);
+
+	string s;
+	while (in >> s)
+	{
+		v.push_back(s);
+	}
+	cout << "단어 개수 - " << v.size() << endl;
+
+	// v를 first 오름차순으로 정렬한다.
+	auto PS기준 = [](const PS& a, const PS& b) {
+		return a.first < b.first;
+	};
+	sort(v.begin(), v.end(), PS기준);
+
+	// [문제] 전체 anagram 쌍을 화면에 출력하라.
+	
+
+	auto i = v.begin();
+	int cnt{};
+	while (true)
+	{
+		i = adjacent_find(i, v.end(), [](const PS& a, const PS& b) {
+			return a.first == b.first;
+			});
+
+		if (i == v.end())
+		{
+			break;
+		}
+
+		// 그렇다면 i와 i+1의 first는 같다.
+		auto j = find_if_not(i + 1, v.end(), [i](const PS& a) {
+			return i->first == a.first;
+			});
+
+		// [i, j)는 애너그램 쌍이다
+		cout << "[" << ++cnt << "] - ";
+		for (auto k = i; k < j; ++k)
+		{
+			cout << k->second << " ";
+		}
+		cout << endl;
+
+		i = j;
+	}
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-06-08 목요일 오후 10:30:53
+==================================================
+//------------------------------------------------------------
+// 2023 STL 총정리 실습 - 애너그램 찾기
+// - "단어들.txt" 파일을 다운 받는다.
+// - 단어들이 자료구조에 369882개 저장되있다
+// - 정렬이 되어 있는지 확인하자 - 정렬되어 있다
+// - 중복된 단어는 없나? - 없다
+// - 길이가 가장 긴 단어는 - 31글자 dichlorodiphenyltrichloroethane
+// - 길이가 같은 단어 몇개를 화면에 출력
+// - 사용자가 입력한 단어가 사전에 있는지 검사
+//   사전에 있는 단어라면 anagram을 출력한다
+//-----------------------------------------------------------------
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <list>
+#include <string>
+#include <algorithm>
+#include <ranges>
+#include "save.h"
+
+using namespace std;
+
+struct PS : pair<string, string>
+{
+	PS(string s) :pair(s, s) {
+		sort(first.begin(), first.end());
+	}
+};
+
+//-------
+int main()
+//-------
+{
+	save("소스.cpp");
+
+	ifstream in{ "단어들.txt" };
+
+	if (!in)
+	{
+		cout << "파일 읽기 실패";
+		return 0;
+	}
+
+	vector<PS> v;
+	v.reserve(40'0000);
+
+	string s;
+	while (in >> s)
+	{
+		v.push_back(s);
+	}
+	cout << "단어 개수 - " << v.size() << endl;
+
+	// v를 first 오름차순으로 정렬한다.
+	auto PS기준 = [](const PS& a, const PS& b) {
+		return a.first < b.first;
+	};
+	sort(v.begin(), v.end(), PS기준);
+
+	// [문제] 전체 anagram 쌍을 컨테이너에 저장하라
+	vector<list<string>> anagrams;
+
+	auto i = v.begin();
+	int cnt{};
+	while (true)
+	{
+		i = adjacent_find(i, v.end(), [](const PS& a, const PS& b) {
+			return a.first == b.first;
+			});
+
+		if (i == v.end())
+		{
+			break;
+		}
+
+		// 그렇다면 i와 i+1의 first는 같다.
+		auto j = find_if_not(i + 1, v.end(), [i](const PS& a) {
+			return i->first == a.first;
+			});
+
+		// [i, j)는 애너그램 쌍이다
+		list<string> con;
+		for (auto k = i; k < j; ++k)
+		{
+			con.push_back(k->second);
+		}
+		anagrams.push_back(con);
+
+		i = j;
+	}
+
+	cout << "모두 " << anagrams.size() << "개의 애너그램 쌍을 찾았습니다." << endl;
+
+
+	// 애너그램 개수가 많은 순서대로 정렬
+	sort(anagrams.begin(), anagrams.end(), [](const list<string>& a, const list<string>& b) {
+		return a.size() > b.size();
+		});
+
+	for (int i = 0; i < 10; ++i)
+	{
+		cout << anagrams[i].size() << " - ";
+		for (const string& word : anagrams[i])
+		{
+			cout << word << " ";
+		}
+		cout << endl;
+	}
+}

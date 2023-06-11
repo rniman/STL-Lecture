@@ -1,0 +1,730 @@
+==================================================
+소스.cpp , 저장시간: 2023-05-29 월요일 오후 5:52:46
+==================================================
+//------------------------------------------------------------
+// 2023. 5.29, 월56                        (13주 2일)
+//------------------------------------------------------------------
+//
+//-----------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+ 
+template<typename itr, typename pred>
+bool my_all_of(itr begin, itr end, pred pr)
+{
+	while (begin != end)
+	{
+		if (pr(*begin) == false)
+			return false;
+		++begin;
+	}
+	return true;	//표준에서 원소가 없다면 true 리턴
+}
+
+//-------
+int main()
+//-------
+{
+	vector<int> v{1, 3, 5, 7, 9};
+	//vector<int> v{}; true리턴
+	// [문제] v의 원소가 전부 홀수인지 검사한다.
+	bool res = my_all_of(v.begin(), v.end(), [](int i) {
+		return i & 1;
+		});
+
+	cout << boolalpha << "홀수? - " << res << endl;;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-29 월요일 오후 5:55:18
+==================================================
+//------------------------------------------------------------
+// 2023. 5.29, 월56                        (13주 2일)
+//------------------------------------------------------------------
+//
+//-----------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+ 
+template<typename itr, typename pred>
+bool my_all_of(itr begin, itr end, pred pr)
+{
+	while (begin != end)
+	{
+		if (pr(*begin) == false)
+			return false;
+		++begin;
+	}
+	return true;	//표준에서 원소가 없다면 true 리턴
+}
+
+//-------
+int main()
+//-------
+{
+	//String s{ "algorithm - all_of" }; false
+	String s{ "algorithmallof" };
+	
+	// [문제] s의 원소가 전부 소문자?
+
+	bool res = my_all_of(s.begin(), s.end(), [](char c) {
+		return islower(c);
+		});
+
+	cout << boolalpha << "소문자? - " << res << endl;;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-29 월요일 오후 6:05:03
+==================================================
+//------------------------------------------------------------
+// 2023. 5.29, 월56                        (13주 2일)
+//------------------------------------------------------------------
+//
+//-----------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// 컨테이너가 2개 이상이 있을 때 
+// 첫 컨테이너는 전체 구간을 알려줘야 하고 
+// 두번째 컨테이너는 구간의 시작만 알려줘도 충분하다
+
+//-------
+int main()
+//-------
+{
+	//vector<int> v1{ 1, 2, 3, 4, 5, 6, 7 };//5
+	//vector<int> v2{ 1, 2, 3, 4, 7, 8, 7, 9, 10, 20 }; //7
+
+	vector<int> v1{ 1, 2, 3, 4, 5, 6, 7 }; //end
+	vector<int> v2{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20 }; //8
+
+	//vector<int> v1{ 1, 2, 3, 4, 5, 6, 7 }; //7
+	//vector<int> v2{1, 2, 3, 4, 5, 6 };     //end
+
+	//p는 pair형태로 반환, 각각 다른지점 위치 반환
+	auto p = mismatch(v1.begin(), v1.end(), v2.begin());
+
+	//cout << "v1의 위치 - " << *p.first << endl; 
+	//cout << "v2의 위치 - " << *p.second << endl; 
+
+	if(p.first != v1.end())
+		cout << "v1의 위치 - " << *p.first << endl;  
+	if(p.second != v2.end())
+		cout << "v2의 위치 - " << *p.second << endl;
+
+
+	save("소스.cpp");
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-05-29 월요일 오후 6:16:10
+==================================================
+//------------------------------------------------------------
+// 2023. 5.29, 월56                        (13주 2일)
+//------------------------------------------------------------------
+//
+//-----------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <random>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// 흥미 예제 - Lotto 번호 생성기
+
+//-------
+int main()
+//-------
+{
+	vector<int> v;
+	v.reserve(45);
+	for (int i = 0; i < 45; ++i)
+	{
+		v.push_back(i + 1);
+	}
+
+	for (int n : v)
+		cout << n << ' ';
+
+	cout << endl << endl;
+
+	cout << "이번 주 구입할 Lotto 번호 - ";
+	sample(v.begin(), v.end(), ostream_iterator<int>{cout, " "}, 6, default_random_engine(random_device{}()));
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-29 월요일 오후 6:22:40
+==================================================
+//------------------------------------------------------------
+// 2023. 5.29, 월56                        (13주 2일)
+//------------------------------------------------------------------
+//
+//-----------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <random>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// 흥미 예제 - 전광판 예제
+
+//-------
+int main()
+//-------
+{
+	String s{ "C++ STL Containers Iterators Algorithms" };
+
+	for(int i=0;i<10;++i)
+	{
+		cout << s << endl;
+		rotate(s.begin(), s.begin() + 1, s.end());
+	}
+
+	save("소스.cpp");
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-05-29 월요일 오후 6:27:34
+==================================================
+//------------------------------------------------------------
+// 2023. 5.29, 월56                        (13주 2일)
+//------------------------------------------------------------------
+//
+//-----------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <random>
+#include <format>
+#include <string>
+#include <thread>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// 흥미 예제 - 전광판 예제
+
+//-------
+int main()
+//-------
+{
+	string s{ "C++ STL Containers Iterators Algorithms" };
+	save("소스.cpp");
+
+	for (int i = 0; i < 5; ++i)
+		cout << endl;
+
+	while (true)
+	{
+		cout << format("{:^79}", s);
+		this_thread::sleep_for(100ms);
+		rotate(s.begin(), s.begin() + 1, s.end());
+		//rotate(s.begin(), s.begin() - 1, s.end()); // error
+		//rotate(s.rbegin(), s.rbegin() + 1, s.rend());	//반대로
+		//rotate(s.begin(), s.end() - 1, s.end());
+		cout << '\r';
+		
+	}
+		
+
+}
+
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-29 월요일 오후 6:29:16
+==================================================
+//------------------------------------------------------------
+// 2023. 5.29, 월56                        (13주 2일)
+//------------------------------------------------------------------
+//
+//-----------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <random>
+#include <format>
+#include <string>
+#include <thread>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// 흥미 예제 - 전광판 예제
+
+//-------
+int main()
+//-------
+{
+	string s{ "C++ STL Containers Iterators Algorithms" };
+	save("소스.cpp");
+
+	for (int i = 0; i < 5; ++i)
+		cout << endl;
+
+	while (true)
+	{
+		cout << format("{:^79}", s);
+		this_thread::sleep_for(100ms);
+		shift_left(s.begin(), s.end(), 1);
+		//shift_right(s.begin(), s.end(), 1);
+
+		cout << '\r';
+	}
+		
+
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-05-29 월요일 오후 6:34:14
+==================================================
+//------------------------------------------------------------
+// 2023. 5.29, 월56                        (13주 2일)
+//------------------------------------------------------------------
+//
+//-----------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+// 흥미 예제 - 
+
+//-------
+int main()
+//-------
+{
+	//vector<int> v{1, 2, 3, 4, 5};
+
+	//copy(v.begin(), v.end(), ostream_iterator<int>{cout, " "});
+
+	vector<int> v{1, 2, 3, 4, 5, 6};
+
+	// 자기 자신을 수정 시킬 수도 있으므로 -> modify로 분류
+	copy(v.begin(), v.end() - 1, v.begin() + 1);
+
+	for (int n : v)
+		cout << n << " ";
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-29 월요일 오후 7:03:24
+==================================================
+//------------------------------------------------------------
+// 2023. 5.29, 월56                        (13주 2일)
+//------------------------------------------------------------------
+// algorithms	- sort 관련 함수들(복잡도가 낮은 거 부터)
+// partition	- 기준에 따라 분류
+// nth_element	- 기준에 맞는 n개를 분리
+// partial_sort	- n개까지만 정렬
+// sort		- 기준에 따라 모든 원소를 정렬
+// stable_sort	- 상대적인 순서를 변경하지 않으면서 모든 원소를 정렬
+//-----------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <random>
+#include <format>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+default_random_engine dre;
+
+//-------
+int main()
+//-------
+{
+	// 자료준비
+	vector<int> v(100);
+	for (int i = 0; i < 100; ++i)
+	{
+		v[i] = i + 1;
+	}
+
+	{	// partition - odd / even
+
+		// 자료를 섞는다
+		shuffle(v.begin(), v.end(), dre);
+
+		for (int n : v)
+			cout << format("{:4}", n);
+		cout << endl;
+		
+		auto p = partition(v.begin(), v.end(), [](int n) {
+			return n % 2 == 1;
+			});
+
+		cout << "partition 결과" << endl;
+		cout << "odd numbers" << endl;
+		for (auto i = v.begin(); i != p; ++i)
+			cout << format("{:4}", *i);
+		cout << endl;
+		
+		cout << "even numbers" << endl;
+		for(auto i = p;i != v.end();++i)
+			cout << format("{:4}", *i);
+		cout << endl;
+	}
+
+	cout << endl;
+	{	// nth_element
+
+		// 자료를 섞는다
+		shuffle(v.begin(), v.end(), dre);
+
+		for (int n : v)
+			cout << format("{:4}", n);
+		cout << endl;
+
+		nth_element(v.begin(), v.begin() + 30, v.end());
+		cout << "nth_element 결과" << endl;
+
+		cout << "nth_element통과" << endl;
+		for (auto p = v.begin(); p != v.begin() + 30; ++p)
+			cout << format("{:4}", *p);
+		cout << endl;
+
+		cout << "nth_element통과하지 못함" << endl;
+		for (auto p = v.begin() + 30; p != v.end(); ++p)
+			cout << format("{:4}", *p);
+		cout << endl;
+	}
+
+	cout << endl;
+	{	// partial_sort
+
+		// 자료를 섞는다
+		shuffle(v.begin(), v.end(), dre);
+
+		for (int n : v)
+			cout << format("{:4}", n);
+		cout << endl;
+
+		partial_sort(v.begin(), v.begin() + 30, v.end());
+		cout << "partial_sort 30개까지만 정렬한 결과" << endl;
+		
+		cout << "정렬된 30개" << endl;
+		for (auto p = v.begin(); p != v.begin() + 30; ++p)
+			cout << format("{:4}", *p);
+		cout << endl;
+
+		cout << "나머지 70개" << endl;
+		for (auto p = v.begin() + 30; p != v.end(); ++p)
+			cout << format("{:4}", *p);
+		cout << endl;
+	}
+
+	cout << endl;
+	{	// sort
+
+		// 자료를 섞는다
+		shuffle(v.begin(), v.end(), dre);
+
+		for (int n : v)
+			cout << format("{:4}", n);
+		cout << endl;
+
+		sort(v.begin(), v.end());
+		cout << "정렬한 결과" << endl;
+		for (auto p = v.begin(); p != v.end(); ++p)
+			cout << format("{:4}", *p);
+		cout << endl;
+	}
+	
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-29 월요일 오후 7:12:17
+==================================================
+//------------------------------------------------------------
+// 2023. 5.29, 월56                        (13주 2일)
+//-----------------------------------------------------------------
+//-----------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <random>
+#include <format>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+default_random_engine dre;
+uniform_int_distribution uid{ 1,20 };
+uniform_int_distribution<int> uidChar{ 'a', 'z' };
+
+struct Dog
+{
+	int num;
+	char c;
+
+	Dog() {
+		num = uid(dre);
+		c = uidChar(dre);
+	}
+};
+
+//-------
+int main()
+//-------
+{
+	// 자료준비
+	vector<Dog> dogs(100);
+
+	// 글자 c 기준 정렬
+	sort(dogs.begin(), dogs.end(), [](const Dog& a, const Dog& b) {
+		return a.c < b.c;
+		});
+
+	// 숫자 num 기준 정렬 - 글자 c 기준으로 정렬한 순서를 지키면서
+	stable_sort(dogs.begin(), dogs.end(), [](const Dog& a, const Dog& b) {
+		return a.num < b.num;
+		});
+
+	for (const Dog& dog : dogs)
+		cout << dog.c << " - " << dog.num << endl;
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-29 월요일 오후 7:17:17
+==================================================
+//------------------------------------------------------------
+// 2023. 5.29, 월56                        (13주 2일)
+//------------------------------------------------------------------
+// distance를 구현한다 - itreator operation
+//-----------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	vector<int> v{1, 2, 3, 4, 5};
+
+	cout << distance(v.begin(), v.end()) << endl; // 5
+
+	cout << distance(v.end(), v.begin()) << endl; // -5
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-29 월요일 오후 7:18:44
+==================================================
+//------------------------------------------------------------
+// 2023. 5.29, 월56                        (13주 2일)
+//------------------------------------------------------------------
+// distance를 구현한다 - itreator operation
+//-----------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+//-------
+int main()
+//-------
+{
+	set<int> v{1, 2, 3, 4, 5};
+
+	cout << distance(v.begin(), v.end()) << endl; 5
+	//cout << distance(v.end(), v.begin()) << endl; -> 오류난다
+
+	//list<int> v{1, 2, 3, 4, 5};
+
+	//cout << distance(v.end(), v.begin()) << endl; 5
+	save("소스.cpp");
+}
+
+==================================================
+소스.cpp , 저장시간: 2023-05-29 월요일 오후 7:22:28
+==================================================
+//------------------------------------------------------------
+// 2023. 5.29, 월56                        (13주 2일)
+//------------------------------------------------------------------
+// distance를 구현한다 - itreator operation
+//-----------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <list>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+template<class Iter>
+int my_distance(Iter b, Iter e)
+{
+	int cnt = 0;
+	while (b != e)
+	{
+		++b;
+		++cnt;
+	}
+	return cnt;
+}
+
+//-------
+int main()
+//-------
+{
+	list<int> v{1, 2, 3, 4, 5};
+	cout << my_distance(v.begin(), v.end()) << endl; //5
+	cout << my_distance(v.end(), v.begin()) << endl; //1
+	
+
+	forward_list<int> v{1, 2, 3, 4, 5};
+
+	cout << my_distance(v.end(), v.begin()) << endl; //사망	
+
+
+	save("소스.cpp");
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-29 월요일 오후 7:25:03
+==================================================
+//------------------------------------------------------------
+// 2023. 5.29, 월56                        (13주 2일)
+//------------------------------------------------------------------
+// distance를 구현한다 - itreator operation
+//-----------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+template<class Iter>
+int my_distance(Iter b, Iter e)
+{
+	int cnt = 0;
+	while (b != e)
+	{
+		++b;
+		++cnt;
+	}
+	return cnt;
+}
+
+//-------
+int main()
+//-------
+{
+	vector<int> v{1, 2, 3, 4, 5};
+
+	cout << my_distance(v.end(), v.begin()) << endl;  // 무한 루프에 빠진다
+}
+
+
+==================================================
+소스.cpp , 저장시간: 2023-05-29 월요일 오후 7:25:42
+==================================================
+//------------------------------------------------------------
+// 2023. 5.29, 월56                        (13주 2일)
+//------------------------------------------------------------------
+// distance를 구현한다 - itreator operation
+//-----------------------------------------------------------------
+#include <iostream>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+
+using namespace std;
+extern bool 관찰;
+
+template<class Iter>
+int my_distance(Iter b, Iter e)
+{
+	return e - b;
+}
+
+//-------
+int main()
+//-------
+{
+	save("소스.cpp");
+
+	vector<int> v{1, 2, 3, 4, 5};
+
+	cout << my_distance(v.end(), v.begin()) << endl;
+}
